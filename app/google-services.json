@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "781084580802",
+    "project_id": "earlybird-runningbuddy",
+    "storage_bucket": "earlybird-runningbuddy.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:781084580802:android:202e5e72710520f2fa145b",
+        "android_client_info": {
+          "package_name": "com.earlybird.runningbuddy"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "781084580802-k62jupflm2jf1j271382bokks90q6nn0.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDRsyj-Kp0wxZnxaW8Ap9Xd8J8USDVKaW0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "781084580802-k62jupflm2jf1j271382bokks90q6nn0.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
