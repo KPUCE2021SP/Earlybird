@@ -15,13 +15,10 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.FusedLocationSource
 
-class MapActivity : AppCompatActivity(), OnMapReadyCallback {
+object MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private val PERMISSION_REQUEST_CODE = 100
-    private val PERMISSIONS: Array<String> = arrayOf(
-        Manifest.permission.ACCESS_FINE_LOCATION,
-        Manifest.permission.ACCESS_COARSE_LOCATION
-    )
+
+    private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     private lateinit var locationSource: FusedLocationSource
     private lateinit var naverMap: NaverMap
 
@@ -118,8 +115,5 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     public fun getCurrentLocation(naverMap: NaverMap) {
 
     }
-
-    companion object {
-        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
-    }
+    
 }

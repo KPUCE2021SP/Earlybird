@@ -26,7 +26,11 @@ class AfterLoginActivity : AppCompatActivity() {
             Firebase.auth.signOut()
             finish()
         }
-
+        binding.buttonMap.setOnClickListener {
+            startActivity(
+                Intent(this, MapActivity::class.java)
+            )
+        }
     }
 
 }
