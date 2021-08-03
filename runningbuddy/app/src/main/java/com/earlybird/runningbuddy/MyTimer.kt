@@ -8,35 +8,38 @@ import kotlin.concurrent.timer
 
 class MyTimer: AppCompatActivity() {
 
+
     private lateinit var binding: ActivityMainBinding
 
-    private var time = 0
-    private var isRunning = false
-    private var timerTask: Timer? = null
-    private var lap = 1
+        private var time = 0
+        private var isRunning = false
+        private var timerTask: Timer? = null
+        private var lap = 1
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-//        binding.runButton.setOnClickListener {
-//            isRunning = !isRunning
-//
-//            if (isRunning) {
-//                Start()
-//            } else {
-//                Pause()
-//            }
-//        }
+
+
+        binding.runButton.setOnClickListener {
+            isRunning = !isRunning
+
+            if (isRunning) {
+                Start()
+            } else {
+                Pause()
+            }
+        }
     }
 
-    private fun Pause() {
+    public fun Pause() {
         binding.runButton.text = "시작"
         timerTask?.cancel()
     }
 
-    private fun Start() {
+    public fun Start() {
         binding.runButton.text = "종료"
 
         timerTask = timer(period = 1000) {

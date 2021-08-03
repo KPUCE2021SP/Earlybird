@@ -3,8 +3,12 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+<<<<<<< Updated upstream
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_login.xml" value="0.2390625" />
+=======
+        <entry key="..\:/Users/Yoon/Running Buddy.png/runningbuddy/app/src/main/res/layout/activity_main.xml" value="0.38697916666666665" />
+>>>>>>> Stashed changes
         <entry key="..\:/gitHub/Earlybird/runningbuddy/app/src/main/res/layout/activity_main.xml" value="0.1" />
       </map>
     </option>

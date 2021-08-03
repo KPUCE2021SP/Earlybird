@@ -19,16 +19,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        binding.runButton.setOnClickListener {
-            timer.isRunning =! timer.isRunning
 
-            if (timer.isRunning) {
-                timer.Start()
-            } else {
-                timer.Pause()
-            }
+
         }
     }
 
 
-}
