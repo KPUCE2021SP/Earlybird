@@ -47,6 +47,14 @@ dependencies {
     implementation platform('com.google.firebase:firebase-bom:28.3.0')
     implementation 'com.naver.maps:map-sdk:3.12.0'
 
+
+
+
+
+
+
+
+    
     implementation 'com.firebaseui:firebase-ui-auth:8.0.0'
 
     // Required only if Facebook login support is required
