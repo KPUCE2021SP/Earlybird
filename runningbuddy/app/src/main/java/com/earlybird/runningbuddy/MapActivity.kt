@@ -112,6 +112,9 @@ object MapActivity : AppCompatActivity(), OnMapReadyCallback {
         path.map = naverMap
     }
 
+//    private fun clear(coords: MutableList<LatLng>, location: Location, path: PathOverlay) {
+//        path.map = null
+//    }
     public fun getCurrentLocation(naverMap: NaverMap) {
 
     }

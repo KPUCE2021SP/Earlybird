@@ -28,7 +28,7 @@ class AfterLoginActivity : AppCompatActivity() {
         }
         binding.buttonMap.setOnClickListener {
             startActivity(
-                Intent(this, MapActivity::class.java)
+                Intent(this, MainActivity::class.java)
             )
         }
     }
