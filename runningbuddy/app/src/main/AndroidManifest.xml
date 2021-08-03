@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.earlybird.runningbuddy">
+
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+
     <application
         android:allowBackup="true"
         android:icon="@mipmap/icon_bird"
@@ -10,8 +12,20 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
         <activity
-            android:name=".LoginActivity"
+            android:name=".AfterLoginActivity"
             android:exported="true" />
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
@@ -20,11 +34,7 @@
         <activity
             android:name=".MapActivity"
             android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 
