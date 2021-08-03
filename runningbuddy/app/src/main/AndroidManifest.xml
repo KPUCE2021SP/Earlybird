@@ -28,12 +28,12 @@
         <activity
             android:name=".MainActivity"
             android:exported="true">
+        </activity>
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="@string/naver_map_client_id" />
-            
-        </activity>
+
     </application>
 
 </manifest>
