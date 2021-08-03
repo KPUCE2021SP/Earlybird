@@ -33,9 +33,6 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="@string/naver_map_client_id" />
 
-        <activity
-            android:name=".MapActivity"
-            android:exported="true">
 
         </activity>
     </application>
