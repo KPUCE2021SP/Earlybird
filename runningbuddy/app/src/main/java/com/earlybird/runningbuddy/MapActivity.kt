@@ -5,8 +5,10 @@ import android.location.Location
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.widget.Button
 import android.widget.Toast
 import androidx.fragment.app.FragmentManager
+import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapFragment
@@ -14,13 +16,20 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.FusedLocationSource
+import kotlinx.coroutines.delay
+import java.util.*
+import kotlin.concurrent.timer
 
 class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var locationSource: FusedLocationSource
     private lateinit var naverMap: NaverMap
+    private var path = PathOverlay()
+
+    private var runningService = RunningService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
@@ -38,7 +47,6 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
         // getMapAsync 를 호출하여 비동기로 onMapReady 콜백 메서드 호출
         // onMapReady 에서 NaverMap 객체를 받음
         mapFragment.getMapAsync(this)
-
 
     }
 
@@ -66,26 +74,28 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(naverMap: NaverMap) {
 
         this.naverMap = naverMap
-        // 지도 확대 축소 설정
-//        naverMap.minZoom = 18.0
-//        naverMap.maxZoom = 18.0
+        runningService.setNaverMap(naverMap,path)
 
         //지도 위치를 현 위치로 설정
         naverMap.locationSource = locationSource
 
+        // 지도 확대 축소 설정
+//        naverMap.minZoom = 18.0
+//        naverMap.maxZoom = 18.0
+
         // 지도 위 이동 거리 표시
-        val path = PathOverlay()
-        // 좌표열 저장
-        path.coords = listOf(
-            LatLng(37.57152, 126.97714),
-            LatLng(37.56607, 126.98268),
-        )
-        // 좌표열 변경을 위한 변수
-        val coords = mutableListOf(
-            LatLng(37.57152, 126.97714),
-            LatLng(37.56607, 126.98268),
-        )
-        path.coords = coords
+//        val path = PathOverlay()
+//        // 좌표열 저장
+//        path.coords = listOf(
+//            LatLng(37.57152, 126.97714),
+//            LatLng(37.56607, 126.98268),
+//        )
+//        // 좌표열 변경을 위한 변수
+//        val coords = mutableListOf(
+//            LatLng(37.57152, 126.97714),
+//            LatLng(37.56607, 126.98268),
+//        )
+//        path.coords = coords
 
         // 움직일때마다 좌표 표시시 + 위치를 그려줄 수 있는 함수 호출
         naverMap.addOnLocationChangeListener { location ->
@@ -93,7 +103,7 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
                 this, "${location.latitude}, ${location.longitude}",
                 Toast.LENGTH_SHORT
             ).show()
-            drawMap(coords, location, path)
+            //drawMap(coords, location, path)
         }
 
         // 위치 추적 활성화
@@ -101,25 +111,16 @@ class MapActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     // 위치 드로우
-    private fun drawMap(coords: MutableList<LatLng>, location: Location, path: PathOverlay) {
-        coords[0] = LatLng(location)
-        path.coords.add(LatLng(location))
-
-        path.coords = coords
-
-        path.map = naverMap
-    }
+//    private fun drawMap(coords: MutableList<LatLng>, location: Location, path: PathOverlay) {
+//        coords[0] = LatLng(location)
+//        path.coords.add(LatLng(location))
+//
+//        path.coords = coords
+//
+//        path.map = naverMap
+//    }
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     }
-//    private fun clear(coords: MutableList<LatLng>, location: Location, path: PathOverlay) {
-//        path.map = null
-//    }
-    public fun getCurrentLocation(naverMap: NaverMap) {
-
-    }
-
-
-    
 }
