@@ -15,10 +15,8 @@ import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.FusedLocationSource
 
-object MapActivity : AppCompatActivity(), OnMapReadyCallback {
+class MapActivity : AppCompatActivity(), OnMapReadyCallback {
 
-
-    private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
     private lateinit var locationSource: FusedLocationSource
     private lateinit var naverMap: NaverMap
 
@@ -112,11 +110,16 @@ object MapActivity : AppCompatActivity(), OnMapReadyCallback {
         path.map = naverMap
     }
 
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
+    }
 //    private fun clear(coords: MutableList<LatLng>, location: Location, path: PathOverlay) {
 //        path.map = null
 //    }
     public fun getCurrentLocation(naverMap: NaverMap) {
 
     }
+
+
     
 }
