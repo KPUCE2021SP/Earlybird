@@ -11,30 +11,33 @@
         android:roundIcon="@mipmap/icon_bird"
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
+
         <activity
             android:name=".AfterLoginActivity"
             android:exported="true" />
+
         <activity
             android:name=".LoginActivity"
-            android:exported="true">
-
-
-        </activity>
+            android:exported="true"/>
 
         <activity android:name=".MapActivity"
+            android:exported="true">
+        </activity>
+
+        <activity android:name=".RunningActivity"
+            android:exported="true"/>
+
+        <activity android:name=".DataViewActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-
-        </activity>
-
-        <activity
-            android:name=".MainActivity"
-            android:exported="true">
-
         </activity>
 
         <meta-data
