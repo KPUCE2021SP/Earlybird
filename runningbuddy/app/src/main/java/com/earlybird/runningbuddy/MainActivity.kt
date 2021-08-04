@@ -14,6 +14,11 @@ class MainActivity : AppCompatActivity() {
     private var isRunning = false
     private var timerTask: Timer? = null
     private var lap = 1
+    private var sec: Int = 0
+    private var min: Int = 0
+    private var hour: Int = 0
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,31 +38,30 @@ class MainActivity : AppCompatActivity() {
 
     private fun Pause() {
         binding.runButton.text = "시작"
-        timerTask?.cancel()
+        timerTask?.cancel() //
     }
 
     private fun Start() {
         binding.runButton.text = "종료"
+        val timestart = TimeStart()
 
-        timerTask = timer(period = 10) {
+    }
+
+
+
+    private fun TimeStart() {
+        timerTask = timer(period = 10, initialDelay = 1000) {  //주기 : 1초, 초기딜레이시간 1초
             time++
-            val milli = time % 100
-            var sec = time / 100
-            var min = (time / 100) / 60
-            val hour = (time / 100) / 3600
-
-            if (sec == 0) sec = time / 100
-            else if (sec / 60 >= 1) sec %= 60
-
-            if (min == 0) min = (time / 100) / 60
-            else if (min / 60 >= 1) min %= 60
+            sec = time % 60
+            min = (time / 60) % 60
+            hour = time / 3600
 
             runOnUiThread {
                 binding.hourView.text = "${hour}"
                 binding.minuteView.text = "${min}"
                 binding.secondView.text = "${sec}"
-                binding.milliView.text = "${milli}"
             }
+
         }
     }
 }
