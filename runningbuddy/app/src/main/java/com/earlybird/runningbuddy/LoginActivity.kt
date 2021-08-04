@@ -24,7 +24,7 @@ class LoginActivity : AppCompatActivity() {
             val password = binding.password.text.toString()
             doLogin(userEmail, password)
         }
-    }
+    }//일권이 첫주석(깃허브 테스트용)
     private fun doLogin(userEmail: String, password: String) {
         Firebase.auth.signInWithEmailAndPassword(userEmail, password)
             .addOnCompleteListener(this) { // it: Task<AuthResult!>
