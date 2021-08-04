@@ -1,5 +1,6 @@
 package com.earlybird.runningbuddy
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
@@ -29,39 +30,32 @@ class MainActivity : AppCompatActivity() {
             isRunning = !isRunning
 
             if (isRunning) {
-                Start()
+                RunStart()
             } else {
-                Pause()
+                RunPause()
             }
         }
     }
 
-    private fun Pause() {
-        binding.runButton.text = "시작"
-        timerTask?.cancel() //
+    private fun RunPause() {
+        timerTask?.cancel()
     }
 
-    private fun Start() {
-        binding.runButton.text = "종료"
+    private fun RunStart() {
         val timestart = TimeStart()
+        val RunStartIntent = Intent(this@MainActivity,R.layout.activity_running::class.java)
+        startActivity(RunStartIntent)
 
     }
 
 
 
-    private fun TimeStart() {
+    private fun TimeStart() { //타이머 돌아가는 함수
         timerTask = timer(period = 10, initialDelay = 1000) {  //주기 : 1초, 초기딜레이시간 1초
             time++
             sec = time % 60
             min = (time / 60) % 60
             hour = time / 3600
-
-            runOnUiThread {
-                binding.hourView.text = "${hour}"
-                binding.minuteView.text = "${min}"
-                binding.secondView.text = "${sec}"
-            }
-
         }
     }
 }
