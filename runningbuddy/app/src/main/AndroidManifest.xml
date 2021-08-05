@@ -3,6 +3,7 @@
     package="com.earlybird.runningbuddy">
 
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
 
     <application
         android:allowBackup="true"
@@ -11,6 +12,11 @@
         android:roundIcon="@mipmap/icon_bird"
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
+
+        <service
+            android:name=".RunningService"
+            android:enabled="true"
+            android:exported="true" />
 
         <activity
             android:name=".AfterLoginActivity"
