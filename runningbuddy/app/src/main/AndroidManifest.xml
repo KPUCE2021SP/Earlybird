@@ -12,6 +12,11 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
 
+        <service
+            android:name=".RunningService"
+            android:enabled="true"
+            android:exported="true"/>
+
         <activity
             android:name=".AfterLoginActivity"
             android:exported="true" >

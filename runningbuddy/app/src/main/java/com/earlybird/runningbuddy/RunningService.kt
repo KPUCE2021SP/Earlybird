@@ -67,4 +67,8 @@ class RunningService : Service() {
     override fun onDestroy(){
         mapThread.cancel()
     }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        return super.onStartCommand(intent, flags, startId)
+    }
 }
