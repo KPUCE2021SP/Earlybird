@@ -1,26 +1,35 @@
 package com.earlybird.runningbuddy
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
+import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
 import java.util.*
 import kotlin.concurrent.timer
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var binding1: ActivityRunningBinding
+
 
     private var time = 0
     private var isRunning = false
     private var timerTask: Timer? = null
     private var lap = 1
+    private var sec: Int = 0
+    private var min: Int = 0
+    private var hour: Int = 0
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.runButton.setOnClickListener {
+        binding.runButton.setOnClickListener { //runButton클릭 시
+
             isRunning = !isRunning
 
             if (isRunning) {
@@ -32,32 +41,25 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun Pause() {
-        binding.runButton.text = "시작"
-        timerTask?.cancel()
+        timerTask?.cancel() //
     }
 
     private fun Start() {
-        binding.runButton.text = "종료"
+        val timestart = TimeStart()
+        val intent = Intent(this, RunningActivity::class.java)  //RunningActivity로 넘어감
+        startActivity(intent)
+    }
 
-        timerTask = timer(period = 10) {
+
+    private fun TimeStart() {
+        timerTask = timer(period = 10, initialDelay = 1000) {  //주기 : 1초, 초기딜레이시간 1초
             time++
-            val milli = time % 100
-            var sec = time / 100
-            var min = (time / 100) / 60
-            val hour = (time / 100) / 3600
+            sec = time % 60
+            min = (time / 60) % 60
+            hour = time / 3600
 
-            if (sec == 0) sec = time / 100
-            else if (sec / 60 >= 1) sec %= 60
-
-            if (min == 0) min = (time / 100) / 60
-            else if (min / 60 >= 1) min %= 60
-
-            runOnUiThread {
-                binding.hourView.text = "${hour}"
-                binding.minuteView.text = "${min}"
-                binding.secondView.text = "${sec}"
-                binding.milliView.text = "${milli}"
-            }
         }
     }
 }
+
+
