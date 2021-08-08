@@ -2,9 +2,8 @@ package com.earlybird.runningbuddy
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
-import com.earlybird.runningbuddy.databinding.ActivityLoginBinding
-import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
 
 class RunningActivity: AppCompatActivity() {
@@ -16,6 +15,10 @@ class RunningActivity: AppCompatActivity() {
 
         binding = ActivityRunningBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+        val transaction = supportFragmentManager.beginTransaction().add(R.id.map,MapFragment())
+        transaction.commit()
+        Log.d("Map22","runningActivity")
 
         binding.stopButton.setOnClickListener { //stopButton클릭 시
             val intent = Intent(this,DataViewActivity::class.java)  //DataViewActivity로 넘어감

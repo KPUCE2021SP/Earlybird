@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.PathOverlay
 import kotlinx.coroutines.CoroutineScope
@@ -32,7 +33,8 @@ class RunningService : Service() {
     private val pathList = mutableListOf<LatLng>()  // 경로 저장하기 위한 리스트
     private val pathListIntent = Intent()   // 경로 저장 리스트를 전달하기 위한
     private lateinit var path:PathOverlay
-    private lateinit var naverMap:NaverMap
+    private lateinit var naverMap:NaverMap  //naver 객체
+    private lateinit var mapView : MapView // xml mapview 객체
 
     //  클라이언트가 서비스와 상호작용하는 데 사용할 수 있는 프로그래밍 인터페이스를 정의하는 IBinder 객체를 반환
     override fun onBind(intent: Intent): IBinder {

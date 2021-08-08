@@ -25,6 +25,11 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val transaction = supportFragmentManager.beginTransaction().add(R.id.map,MapFragment())
+        transaction.commit()
+
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
