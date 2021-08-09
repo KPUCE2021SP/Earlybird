@@ -15,17 +15,17 @@ import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.FusedLocationSource
 
 
-class MapFragment : Fragment() , OnMapReadyCallback {
-
+class MapFragment(flag:Boolean) : Fragment(), OnMapReadyCallback {
+    var flag:Boolean = flag // 경로 표시여부
     private lateinit var locationSource: FusedLocationSource
     private lateinit var naverMap: NaverMap //NaverMap
-    private lateinit var mapView: MapView//xml map 객체
+    private lateinit var mapView: MapView   //xml map 객체
     private var path = PathOverlay()
-    private lateinit var binding : FragmentMapBinding
+    private lateinit var binding: FragmentMapBinding
     private var runningService = RunningService()
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        Log.d("Map22","onCreate")
+        Log.d("Map22", "onCreate")
         super.onCreate(savedInstanceState)
         binding = FragmentMapBinding.inflate(layoutInflater)
     }
@@ -34,13 +34,13 @@ class MapFragment : Fragment() , OnMapReadyCallback {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d("Map22","onCreateView")
+        Log.d("Map22", "onCreateView")
 
         return inflater.inflate(R.layout.fragment_map, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d("Map22","onViewCreated")
+        Log.d("Map22", "onViewCreated")
 
         mapView = view.findViewById(R.id.naverMap)
         mapView.getMapAsync(this)
@@ -68,18 +68,20 @@ class MapFragment : Fragment() , OnMapReadyCallback {
 
     // NaverMap 인스턴스가 준비되면 호출되는 콜백 메서드.
     override fun onMapReady(naverMap: NaverMap) {
-        Log.d("Map22","onMapReady")
+        Log.d("Map22", "onMapReady")
 
         this.naverMap = naverMap
 
         //지도 위치를 현 위치로 설정
         naverMap.locationSource = locationSource
 
+        naverMap.minZoom = 18.0
+        naverMap.maxZoom = 18.0
 
         // 위치 추적 활성화
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
 
-        runningService.setNaverMap(naverMap,path)
+        runningService.setNaverMap(naverMap, path, flag)
     }
 
     // MapView 의 라이프 사이클 메서드 호출

@@ -16,7 +16,7 @@ class RunningActivity: AppCompatActivity() {
         binding = ActivityRunningBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        val transaction = supportFragmentManager.beginTransaction().add(R.id.map,MapFragment())
+        val transaction = supportFragmentManager.beginTransaction().add(R.id.map,MapFragment(true))
         transaction.commit()
         Log.d("Map22","runningActivity")
 

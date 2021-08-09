@@ -26,7 +26,7 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val transaction = supportFragmentManager.beginTransaction().add(R.id.map,MapFragment())
+        val transaction = supportFragmentManager.beginTransaction().add(R.id.map,MapFragment(false))
         transaction.commit()
 
 
