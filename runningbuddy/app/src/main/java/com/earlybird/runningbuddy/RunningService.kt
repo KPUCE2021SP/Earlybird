@@ -18,7 +18,7 @@ import kotlin.concurrent.timer
 
 class RunningService : Service() {
 
-    private val CHANNEL_ID = "ForegroundChannel"    //알림에 사용될 채널
+    private val CHANNEL_ID = "ForegroundChannel"    //포어그라운드에 사용될 채널
     // 시간 계산을 위한 변수
     private var min: Int = 0
     private var sec: Int = 0

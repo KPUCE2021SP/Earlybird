@@ -14,7 +14,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var binding1: ActivityRunningBinding
     private var serviceIntent: Intent? = null   //RunningService의 서비스 시작 전 null값으로 초기화
-
+    private val Activityintent = Intent(this, RunningActivity::class.java)  //RunningActivity로 넘어감
 
 //    private var time = 0
 //    private var isRunning = false
@@ -49,7 +49,6 @@ class MainActivity : AppCompatActivity() {
     private fun Start() {
 //        val timestart = TimeStart()
     startService(this.serviceIntent)    //started서비스 시작
-    val Activityintent = Intent(this, RunningActivity::class.java)  //RunningActivity로 넘어감
     startActivity(Activityintent)
     }
 //
