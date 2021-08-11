@@ -1,5 +1,6 @@
 package com.earlybird.runningbuddy
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -28,6 +29,7 @@ class MapFragment(flag:Boolean) : Fragment(), OnMapReadyCallback {
         Log.d("Map22", "onCreate")
         super.onCreate(savedInstanceState)
         binding = FragmentMapBinding.inflate(layoutInflater)
+
     }
 
     override fun onCreateView(
@@ -35,6 +37,8 @@ class MapFragment(flag:Boolean) : Fragment(), OnMapReadyCallback {
         savedInstanceState: Bundle?
     ): View? {
         Log.d("Map22", "onCreateView")
+
+
 
         return inflater.inflate(R.layout.fragment_map, container, false)
     }

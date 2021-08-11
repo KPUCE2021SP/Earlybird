@@ -1,6 +1,8 @@
 package com.earlybird.runningbuddy
 
 import android.app.Service
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
@@ -15,6 +17,7 @@ import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
 import okhttp3.Dispatcher
 import kotlin.math.round
+import kotlin.math.roundToInt
 
 class RunningService : Service() {
 
@@ -30,25 +33,35 @@ class RunningService : Service() {
 
     private var distance: Double = 0.0
     private val mapThread = CoroutineScope(Dispatchers.Main)
-    private val distanceIntent = Intent()   // 거리 정보를 전달하기 위한 intent
+    private val distanceIntent = Intent("DistanceService")   // 거리 정보를 전달하기 위한 intent
     private val pathList = mutableListOf<LatLng>()  // 경로 저장하기 위한 리스트
     private val pathListIntent = Intent()   // 경로 저장 리스트를 전달하기 위한
     private lateinit var path: PathOverlay
     private lateinit var naverMap: NaverMap  //naver 객체
+
+    override fun onCreate() {
+        Log.d("serviceCycle", "onCreate()")
+        timerIntent.action
+    }
+
+    override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
+        Log.d("serviceCycle", "onStartCommand()")
+        return START_NOT_STICKY
+    }
 
     //  클라이언트가 서비스와 상호작용하는 데 사용할 수 있는 프로그래밍 인터페이스를 정의하는 IBinder 객체를 반환
     override fun onBind(intent: Intent): IBinder {
         Log.d("serviceCycle", "onBind()")
         // 메서드를 항상 구현해야 하기에 일단 null 반환
         val binder: IBinder? = null
+
         return binder!!
     }
 
     fun setNaverMap(naverMap: NaverMap, path: PathOverlay, flag: Boolean) {
-        Log.d("service22", "setnaverMap")
+        Log.d("service22", "setNaverMap")
         this.naverMap = naverMap
         this.path = path
-
         launchMap(flag)
     }
 
@@ -66,23 +79,20 @@ class RunningService : Service() {
             if (flag) {
                 drawPath()
                 val distance = pathList[pathList.size - 1].distanceTo(pathList[pathList.size - 2])
-                Log.d("service22", "distance : $distance")
                 setDistance(distance)
+                Log.d("service22", "distance : $distance")
             }
         }
-
     }
 
-    private fun setDistance(distance: Double) {
-        // m -> km 수정필요
-        this.distance += distance
-        val changeDistance = round(this.distance * 1.0) / 100
-        Log.d("service22","$changeDistance")
-       // sendDistance(changeDistance)
-    }
-
-    private fun sendDistance(distance: Double) {
-        distanceIntent.putExtra("distance", distance)
+    private fun setDistance(distance:Double){
+        this.distance += distance/1000f
+        Log.d("service22","소수점 1자리까지만 this.distance : %.1f".format(this.distance))
+        Log.d("service22","this.distance : ${this.distance}")
+        //distanceIntent.action = "DistanceService"
+        distanceIntent.putExtra("distance",this.distance)
+        Log.d("service22","sendBroadcast")
+        Log.d("service22","distanceIntent.action : ${distanceIntent.action}")
         sendBroadcast(distanceIntent)
     }
 
@@ -101,4 +111,6 @@ class RunningService : Service() {
         Log.d("serviceCycle", "onDestroy()")
         mapThread.cancel()
     }
+
 }
+
