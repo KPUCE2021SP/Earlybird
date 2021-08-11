@@ -11,10 +11,12 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/minuteView"
+        app:layout_constraintBottom_toTopOf="@+id/TimeView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/stopButton"
@@ -26,36 +28,16 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/hourView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:text="00"
-        android:textSize="50sp"
-        app:layout_constraintBottom_toBottomOf="@+id/minuteView"
-        app:layout_constraintEnd_toStartOf="@+id/minuteView" />
-
-    <TextView
-        android:id="@+id/minuteView"
+        android:id="@+id/TimeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
-        android:text="00"
+        android:text="00:00:00"
         android:textSize="50sp"
         app:layout_constraintBottom_toTopOf="@+id/distanceView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
-
-    <TextView
-        android:id="@+id/secondView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:text="00"
-        android:textSize="50sp"
-        app:layout_constraintBottom_toBottomOf="@+id/minuteView"
-        app:layout_constraintStart_toEndOf="@+id/minuteView" />
 
     <TextView
         android:id="@+id/distanceView"
@@ -65,7 +47,7 @@
         android:text="00Km"
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/stopButton"
-        app:layout_constraintEnd_toStartOf="@+id/minuteView" />
+        app:layout_constraintEnd_toStartOf="@+id/TimeView" />
 
     <TextView
         android:id="@+id/paceView"
@@ -74,7 +56,7 @@
         android:text="0000"
         android:textSize="30dp"
         app:layout_constraintBottom_toBottomOf="@+id/distanceView"
-        app:layout_constraintStart_toEndOf="@+id/minuteView" />
+        app:layout_constraintStart_toEndOf="@+id/TimeView" />
 
     <Button
         android:id="@+id/pauseButton"
