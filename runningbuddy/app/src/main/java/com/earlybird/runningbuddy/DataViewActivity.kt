@@ -9,6 +9,9 @@ class DataViewActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        
+
+        binding = ActivityDataviewBinding.inflate(layoutInflater)
+
+
     }
 }

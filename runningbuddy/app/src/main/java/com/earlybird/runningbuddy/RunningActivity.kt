@@ -36,7 +36,8 @@ class RunningActivity: AppCompatActivity() {
 
         binding.pauseButton.setOnClickListener{
             stopService(serviceIntent)
-            startService()
+
+
         }
 
     }
