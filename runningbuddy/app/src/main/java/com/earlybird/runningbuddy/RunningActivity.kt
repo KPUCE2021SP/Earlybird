@@ -31,7 +31,7 @@ class RunningActivity: AppCompatActivity() {
         // broadcast
         Log.d("service22","broadcast")
         intentFilter.addAction("DistanceService")
-        registerReceiver(br,intentFilter)
+        this.registerReceiver(br,intentFilter)
 
         // RunningService
         val intent = Intent(this, RunningService::class.java)
@@ -45,11 +45,16 @@ class RunningActivity: AppCompatActivity() {
         Log.d("Map22","runningActivity")
 
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        unregisterReceiver(br)
+    }
 }
 
 class MyBroadcastReceiver : BroadcastReceiver() {
     override fun onReceive(context: Context?, intent: Intent?) {
-        Log.d("service22", "[MyBroadcastReceiver] Intent: $intent")
+        Log.d("service22", "[MyBroadcastReceiver] Intent: ${intent?.action}")
         if(intent!=null){
             when(intent.action){
                 "DistanceService"->{

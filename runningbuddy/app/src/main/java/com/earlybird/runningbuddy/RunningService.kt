@@ -1,23 +1,16 @@
 package com.earlybird.runningbuddy
 
 import android.app.Service
-import android.content.BroadcastReceiver
-import android.content.Context
 import android.content.Intent
 import android.os.IBinder
 import android.util.Log
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.MapView
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.PathOverlay
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.launch
-import okhttp3.Dispatcher
-import kotlin.math.round
-import kotlin.math.roundToInt
 
 class RunningService : Service() {
 
@@ -85,15 +78,21 @@ class RunningService : Service() {
         }
     }
 
-    private fun setDistance(distance:Double){
-        this.distance += distance/1000f
+    private fun setDistance(mDistance:Double){
+        this.distance += mDistance/1000f
         Log.d("service22","소수점 1자리까지만 this.distance : %.1f".format(this.distance))
         Log.d("service22","this.distance : ${this.distance}")
         //distanceIntent.action = "DistanceService"
+
         distanceIntent.putExtra("distance",this.distance)
+
+        val intent = Intent("DistanceService")
+        intent.putExtra("distance",distance)
+
         Log.d("service22","sendBroadcast")
-        Log.d("service22","distanceIntent.action : ${distanceIntent.action}")
-        sendBroadcast(distanceIntent)
+        sendBroadcast(intent)
+       // Log.d("service22","distanceIntent.action : ${distanceIntent.action}")
+        //sendBroadcast(distanceIntent)
     }
 
     private fun drawPath() {
