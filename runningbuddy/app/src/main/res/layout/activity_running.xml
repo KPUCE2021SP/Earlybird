@@ -11,9 +11,15 @@
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginBottom="20dp"
+<<<<<<< Updated upstream
         app:layout_constraintBottom_toTopOf="@+id/TimeView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="1.0"
+=======
+        app:layout_constraintBottom_toTopOf="@+id/timeTV"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+>>>>>>> Stashed changes
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0" />
@@ -27,14 +33,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
+<<<<<<< Updated upstream
     <TextView
         android:id="@+id/TimeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
         android:text="00:00:00"
+=======
+
+    <TextView
+        android:id="@+id/timeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="152dp"
+        android:text="00:00:00"
+        android:textAlignment="center"
+>>>>>>> Stashed changes
         android:textSize="50sp"
-        app:layout_constraintBottom_toTopOf="@+id/distanceView"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
         app:layout_constraintStart_toStartOf="parent" />
@@ -43,20 +60,34 @@
         android:id="@+id/distanceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
+        android:layout_marginBottom="16dp"
         android:text="00Km"
         android:textSize="30dp"
         app:layout_constraintBottom_toTopOf="@+id/stopButton"
+<<<<<<< Updated upstream
         app:layout_constraintEnd_toStartOf="@+id/TimeView" />
+=======
+        app:layout_constraintEnd_toStartOf="@+id/paceView"
+        app:layout_constraintHorizontal_bias="0.479"
+        app:layout_constraintStart_toStartOf="parent" />
+>>>>>>> Stashed changes
 
     <TextView
         android:id="@+id/paceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:text="0000"
         android:textSize="30dp"
+<<<<<<< Updated upstream
         app:layout_constraintBottom_toBottomOf="@+id/distanceView"
         app:layout_constraintStart_toEndOf="@+id/TimeView" />
+=======
+        app:layout_constraintBottom_toTopOf="@+id/pauseButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.741"
+        app:layout_constraintStart_toStartOf="parent" />
+>>>>>>> Stashed changes
 
     <Button
         android:id="@+id/pauseButton"
@@ -66,4 +97,14 @@
         android:text="일시정지"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
+    <Button
+        android:id="@+id/resetButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
+        android:text="다시시작"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
