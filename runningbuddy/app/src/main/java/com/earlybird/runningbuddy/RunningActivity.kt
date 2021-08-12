@@ -18,6 +18,7 @@ class RunningActivity: AppCompatActivity() {
     private lateinit var serviceIntent : Intent //RunningService의 값을 받기 위한 intent
 
     private var time = 0.0
+    private var timerstatus = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -30,12 +31,12 @@ class RunningActivity: AppCompatActivity() {
         registerReceiver(RunningBroadCast(), IntentFilter(RunningService.TIMER_UPDATED))
 
         binding.stopButton.setOnClickListener { //stopButton클릭 시
-            stopService(serviceIntent)
+            stopTimer()
             startActivity(dataViewIntent)
         }
 
         binding.pauseButton.setOnClickListener{
-            stopService(serviceIntent)
+            pauseTime()
         }
     }
 
@@ -64,4 +65,24 @@ class RunningActivity: AppCompatActivity() {
 
     private fun makeTimeString(hours: Int, minutes: Int, seconds: Int): String = //문자 합치기
         String.format("%02d:%02d:%02d",hours,minutes,seconds)
+
+    private fun pauseTime() {
+        if(timerstatus)
+            stopTimer()
+        else
+            restartTimer()
+    }
+
+    private fun restartTimer() {
+        serviceIntent.putExtra(RunningService.TIME_EXTRA,time)
+        startService(serviceIntent)
+        binding.pauseButton.text = "일시정지"
+        timerstatus = true
+    }
+
+    private fun stopTimer() {
+        stopService(serviceIntent)
+        binding.pauseButton.text = "재시작"
+        timerstatus = false
+    }
 }
