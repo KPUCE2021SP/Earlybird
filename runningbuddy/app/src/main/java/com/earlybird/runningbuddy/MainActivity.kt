@@ -22,13 +22,11 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-<<<<<<< Updated upstream
         serviceIntent = Intent(applicationContext, RunningService::class.java)   //RunningService와 intent
         Activityintent = Intent(applicationContext,RunningActivity::class.java) //RunningActivity와 intent
 
         binding.runButton.setOnClickListener { //runButton클릭 시
             startTimer()
-=======
         this.serviceIntent = Intent(this, RunningService2::class.java)   //RunningService로 넘어감
 
         binding.runButton.setOnClickListener { //runButton클릭 시
@@ -42,7 +40,6 @@ class MainActivity : AppCompatActivity() {
 //            } else {
 //                Pause()
 //            }
->>>>>>> Stashed changes
         }
     }
 
@@ -51,8 +48,6 @@ class MainActivity : AppCompatActivity() {
         startService(serviceIntent)
         startActivity(Activityintent)
     }
-<<<<<<< Updated upstream
-=======
 
 
 //    private fun TimeStart() {
@@ -64,7 +59,7 @@ class MainActivity : AppCompatActivity() {
 //
 //        }
 //    }
->>>>>>> Stashed changes
+
 }
 
 

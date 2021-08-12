@@ -6,8 +6,6 @@ import android.content.Intent
 import android.content.IntentFilter
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.earlybird.runningbuddy.RunningService2.Companion.TIMER_UPDATED
-import com.earlybird.runningbuddy.RunningService2.Companion.TIME_EXTRA
 import com.earlybird.runningbuddy.databinding.ActivityLoginBinding
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
@@ -33,7 +31,14 @@ class RunningActivity: AppCompatActivity() {
 
         binding.stopButton.setOnClickListener { //stopButton클릭 시
             stopService(serviceIntent)
+            startActivity(dataViewIntent)
         }
+
+        binding.pauseButton.setOnClickListener{
+            stopService(serviceIntent)
+            startService()
+        }
+
     }
 
     private val updateTime: BroadcastReceiver = object : BroadcastReceiver() {
