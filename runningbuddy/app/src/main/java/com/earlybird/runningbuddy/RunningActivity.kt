@@ -31,7 +31,16 @@ class RunningActivity: AppCompatActivity() {
 
         binding.stopButton.setOnClickListener { //stopButton클릭 시
             stopService(serviceIntent)
+            startActivity(dataViewIntent)
+
+
         }
+
+        binding.pauseButton.setOnClickListener{
+            stopService(serviceIntent)
+            startService()
+        }
+
     }
 
     private val updateTime: BroadcastReceiver = object : BroadcastReceiver() {
