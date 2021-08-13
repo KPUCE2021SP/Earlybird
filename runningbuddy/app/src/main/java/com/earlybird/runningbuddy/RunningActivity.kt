@@ -38,6 +38,7 @@ class RunningActivity: AppCompatActivity() {
         binding.pauseButton.setOnClickListener{
             pauseTime()
         }
+
     }
 
     inner class RunningBroadCast : BroadcastReceiver() {
