@@ -1,4 +1,6 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
+
+
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -9,10 +11,14 @@
         android:id="@+id/map"
         android:name="com.naver.maps.map.MapFragment"
         android:layout_width="0dp"
-        android:layout_height="@dimen/browser_actions_context_menu_max_width"
+        android:layout_height="0dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/TimeView"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.0" />
 
     <Button
         android:id="@+id/stopButton"
@@ -24,56 +30,35 @@
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
-        android:id="@+id/hourView"
+        android:id="@+id/TimeView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="15dp"
-        android:text="00"
+        android:layout_marginBottom="20dp"
+        android:text="00:00:00"
         android:textSize="50sp"
-        app:layout_constraintBottom_toBottomOf="@+id/minuteView"
-        app:layout_constraintEnd_toStartOf="@+id/minuteView" />
-
-    <TextView
-        android:id="@+id/minuteView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
-        android:text="00"
-        android:textSize="50sp"
+        app:layout_constraintBottom_toTopOf="@+id/distanceView"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map" />
-
-    <TextView
-        android:id="@+id/secondView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="15dp"
-        android:text="00"
-        android:textSize="50sp"
-        app:layout_constraintBottom_toBottomOf="@+id/minuteView"
-        app:layout_constraintStart_toEndOf="@+id/minuteView" />
+        app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
         android:id="@+id/distanceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginBottom="20dp"
         android:text="00Km"
         android:textSize="30dp"
-        app:layout_constraintEnd_toStartOf="@+id/minuteView"
-        app:layout_constraintTop_toBottomOf="@+id/hourView" />
+        app:layout_constraintBottom_toTopOf="@+id/stopButton"
+        app:layout_constraintEnd_toStartOf="@+id/TimeView" />
 
     <TextView
         android:id="@+id/paceView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         android:text="0000"
         android:textSize="30dp"
-        app:layout_constraintStart_toEndOf="@+id/minuteView"
-        app:layout_constraintTop_toBottomOf="@+id/secondView" />
+        app:layout_constraintBottom_toBottomOf="@+id/distanceView"
+        app:layout_constraintStart_toEndOf="@+id/TimeView" />
 
     <Button
         android:id="@+id/pauseButton"
@@ -83,4 +68,5 @@
         android:text="일시정지"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
