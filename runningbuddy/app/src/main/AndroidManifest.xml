@@ -12,15 +12,7 @@
         android:roundIcon="@mipmap/icon_bird"
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
-        <receiver
-            android:name=".RunningBroadcast"
-            android:enabled="true"
-            android:exported="true"></receiver>
 
-        <service
-            android:name=".RunningService2"
-            android:enabled="true"
-            android:exported="true" />
         <service
             android:name=".RunningService"
             android:enabled="true"
@@ -28,9 +20,6 @@
 
         <activity
             android:name=".AfterLoginActivity"
-            android:exported="true" />
-        <activity
-            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,15 +27,23 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true"/>
+
         <activity
             android:name=".MapActivity"
             android:exported="true" />
+
         <activity
             android:name=".RunningActivity"
             android:exported="true" />
+
         <activity
             android:name=".DataViewActivity"
             android:exported="true" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true" />
@@ -55,5 +52,4 @@
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="@string/naver_map_client_id" />
     </application>
-
 </manifest>

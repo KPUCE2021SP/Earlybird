@@ -7,11 +7,9 @@ import com.earlybird.runningbuddy.databinding.ActivityDataviewBinding
 
 class DataViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDataviewBinding
-    private lateinit var binding: DataViewActivity
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
 
 //        binding = ActivityRunningBinding.inflate(layoutInflater)
 //        setContentView(binding.root)

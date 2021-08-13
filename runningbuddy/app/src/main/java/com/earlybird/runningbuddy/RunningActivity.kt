@@ -47,13 +47,6 @@ class RunningActivity: AppCompatActivity() {
         }
     }
 
-//    private val updateTime: BroadcastReceiver = object : BroadcastReceiver() {
-//        override fun onReceive(context: Context?, intent: Intent) {
-//            time = intent.getDoubleExtra(RunningService.TIME_EXTRA, 0.0)
-//            binding.TimeView.text = getTimeStringFromDouble(time)
-//        }
-//    }
-
     private fun getTimeStringFromDouble(time: Double): String { //시간을 스트링으로 변환
         val resultInt = time.roundToInt()
         val hours = resultInt % 86400 / 3600
