@@ -34,7 +34,7 @@ class MainActivity : AppCompatActivity() {
         serviceIntent.putExtra(RunningService.TIME_EXTRA,time)  //time값 RunningService로 보내기
         startService(serviceIntent)
         startActivity(Activityintent)
-    }
+    }   
 }
 
 
