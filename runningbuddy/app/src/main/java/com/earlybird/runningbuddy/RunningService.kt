@@ -36,10 +36,10 @@ class RunningService : Service() {
         const val DISTANCE_EXTRA = "distance"
     }
 
-    // Dispatchers.Main : 기본 Android 스레드에서 코투린을 실행
-    // UI와 상호작용하고 빠른 작업을 실행하기 위해서만 사용해야함
-    private val timerThread = CoroutineScope(Dispatchers.Main)  // timer 코루틴을 위한 객체
-    private val timerIntent = Intent()  // timer 정보를 전달하기 위한 intnet 객체
+//     Dispatchers.Main : 기본 Android 스레드에서 코투린을 실행
+//     UI와 상호작용하고 빠른 작업을 실행하기 위해서만 사용해야함
+//    private val timerThread = CoroutineScope(Dispatchers.Main)  // timer 코루틴을 위한 객체
+//    private val timerIntent = Intent()  // timer 정보를 전달하기 위한 intnet 객체
 
     private var distance: Double = 0.0
     private val mapThread = CoroutineScope(Dispatchers.Main)
@@ -50,7 +50,7 @@ class RunningService : Service() {
     private lateinit var naverMap: NaverMap  //naver 객체
     private val binder = MyBinder()
 
-    inner class MyBinder : Binder() {
+    inner class MyBinder : Binder() {//  클라이언트가 서비스와 상호작용하는 데 사용할 수 있는 프로그래밍 인터페이스를 정의하는 IBinder 객체를 반환
         fun getService(): RunningService {
             Log.d("Map22","RunningService binder()")
             return this@RunningService
@@ -61,7 +61,6 @@ class RunningService : Service() {
         Log.d("serviceCycle", "onCreate()")
         timerIntent.action
     }
-
     override fun onBind(intent: Intent): IBinder {
         Log.d("Map22", "onBind()")
         return binder
@@ -151,3 +150,4 @@ class RunningService : Service() {
         }
     }
 }
+

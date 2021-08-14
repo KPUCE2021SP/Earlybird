@@ -17,7 +17,6 @@ class RunningActivity : AppCompatActivity() {
     private lateinit var serviceIntent: Intent //RunningService의 값을 받기 위한 intent
 
     private var time = 0.0
-    private var timerstatus = true
 
     private var distance = 0.0
 
@@ -68,7 +67,7 @@ class RunningActivity : AppCompatActivity() {
 
 
         binding.stopButton.setOnClickListener { //stopButton클릭 시
-            stopTimer()
+            stopService(serviceIntent)
             startActivity(dataViewIntent)
         }
 
@@ -153,6 +152,4 @@ class RunningActivity : AppCompatActivity() {
         binding.pauseButton.text = "재시작"
         timerstatus = false
     }
-
-
 }
