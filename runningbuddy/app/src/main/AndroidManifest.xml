@@ -12,10 +12,6 @@
         android:roundIcon="@mipmap/icon_bird"
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
-        <receiver
-            android:name=".RunningBroadcast"
-            android:enabled="true"
-            android:exported="true"></receiver>
 
         <service
             android:name=".RunningService2"
