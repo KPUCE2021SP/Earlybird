@@ -46,7 +46,6 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-
         mapView = view.findViewById(R.id.naverMap)
         mapView.getMapAsync(this)
         locationSource = FusedLocationSource(this, LOCATION_PERMISSION_REQUEST_CODE)
@@ -85,9 +84,7 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
         // 위치 추적 활성화
         naverMap.locationTrackingMode = LocationTrackingMode.Follow
 
-
         Log.d("Map22", "MapFragment runningActivity : $runningActivity")
-
 
         if (runningActivity != null) {
             Log.d("Map22", "${runningActivity.mService}")
