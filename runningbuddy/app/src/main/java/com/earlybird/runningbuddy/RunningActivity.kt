@@ -14,6 +14,10 @@ import kotlin.collections.ArrayList
 
 
 class RunningActivity : AppCompatActivity() {
+    // 달리는 중인지 서비스에서 확인하기 위해
+    companion object{
+        var isRunning = true
+    }
 
     private lateinit var binding: ActivityRunningBinding
     private lateinit var dataViewIntent: Intent    //DataViewActivity에 값을 주기 위한 intent
@@ -23,10 +27,9 @@ class RunningActivity : AppCompatActivity() {
     private var timerstatus = true
 
     private var distance = 0.0
-
     private var pathList = ArrayList<LatLng>()
 
-    private var isMap = false
+    private var isMap = false   // mapFragment
 
     private val intentFilter = IntentFilter()
 
@@ -35,11 +38,10 @@ class RunningActivity : AppCompatActivity() {
 
     private val connection = object :ServiceConnection{
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
-            Log.d("HAN_RunningActivity", "onServiceConnected(), ${isMap}")
             val binder = service as RunningService.MyBinder
             mService = binder.getService()
             mBound = true
-            // map fragment
+            // map fragment 를 한번만 그려주기 위해
             if(!isMap) {
                 val transaction = supportFragmentManager.beginTransaction()
                     .add(R.id.map, MapFragment(this@RunningActivity))
@@ -55,7 +57,6 @@ class RunningActivity : AppCompatActivity() {
 
     }
 
-    fun getIsMap():Boolean = isMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,15 +66,20 @@ class RunningActivity : AppCompatActivity() {
 
         setIntent()
 
+        setAction()
+
+        setButton()
+    }
+
+    override fun onStart() {
+        super.onStart()
+        // 서비스가 중단되지 않게 하기 위해
+        startService(serviceIntent)
         // 바인드된 서비스 실행, 서비스안에 있는 함수를 호출하기 위해
         Intent(this, RunningService::class.java).also { intent ->
             Log.d("HAN_RunningActivity","RunningActivity onStart()")
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
-
-        setAction()
-
-        setButton()
     }
 
     override fun onPause() {
@@ -91,6 +97,7 @@ class RunningActivity : AppCompatActivity() {
         Log.d("serviceCycle", "RunningActivity onDestroy()")
         unbindService(connection)
         mBound = false
+        isRunning = false
     }
 
     // 뒤로 가기 막기, 일단 단순히 뒤로 못가게 막음
@@ -120,6 +127,8 @@ class RunningActivity : AppCompatActivity() {
         }
 
         binding.pauseButton.setOnClickListener {
+            isRunning = !isRunning
+            Log.d("serviceCycle","isRunning : ${isRunning}")
             if (timerstatus)
                 stopRunning()
             else
@@ -138,8 +147,8 @@ class RunningActivity : AppCompatActivity() {
 
     private fun restartRunning() {
         serviceIntent.putExtra(RunningService.TIME_EXTRA, time)
-        //startService(serviceIntent)
-
+        val restart = true
+        serviceIntent.putExtra("restart",restart)
         bindService(serviceIntent,connection,Context.BIND_AUTO_CREATE)
         binding.pauseButton.text = "일시정지"
         timerstatus = true
@@ -147,8 +156,7 @@ class RunningActivity : AppCompatActivity() {
     }
 
     private fun stopRunning() {
-        Log.d("serviceCycle","stopTimer()")
-        //stopService(serviceIntent)
+        Log.d("serviceCycle","stopRunning()")
         unbindService(connection)
         binding.pauseButton.text = "재시작"
         timerstatus = false
@@ -175,7 +183,6 @@ class RunningActivity : AppCompatActivity() {
                     Log.d("service22","pathList : $pathList")
                 }
             }
-            //time = intent.getDoubleExtra(RunningService.TIME_EXTRA, 0.0)
             binding.TimeView.text = getTimeStringFromDouble(time)
             binding.distanceView.text = "%.1f km".format(distance)
             Log.d("service22", "broadCast : $distance")
