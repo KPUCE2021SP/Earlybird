@@ -5,6 +5,8 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import com.earlybird.runningbuddy.databinding.ActivityLoginBinding
+import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
 import com.naver.maps.geometry.LatLng
 import kotlin.math.roundToInt
@@ -50,12 +52,14 @@ class RunningActivity : AppCompatActivity() {
             Log.d("HAN_RunningActivity","onServiceDisconnected()")
             mBound = false
         }
+
     }
 
     fun getIsMap():Boolean = isMap
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         binding = ActivityRunningBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
@@ -172,6 +176,8 @@ class RunningActivity : AppCompatActivity() {
                 }
             }
             //time = intent.getDoubleExtra(RunningService.TIME_EXTRA, 0.0)
+            binding.TimeView.text = getTimeStringFromDouble(time)
+            binding.distanceView.text = "%.1f km".format(distance)
             Log.d("service22", "broadCast : $distance")
         }
     }
