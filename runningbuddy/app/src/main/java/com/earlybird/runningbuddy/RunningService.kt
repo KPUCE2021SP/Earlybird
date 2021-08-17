@@ -97,6 +97,7 @@ class RunningService : Service() {
         return START_NOT_STICKY
     }
 
+
     override fun onUnbind(intent: Intent?): Boolean {
         Log.d("serviceCycle", "onUnbind()")
         isRunning = false
@@ -155,19 +156,6 @@ class RunningService : Service() {
         path.coords = pathList
         path.map = naverMap
     }
-
-    override fun onUnbind(intent: Intent?): Boolean {
-        Log.d("serviceCycle", "onUnbind()")
-        return super.onUnbind(intent)
-    }
-
-    // 서비스가 수신하는 마지막 호출
-    override fun onDestroy() {
-        Log.d("serviceCycle", "onDestroy()")
-        mapThread.cancel()
-        timer.cancel()
-    }
-
 
     private inner class TimeTask(private var time: Double) : TimerTask() {   //시간 작업(task)
         override fun run() {
