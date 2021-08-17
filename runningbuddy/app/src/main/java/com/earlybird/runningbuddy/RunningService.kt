@@ -52,8 +52,6 @@ class RunningService : Service() {
     private lateinit var naverMap: NaverMap  //naver 객체
     private val binder = MyBinder()
 
-    private var runningActivity=RunningActivity()
-
     inner class MyBinder : Binder() {//  클라이언트가 서비스와 상호작용하는 데 사용할 수 있는 프로그래밍 인터페이스를 정의하는 IBinder 객체를 반환
         fun getService(): RunningService {
             Log.d("serviceCycle","RunningService binder()")
@@ -65,13 +63,10 @@ class RunningService : Service() {
         //runningActivity.isMap
         Log.d("serviceCycle", "onCreate()")
         isRunning = true
-        //timerIntent.action
     }
     override fun onBind(intent: Intent): IBinder {
         Log.d("serviceCycle", "onBind()")
         isRunning = true
-        //if(runningActivity.getIsMap()) launchMap()
-        //TODO 서비스가 완전히 죽고나면 거리가 갱신이 불가해짐
 
         val time = intent.getDoubleExtra(TIME_EXTRA, 0.0)    //TIME_EXTRA 0.0으로 초기화
 
@@ -114,52 +109,42 @@ class RunningService : Service() {
         Log.d("serviceCycle", "setNaverMap")
         this.naverMap = naverMap
         this.path = path
-        //isMap = true
-        launchMap()
+        locationChange()
     }
 
-    // 좌표 저장
-    private fun launchMap() = mapThread.launch {
-        Log.d("serviceCycle", "launchMap()")
+    private fun locationChange(){
         naverMap.addOnLocationChangeListener {
-            //
             if (pathList.size < 2) {// 2개 이상 가지고 있어야 하므로
                 pathList.add(LatLng(it.latitude, it.longitude))
                 pathList.add(LatLng(it.latitude, it.longitude))
             } else {
                 pathList.add(LatLng(it.latitude, it.longitude))
             }
-            // 일시정지를 눌렀을 경우 경로는 그리되 거리는 증가하지 않도록 하기 위해
             drawPath()
-            if(isRunning) {
-                Log.d("serviceCycle","isRunning true")
+            // 일시정지를 눌렀을 경우 경로는 그리되 거리는 증가하지 않도록 하기 위해
+            if(RunningActivity.isRunning) {
                 pathListIntent.putExtra(PATH_EXTRA,pathList)
                 sendBroadcast(pathListIntent)
-                val distance = pathList[pathList.size - 1].distanceTo(pathList[pathList.size - 2])
-                setDistance(distance)
-            }  //Log.d("service22", "distance : $distance")
+                setDistance()
+            }
         }
     }
     // km 로 변환하여 전달
-    private fun setDistance(mDistance: Double) {
+    private fun setDistance() {
+        val mDistance = pathList[pathList.size - 1].distanceTo(pathList[pathList.size - 2])
         this.distance += mDistance / 1000f
-        //Log.d("service22", "소수점 1자리까지만 this.distance : %.1f".format(distance))
-        Log.d("service22", "this.distance : ${distance}")
 
         distanceIntent.putExtra(DISTANCE_EXTRA, distance)
-
         sendBroadcast(distanceIntent)
     }
     // 지도에 경로 그리기
     private fun drawPath() {
-        //Log.d("serviceCycle", "drawPath()")
         path.coords = pathList
         path.map = naverMap
     }
 
     private inner class TimeTask(private var time: Double) : TimerTask() {   //시간 작업(task)
         override fun run() {
-            Log.d("serviceCycle","TimeTask")
             val intent = Intent(TIMER_UPDATED)  //전송될 값 intent
             time++
             intent.putExtra(TIME_EXTRA, time)    //time값 TIMER_UPDATED로 넘기기
