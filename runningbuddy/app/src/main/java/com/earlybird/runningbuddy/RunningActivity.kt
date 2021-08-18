@@ -16,7 +16,7 @@ import kotlin.collections.ArrayList
 class RunningActivity : AppCompatActivity() {
     // 달리는 중인지 서비스에서 확인하기 위해
     companion object{
-        var isRunning = true
+        var mBound: Boolean = false             //true 일 경우 서비스 실행 중
     }
 
     private lateinit var binding: ActivityRunningBinding
@@ -24,7 +24,6 @@ class RunningActivity : AppCompatActivity() {
     private lateinit var serviceIntent: Intent //RunningService의 값을 받기 위한 intent
 
     private var time = 0.0
-    private var timerstatus = true
 
     private var distance = 0.0
     private var pathList = ArrayList<LatLng>()
@@ -34,7 +33,6 @@ class RunningActivity : AppCompatActivity() {
     private val intentFilter = IntentFilter()
 
     lateinit var mService: RunningService   //RunningService 에 접근하기 위한 변수
-    var mBound: Boolean = false             //true 일 경우 서비스 실행 중
 
     private val connection = object :ServiceConnection{
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
@@ -97,7 +95,6 @@ class RunningActivity : AppCompatActivity() {
         Log.d("serviceCycle", "RunningActivity onDestroy()")
         unbindService(connection)
         mBound = false
-        isRunning = false
     }
 
     // 뒤로 가기 막기, 일단 단순히 뒤로 못가게 막음
@@ -127,9 +124,8 @@ class RunningActivity : AppCompatActivity() {
         }
 
         binding.pauseButton.setOnClickListener {
-            isRunning = !isRunning
-            Log.d("serviceCycle","isRunning : ${isRunning}")
-            if (timerstatus)
+
+            if (mBound)
                 stopRunning()
             else
                 restartRunning()
@@ -151,7 +147,6 @@ class RunningActivity : AppCompatActivity() {
         serviceIntent.putExtra("restart",restart)
         bindService(serviceIntent,connection,Context.BIND_AUTO_CREATE)
         binding.pauseButton.text = "일시정지"
-        timerstatus = true
         mBound = true
     }
 
@@ -159,7 +154,6 @@ class RunningActivity : AppCompatActivity() {
         Log.d("serviceCycle","stopRunning()")
         unbindService(connection)
         binding.pauseButton.text = "재시작"
-        timerstatus = false
         mBound = false
     }
 
@@ -171,6 +165,7 @@ class RunningActivity : AppCompatActivity() {
             when (intent.action) {
                 "timerUpdated" -> {
                     time = intent.getDoubleExtra(RunningService.TIME_EXTRA, 0.0)
+
                     binding.TimeView.text = getTimeStringFromDouble(time)
                 }
                 "DistanceService" -> {

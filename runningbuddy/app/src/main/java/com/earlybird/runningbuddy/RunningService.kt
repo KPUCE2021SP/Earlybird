@@ -18,13 +18,7 @@ import kotlin.collections.ArrayList
 
 class RunningService : Service() {
 
-    // 조깅 중인가
-    private var isRunning = false
-
     // 시간 계산을 위한 변수
-    private var min: Int = 0
-    private var sec: Int = 0
-    private var hour: Int = 0
     private val timer = Timer() //timer객체
 
     companion object {   //단순 시간저장공간
@@ -62,40 +56,21 @@ class RunningService : Service() {
     override fun onCreate() {
         //runningActivity.isMap
         Log.d("serviceCycle", "onCreate()")
-        isRunning = true
     }
     override fun onBind(intent: Intent): IBinder {
         Log.d("serviceCycle", "onBind()")
-        isRunning = true
 
         val time = intent.getDoubleExtra(TIME_EXTRA, 0.0)    //TIME_EXTRA 0.0으로 초기화
-
-        timer.scheduleAtFixedRate(
-            TimeTask(time),
-            1000,
-            1000
-        ) //일정한 시간(delay)이 지난후에 일정 간격(period)으로 지정한 작업(task)을 수행
+            timer.scheduleAtFixedRate(
+                TimeTask(time),
+                1000,
+                1000
+            ) //일정한 시간(delay)이 지난후에 일정 간격(period)으로 지정한 작업(task)을 수행
         return binder
     }
 
-    override fun onStartCommand(
-        intent: Intent,
-        flags: Int,
-        startId: Int
-    ): Int {   //Started Service에서 서비스 시작시 호출
-//        val time = intent.getDoubleExtra(TIME_EXTRA, 0.0)    //TIME_EXTRA 0.0으로 초기화
-//        timer.scheduleAtFixedRate(
-//            TimeTask(time),
-//            1000,
-//            1000
-//        ) //일정한 시간(delay)이 지난후에 일정 간격(period)으로 지정한 작업(task)을 수행
-        return START_NOT_STICKY
-    }
-
-
     override fun onUnbind(intent: Intent?): Boolean {
         Log.d("serviceCycle", "onUnbind()")
-        isRunning = false
         return false
     }
     // 서비스가 수신하는 마지막 호출
@@ -122,7 +97,7 @@ class RunningService : Service() {
             }
             drawPath()
             // 일시정지를 눌렀을 경우 경로는 그리되 거리는 증가하지 않도록 하기 위해
-            if(RunningActivity.isRunning) {
+            if(RunningActivity.mBound) {
                 pathListIntent.putExtra(PATH_EXTRA,pathList)
                 sendBroadcast(pathListIntent)
                 setDistance()
@@ -146,6 +121,7 @@ class RunningService : Service() {
     private inner class TimeTask(private var time: Double) : TimerTask() {   //시간 작업(task)
         override fun run() {
             val intent = Intent(TIMER_UPDATED)  //전송될 값 intent
+            if(RunningActivity.mBound)
             time++
             intent.putExtra(TIME_EXTRA, time)    //time값 TIMER_UPDATED로 넘기기
             sendBroadcast(intent)   //TIMER_UPDATED 브로드캐스트로 넘기기
