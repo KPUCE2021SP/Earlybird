@@ -1,21 +1,26 @@
 package com.earlybird.runningbuddy
 
 import android.content.*
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.speech.tts.TextToSpeech
 import android.util.Log
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.earlybird.runningbuddy.databinding.ActivityLoginBinding
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
+import com.google.android.gms.common.internal.Objects
 import com.naver.maps.geometry.LatLng
+import java.util.*
 import kotlin.math.roundToInt
 import kotlin.collections.ArrayList
 
 
 class RunningActivity : AppCompatActivity() {
     // 달리는 중인지 서비스에서 확인하기 위해
-    companion object{
+    companion object {
         var mBound: Boolean = false             //true 일 경우 서비스 실행 중
     }
 
@@ -34,13 +39,13 @@ class RunningActivity : AppCompatActivity() {
 
     lateinit var mService: RunningService   //RunningService 에 접근하기 위한 변수
 
-    private val connection = object :ServiceConnection{
+    private val connection = object : ServiceConnection {
         override fun onServiceConnected(name: ComponentName, service: IBinder) {
             val binder = service as RunningService.MyBinder
             mService = binder.getService()
             mBound = true
             // map fragment 를 한번만 그려주기 위해
-            if(!isMap) {
+            if (!isMap) {
                 val transaction = supportFragmentManager.beginTransaction()
                     .add(R.id.map, MapFragment(this@RunningActivity))
                 transaction.commit()
@@ -49,11 +54,13 @@ class RunningActivity : AppCompatActivity() {
         }
 
         override fun onServiceDisconnected(name: ComponentName?) {
-            Log.d("HAN_RunningActivity","onServiceDisconnected()")
+            Log.d("HAN_RunningActivity", "onServiceDisconnected()")
             mBound = false
         }
 
     }
+
+    private var tts: TextToSpeech? = null
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -67,6 +74,8 @@ class RunningActivity : AppCompatActivity() {
         setAction()
 
         setButton()
+
+
     }
 
     override fun onStart() {
@@ -75,7 +84,7 @@ class RunningActivity : AppCompatActivity() {
         startService(serviceIntent)
         // 바인드된 서비스 실행, 서비스안에 있는 함수를 호출하기 위해
         Intent(this, RunningService::class.java).also { intent ->
-            Log.d("HAN_RunningActivity","RunningActivity onStart()")
+            Log.d("HAN_RunningActivity", "RunningActivity onStart()")
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
     }
@@ -102,22 +111,22 @@ class RunningActivity : AppCompatActivity() {
         return
     }
 
-    private fun setIntent(){
+    private fun setIntent() {
         serviceIntent = Intent(this, RunningService::class.java)
         dataViewIntent = Intent(this, DataViewActivity::class.java)
 
-        serviceIntent.putExtra(RunningService.TIME_EXTRA,time)  //time값 RunningService로 보내기
-        serviceIntent.putExtra(RunningService.DISTANCE_EXTRA,distance)
+        serviceIntent.putExtra(RunningService.TIME_EXTRA, time)  //time값 RunningService로 보내기
+        serviceIntent.putExtra(RunningService.DISTANCE_EXTRA, distance)
     }
 
-    private fun setAction(){
+    private fun setAction() {
         intentFilter.addAction("DistanceService")
         intentFilter.addAction("timerUpdated")
         intentFilter.addAction("PathListService")
-        registerReceiver(RunningBroadCast(),intentFilter)
+        registerReceiver(RunningBroadCast(), intentFilter)
     }
 
-    private fun setButton(){
+    private fun setButton() {
         binding.stopButton.setOnClickListener {
             stopRunning()
             startActivity(dataViewIntent)
@@ -144,17 +153,42 @@ class RunningActivity : AppCompatActivity() {
     private fun restartRunning() {
         serviceIntent.putExtra(RunningService.TIME_EXTRA, time)
         val restart = true
-        serviceIntent.putExtra("restart",restart)
-        bindService(serviceIntent,connection,Context.BIND_AUTO_CREATE)
+        serviceIntent.putExtra("restart", restart)
+        bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
         binding.pauseButton.text = "일시정지"
         mBound = true
     }
 
     private fun stopRunning() {
-        Log.d("serviceCycle","stopRunning()")
+        Log.d("serviceCycle", "stopRunning()")
         unbindService(connection)
         binding.pauseButton.text = "재시작"
         mBound = false
+    }
+
+    // tts 관련
+    private fun initTextToSpeech() {
+        // 버전 확인 롤리팝 이상이여야 TTS 사용 가능
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Toast.makeText(this, "SDK version is low", Toast.LENGTH_SHORT).show()
+            return
+        }
+        tts = TextToSpeech(this) {
+            if (it == TextToSpeech.SUCCESS) {
+                val result = tts?.setLanguage(Locale.KOREAN)
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show()
+                    return@TextToSpeech
+                }
+                Toast.makeText(this, "TTS setting successed", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "TTS init failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun ttsSpeak(strTTS:String){
+        tts?.speak(strTTS,TextToSpeech.QUEUE_FLUSH,null,null)
     }
 
     private fun makeTimeString(hours: Int, minutes: Int, seconds: Int): String = //문자 합치기
@@ -169,13 +203,14 @@ class RunningActivity : AppCompatActivity() {
                     binding.TimeView.text = getTimeStringFromDouble(time)
                 }
                 "DistanceService" -> {
-                    Log.d("service22","BroadcastReceiver distanceService")
+                    Log.d("service22", "BroadcastReceiver distanceService")
                     distance = intent.getDoubleExtra(RunningService.DISTANCE_EXTRA, 0.0)
                     binding.distanceView.text = "%.1f km".format(distance)
                 }
-                "PathListService"->{
-                    pathList = intent.getParcelableArrayListExtra<LatLng>("pathList") as ArrayList<LatLng>
-                    Log.d("service22","pathList : $pathList")
+                "PathListService" -> {
+                    pathList =
+                        intent.getParcelableArrayListExtra<LatLng>("pathList") as ArrayList<LatLng>
+                    Log.d("service22", "pathList : $pathList")
                 }
             }
             binding.TimeView.text = getTimeStringFromDouble(time)
