@@ -52,7 +52,6 @@ class RunningActivity : AppCompatActivity() {
             Log.d("HAN_RunningActivity","onServiceDisconnected()")
             mBound = false
         }
-
     }
 
 

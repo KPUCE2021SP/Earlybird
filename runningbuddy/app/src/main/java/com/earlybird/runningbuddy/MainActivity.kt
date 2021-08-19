@@ -19,27 +19,6 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var transaction: FragmentTransaction
 
-    private var time = 0.0  //시간
-
-
-//    lateinit var mService: RunningService
-//    private var mBound: Boolean = false
-//
-//    private val connection = object :ServiceConnection{
-//        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-//            Log.d("testTest","onServiceConnected()")
-//            val binder = service as RunningService.MyBinder
-//            mService = binder.getService()
-//            mBound = true
-//        }
-//
-//        override fun onServiceDisconnected(name: ComponentName?) {
-//            Log.d("testTest","onServiceDisconnected()")
-//            mBound = false
-//        }
-//
-//    }
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -54,32 +33,7 @@ class MainActivity : AppCompatActivity() {
         activityIntent = Intent(this,RunningActivity::class.java) //RunningActivity와 intent
 
         binding.runButton.setOnClickListener { //runButton클릭 시
-            startTimer()
+            startActivity(activityIntent)
         }
-    }
-
-    override fun onStart() {
-        super.onStart()
-//        Intent(this, RunningService::class.java).also { intent ->
-//            Log.d("Map22","RunningActivity onStart()")
-//            bindService(intent, connection, Context.BIND_AUTO_CREATE)
-//        }
-    }
-
-    private fun startTimer() {
-//        serviceIntent.putExtra(RunningService.TIME_EXTRA,time)  //time값 RunningService로 보내기
-//        startService(serviceIntent)
-        startActivity(activityIntent)
-    }
-
-    override fun onPause() {
-        super.onPause()
-//        stopService(serviceIntent)
-    }
-
-    override fun onStop() {
-        super.onStop()
-//        unbindService(connection)
-//        mBound = false
     }
 }
