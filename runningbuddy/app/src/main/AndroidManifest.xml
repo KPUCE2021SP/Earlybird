@@ -13,9 +13,9 @@
         android:roundIcon="@mipmap/icon_bird"
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
+
         <activity
             android:name=".RecordListActivity"
-            android:exported="true" />
 
         <service
             android:name=".RunningService"
