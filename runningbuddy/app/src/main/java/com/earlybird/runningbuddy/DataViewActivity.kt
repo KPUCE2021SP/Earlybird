@@ -13,8 +13,8 @@ class DataViewActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+//        binding = ActivityRunningBinding.inflate(layoutInflater)
+//        setContentView(binding.root)
 
-        binding = ActivityDataviewBinding.inflate(layoutInflater)
-        setContentView(binding.root)
     }
 }

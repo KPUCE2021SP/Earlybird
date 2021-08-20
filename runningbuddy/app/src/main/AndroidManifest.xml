@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.earlybird.runningbuddy">
 
+    <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
@@ -13,10 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
 
-        <service
-            android:name=".RunningService2"
-            android:enabled="true"
-            android:exported="true" />
+        <activity
+            android:name=".RecordListActivity"
+
         <service
             android:name=".RunningService"
             android:enabled="true"
@@ -24,9 +24,6 @@
 
         <activity
             android:name=".AfterLoginActivity"
-            android:exported="true" />
-        <activity
-            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -34,6 +31,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true" />
         <activity
             android:name=".MapActivity"
             android:exported="true" />
