@@ -1,63 +1,85 @@
 package com.earlybird.runningbuddy
 
+import android.content.ComponentName
+import android.content.Context
+import android.content.Intent
+import android.content.ServiceConnection
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.IBinder
+import android.util.Log
+import androidx.fragment.app.FragmentTransaction
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
-import java.util.*
-import kotlin.concurrent.timer
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var serviceIntent: Intent  //RunningService를 위한 intent
+    private lateinit var activityIntent: Intent    //RunningActivity를 위한 intent
 
-    private var time = 0
-    private var isRunning = false
-    private var timerTask: Timer? = null
-    private var lap = 1
+    private lateinit var transaction: FragmentTransaction
+
+    private var time = 0.0  //시간
+
+
+//    lateinit var mService: RunningService
+//    private var mBound: Boolean = false
+//
+//    private val connection = object :ServiceConnection{
+//        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+//            Log.d("testTest","onServiceConnected()")
+//            val binder = service as RunningService.MyBinder
+//            mService = binder.getService()
+//            mBound = true
+//        }
+//
+//        override fun onServiceDisconnected(name: ComponentName?) {
+//            Log.d("testTest","onServiceDisconnected()")
+//            mBound = false
+//        }
+//
+//    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        transaction = supportFragmentManager.beginTransaction().add(R.id.map,MapFragment())
+        transaction.commit()
+
+
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        binding.runButton.setOnClickListener {
-            isRunning = !isRunning
+        serviceIntent = Intent(applicationContext, RunningService::class.java)   //RunningService와 intent
+        activityIntent = Intent(this,RunningActivity::class.java) //RunningActivity와 intent
 
-            if (isRunning) {
-                Start()
-            } else {
-                Pause()
-            }
+        binding.runButton.setOnClickListener { //runButton클릭 시
+            startTimer()
         }
     }
 
-    private fun Pause() {
-        binding.runButton.text = "시작"
-        timerTask?.cancel()
+    override fun onStart() {
+        super.onStart()
+//        Intent(this, RunningService::class.java).also { intent ->
+//            Log.d("Map22","RunningActivity onStart()")
+//            bindService(intent, connection, Context.BIND_AUTO_CREATE)
+//        }
     }
 
-    private fun Start() {
-        binding.runButton.text = "종료"
+    private fun startTimer() {
+//        serviceIntent.putExtra(RunningService.TIME_EXTRA,time)  //time값 RunningService로 보내기
+//        startService(serviceIntent)
+        startActivity(activityIntent)
+    }
 
-        timerTask = timer(period = 10) {
-            time++
-            val milli = time % 100
-            var sec = time / 100
-            var min = (time / 100) / 60
-            val hour = (time / 100) / 3600
+    override fun onPause() {
+        super.onPause()
+//        stopService(serviceIntent)
+    }
 
-            if (sec == 0) sec = time / 100
-            else if (sec / 60 >= 1) sec %= 60
-
-            if (min == 0) min = (time / 100) / 60
-            else if (min / 60 >= 1) min %= 60
-
-            runOnUiThread {
-                binding.hourView.text = "${hour}"
-                binding.minuteView.text = "${min}"
-                binding.secondView.text = "${sec}"
-                binding.milliView.text = "${milli}"
-            }
-        }
+    override fun onStop() {
+        super.onStop()
+//        unbindService(connection)
+//        mBound = false
     }
 }

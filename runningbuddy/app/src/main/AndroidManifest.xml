@@ -2,7 +2,9 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.earlybird.runningbuddy">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -11,15 +13,25 @@
         android:roundIcon="@mipmap/icon_bird"
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
+
+
+
+
+        <service
+            android:name=".RunningService"
+            android:enabled="true"
+
         <activity
             android:name=".SignUpActivity"
             android:exported="true"
             android:parentActivityName=".LoginActivity"/>
         <activity
             android:name=".AfterLoginActivity"
+
             android:exported="true" />
+
         <activity
-            android:name=".LoginActivity"
+            android:name=".AfterLoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -28,12 +40,28 @@
             </intent-filter>
         </activity>
         <activity
+            android:name=".LoginActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".MapActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".RunningActivity"
+            android:exported="true" />
+
+        <activity
+            android:name=".DataViewActivity"
+            android:exported="true" />
+
+        <activity
             android:name=".MainActivity"
             android:exported="true" />
+
 
         <meta-data
             android:name="com.naver.maps.map.CLIENT_ID"
             android:value="@string/naver_map_client_id" />
     </application>
-
 </manifest>
