@@ -57,7 +57,6 @@ class RunningActivity : AppCompatActivity() {
             Log.d("HAN_RunningActivity", "onServiceDisconnected()")
             mBound = false
         }
-
     }
 
     private var tts: TextToSpeech? = null
