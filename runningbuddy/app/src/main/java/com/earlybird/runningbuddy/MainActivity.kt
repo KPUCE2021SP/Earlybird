@@ -1,13 +1,13 @@
 package com.earlybird.runningbuddy
 
-import android.content.ComponentName
-import android.content.Context
-import android.content.Intent
-import android.content.ServiceConnection
+import android.content.*
+import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.IBinder
+import android.provider.Settings
 import android.util.Log
+import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentTransaction
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 
@@ -32,8 +32,31 @@ class MainActivity : AppCompatActivity() {
         serviceIntent = Intent(applicationContext, RunningService::class.java)   //RunningService와 intent
         activityIntent = Intent(this,RunningActivity::class.java) //RunningActivity와 intent
 
+        startRunning()
+    }
+
+    private fun startRunning(){
         binding.runButton.setOnClickListener { //runButton클릭 시
-            startActivity(activityIntent)
+            //LocationManager
+        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+            // gps 를 껏을 경우
+            if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                val builder = AlertDialog.Builder(this)
+                    .apply {
+                        setTitle("경고")
+                        setMessage("GPS가 꺼져있습니다. GPS를 키시겠습니까?")
+                        setPositiveButton("네", DialogInterface.OnClickListener{ dialog,which ->
+                            val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
+                            startActivity(intent)
+                        })
+                        setNegativeButton("아니오",DialogInterface.OnClickListener{ dialog, which ->
+                            return@OnClickListener
+                        })
+                        show()
+                    }
+            }else{
+                startActivity(activityIntent)
+            }
         }
     }
 }
