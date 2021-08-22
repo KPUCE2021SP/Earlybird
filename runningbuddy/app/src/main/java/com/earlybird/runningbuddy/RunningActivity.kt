@@ -127,7 +127,7 @@ class RunningActivity : AppCompatActivity() {
 
     private fun setButton() {
         binding.stopButton.setOnClickListener {
-            stopRunning()
+            stopRunning() // 러닝 종료버튼
             startActivity(dataViewIntent)
         }
 
@@ -197,23 +197,21 @@ class RunningActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent) {
             when (intent.action) {
                 "timerUpdated" -> {
-                    time = intent.getDoubleExtra(RunningService.TIME_EXTRA, 0.0)
+                    time = intent.getDoubleExtra(RunningService.TIME_EXTRA, 0.0) //시간표시
 
                     binding.TimeView.text = getTimeStringFromDouble(time)
                 }
                 "DistanceService" -> {
                     Log.d("service22", "BroadcastReceiver distanceService")
-                    distance = intent.getDoubleExtra(RunningService.DISTANCE_EXTRA, 0.0)
+                    distance = intent.getDoubleExtra(RunningService.DISTANCE_EXTRA, 0.0) //거리표시
                     binding.distanceView.text = "%.1f km".format(distance)
                 }
                 "PathListService" -> {
                     pathList =
-                        intent.getParcelableArrayListExtra<LatLng>("pathList") as ArrayList<LatLng>
+                        intent.getParcelableArrayListExtra<LatLng>("pathList") as ArrayList<LatLng> //구간좌표 표시
                     Log.d("service22", "pathList : $pathList")
                 }
             }
-            binding.TimeView.text = getTimeStringFromDouble(time)
-            binding.distanceView.text = "%.1f km".format(distance)
             Log.d("service22", "broadCast : $distance")
         }
     }
