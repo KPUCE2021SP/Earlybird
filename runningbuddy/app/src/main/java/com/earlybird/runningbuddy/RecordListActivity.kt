@@ -35,5 +35,6 @@ class RecordListActivity : AppCompatActivity() {
             profileAdapter.notifyDataSetChanged()   //adpater에게 값이 변경되었음을 알려줌
 
         }
+
     }
 }

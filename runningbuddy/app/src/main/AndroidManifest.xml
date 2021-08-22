@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/icon_bird"
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
+
         <activity
             android:name=".RecordListActivity"
             android:exported="true" />
@@ -43,7 +44,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-       
+
         <activity
             android:name=".RunningActivity"
             android:exported="true" />
