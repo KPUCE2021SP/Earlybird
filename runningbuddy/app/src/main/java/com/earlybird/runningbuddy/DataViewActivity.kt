@@ -24,4 +24,8 @@ class DataViewActivity : AppCompatActivity() {
         }
 
     }
+
+    override fun onBackPressed() {
+        return
+    }
 }
