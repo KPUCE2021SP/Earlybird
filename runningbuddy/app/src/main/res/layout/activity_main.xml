@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/defaultBackground"
     tools:context=".MainActivity">
 
     <FrameLayout
@@ -16,22 +17,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!--    <fragment-->
-    <!--        android:id="@+id/map"-->
-    <!--        android:name="com.naver.maps.map.MapFragment"-->
-    <!--        android:layout_width="0dp"-->
-    <!--        android:layout_height="0dp"-->
-    <!--        android:layout_marginBottom="20dp"-->
-    <!--        app:layout_constraintBottom_toTopOf="@+id/runButton"-->
-    <!--        app:layout_constraintEnd_toEndOf="parent"-->
-    <!--        app:layout_constraintStart_toStartOf="parent"-->
-    <!--        app:layout_constraintTop_toTopOf="parent" />-->
-
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        app:layout_constraintTop_toBottomOf="@id/map"
+        android:background="@drawable/shape_button"
         android:id="@+id/runButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/white"
         android:layout_marginBottom="20dp"
+        android:textSize="20sp"
         android:text="시작"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
