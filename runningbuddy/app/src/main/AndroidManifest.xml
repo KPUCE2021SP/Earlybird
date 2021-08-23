@@ -20,8 +20,6 @@
         <activity
             android:name=".RecordDetailActivity"
             android:exported="true" />
-
-
         <service
             android:name=".RunningService"
             android:enabled="true"/>
@@ -32,17 +30,17 @@
             android:parentActivityName=".LoginActivity"/>
         <activity
             android:name=".AfterLoginActivity"
-
-            android:exported="true" />
-
-        <activity
-            android:name=".LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
         </activity>
 
         <activity
