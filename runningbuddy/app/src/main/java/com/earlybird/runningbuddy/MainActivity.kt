@@ -45,10 +45,10 @@ class MainActivity : AppCompatActivity() {
                     .apply {
                         setTitle("경고")
                         setMessage("GPS가 꺼져있습니다. GPS를 키시겠습니까?")
-                        setPositiveButton("네", DialogInterface.OnClickListener{ dialog,which ->
+                        setPositiveButton("네") { dialog, which ->
                             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                             startActivity(intent)
-                        })
+                        }
                         setNegativeButton("아니오",DialogInterface.OnClickListener{ dialog, which ->
                             return@OnClickListener
                         })

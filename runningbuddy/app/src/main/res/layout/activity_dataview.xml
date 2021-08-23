@@ -26,7 +26,7 @@
         app:layout_constraintStart_toEndOf="@+id/homeButton" />
 
     <TextView
-        android:id="@+id/runTimeView"
+        android:id="@+id/runTimeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
@@ -37,33 +37,33 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/runDistanceView"
+        android:id="@+id/runDistanceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="거리"
         android:textSize="34sp"
-        app:layout_constraintStart_toStartOf="@+id/runTimeView"
-        app:layout_constraintTop_toBottomOf="@+id/runTimeView" />
+        app:layout_constraintStart_toStartOf="@+id/runTimeTextView"
+        app:layout_constraintTop_toBottomOf="@+id/runTimeTextView" />
 
     <TextView
-        android:id="@+id/runPaceView"
+        android:id="@+id/runPaceTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="페이스"
         android:textSize="34sp"
-        app:layout_constraintStart_toStartOf="@+id/runDistanceView"
-        app:layout_constraintTop_toBottomOf="@+id/runDistanceView" />
+        app:layout_constraintStart_toStartOf="@+id/runDistanceTextView"
+        app:layout_constraintTop_toBottomOf="@+id/runDistanceTextView" />
 
     <TextView
-        android:id="@+id/runCaloryView4"
+        android:id="@+id/runCalorieTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:text="칼로리"
         android:textSize="34sp"
-        app:layout_constraintStart_toStartOf="@+id/runPaceView"
-        app:layout_constraintTop_toBottomOf="@+id/runPaceView" />
+        app:layout_constraintStart_toStartOf="@+id/runPaceTextView"
+        app:layout_constraintTop_toBottomOf="@+id/runPaceTextView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
