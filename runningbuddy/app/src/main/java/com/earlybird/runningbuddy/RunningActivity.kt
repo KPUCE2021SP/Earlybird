@@ -162,6 +162,10 @@ class RunningActivity : AppCompatActivity() {
                 .document(Firebase.auth.currentUser?.uid ?: "No User")
                 .set (recordsMap, SetOptions.merge())
 
+            // 데이터 뷰에 보이는 것은 db에서 가져오는 것보다 인텐트로 하는 것이 더 효율적이라 판단하여 인텐트로 데이터 전달
+            dataViewIntent.putExtra("Time",time)        // 칼로리 계산을 위해
+            dataViewIntent.putExtra("FormatTime",binding.TimeView.text)         // 달린 시간을 보여주기 위해
+            dataViewIntent.putExtra("Distance",distance)
             startActivity(dataViewIntent)
         }
 
@@ -195,6 +199,7 @@ class RunningActivity : AppCompatActivity() {
     private fun stopRunning() {
         Log.d("serviceCycle", "stopRunning()")
         unbindService(connection)
+        stopService(serviceIntent)
         binding.pauseButton.text = "재시작"
         mBound = false
     }
