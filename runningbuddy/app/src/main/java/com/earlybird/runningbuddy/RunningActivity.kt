@@ -7,12 +7,20 @@ import android.os.IBinder
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import com.earlybird.runningbuddy.databinding.ActivityLoginBinding
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
 import com.google.android.gms.common.internal.Objects
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.roundToInt
 import kotlin.collections.ArrayList
@@ -61,7 +69,7 @@ class RunningActivity : AppCompatActivity() {
 
     private var tts: TextToSpeech? = null
 
-
+    @RequiresApi(Build.VERSION_CODES.O) // 현재시간을 표시하는 LocalDateTime.now() 함수를 쓰러면 이 코드를 추가해야만함
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -125,9 +133,35 @@ class RunningActivity : AppCompatActivity() {
         registerReceiver(RunningBroadCast(), intentFilter)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O) // 현재시간을 표시하는 LocalDateTime.now() 함수를 쓰러면 이 코드를 추가해야만함
     private fun setButton() {
         binding.stopButton.setOnClickListener {
             stopRunning() // 러닝 종료버튼
+
+            //db에 접근하기위해 forestore 객체 할당
+            val db: FirebaseFirestore = Firebase.firestore
+
+            //현재 시간을 불러오는 LocalDateTime.now() 함수를 사용, 원하는 문자열 양식으로 포맷팅 한뒤 formatedDate 변수에 할당
+            val currentDate = LocalDateTime.now()
+            val formatedDate : String = currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
+
+            //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌
+            val currentRecordMap = mapOf(
+                "Time" to time,
+                "Distance" to distance,
+                "PathList" to pathList
+            )
+            //위에서 time, distance, pathlist를 담은 currentRecordMap을 포맷팅된 시간의 이름으로 db에 저장함
+            val recordsMap = hashMapOf(
+                "$formatedDate" to currentRecordMap
+            )
+
+            //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
+            // 러닝 기록은 회원마다 여러개니까 "db에 기존 기록이 있건없건 빈 공간에 merge 함"
+            db.collection("records")
+                .document(Firebase.auth.currentUser?.uid ?: "No User")
+                .set (recordsMap, SetOptions.merge())
+
             startActivity(dataViewIntent)
         }
 
