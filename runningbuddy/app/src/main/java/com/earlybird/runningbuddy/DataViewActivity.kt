@@ -1,19 +1,14 @@
 package com.earlybird.runningbuddy
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
 import androidx.appcompat.app.AppCompatActivity
 import com.earlybird.runningbuddy.databinding.ActivityDataviewBinding
-import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import kotlin.math.roundToInt
 
 class DataViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDataviewBinding
@@ -43,11 +38,12 @@ class DataViewActivity : AppCompatActivity() {
         return
     }
 
+    @SuppressLint("SetTextI18n")
     private fun viewRecord() {
 
         val time = intent.getDoubleExtra("Time", 0.0)
         val distance = intent.getDoubleExtra("Distance", 0.0)
-        var weight: String = "null"
+        var weight: String
 
         binding.runTimeTextView.text = intent.getStringExtra("FormatTime")
         binding.runDistanceTextView.text = "%.1f km".format(distance)
