@@ -74,6 +74,6 @@ class DataViewActivity : AppCompatActivity() {
     // 시간을 초에서 분으로 만들고, 총거리를 시간으로 나눈다.
     private fun getAverageFace (distance: Double, time: Double): String {
         val averageFace = (distance * (time / 60))
-        return String.format("%.2f", averageFace)
+        return String.format("%.2f km/m", averageFace)
     }
 }
