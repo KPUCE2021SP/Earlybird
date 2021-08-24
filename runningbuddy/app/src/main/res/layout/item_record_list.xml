@@ -18,11 +18,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/jogging_course"
+        android:id="@+id/jogging_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
-        android:text="코스"
+        android:hint="날짜"
         android:textColor="@color/white"
         android:textSize="24sp"
         android:textStyle="bold"
@@ -34,11 +34,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:text="정보"
+        android:hint="정보"
         android:textColor="@color/white"
         android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/jogging_course"
-        app:layout_constraintTop_toBottomOf="@id/jogging_course" />
+        app:layout_constraintStart_toStartOf="@+id/jogging_date"
+        app:layout_constraintTop_toBottomOf="@id/jogging_date" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

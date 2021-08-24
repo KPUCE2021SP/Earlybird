@@ -25,11 +25,8 @@ class RecordListActivity : AppCompatActivity() {
 
         //데이터 추가하는 곳곳
         datas.apply {
-            add(ProfileData(img = R.drawable.ic_launcher_foreground, course = "mary", information = 24))
-            add(ProfileData(img = R.drawable.ic_launcher_foreground, course = "jenny", information = 26))
-            add(ProfileData(img = R.drawable.ic_launcher_foreground, course = "jhon", information = 27))
-            add(ProfileData(img = R.drawable.ic_launcher_foreground, course = "ruby", information = 21))
-            add(ProfileData(img = R.drawable.ic_launcher_foreground, course = "yuna", information = 23))
+            add(ProfileData(img = R.drawable.ic_launcher_foreground, date = "mary", information = 24))
+            add(ProfileData(img = R.drawable.ic_launcher_foreground, date = "jenny", information = 26))
 
             profileAdapter.datas = datas
             profileAdapter.notifyDataSetChanged()   //adpater에게 값이 변경되었음을 알려줌

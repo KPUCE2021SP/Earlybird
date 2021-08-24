@@ -28,13 +28,13 @@ class ProfileAdapter (private val context: Context) : RecyclerView.Adapter<Profi
     //View Holder : 각각의 뷰를 보관하는 Holder객채
     //Item 뷰들을 재활용하기 위해 각 요소를 저장해두고 사용
     inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        private val txtCourse: TextView = itemView.findViewById(R.id.jogging_course)
+        private val txtDate: TextView = itemView.findViewById(R.id.jogging_date)
         private val txtInformation: TextView = itemView.findViewById(R.id.jogging_information)
         private val imgProfile: ImageView = itemView.findViewById(R.id.img_map)
 
         fun bind(item: ProfileData) {
             //TextView에 데이터 세팅
-            txtCourse.text = item.course
+            txtDate.text = item.date
             txtInformation.text = item.information.toString()
             Glide.with(itemView).load(item.img).into(imgProfile)
 

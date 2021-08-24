@@ -18,7 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:id="@+id/jogging_course"
+        android:id="@+id/jogging_date"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="25sp"
