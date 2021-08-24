@@ -127,4 +127,12 @@ class RunningService : Service() {
             sendBroadcast(intent)   //TIMER_UPDATED 브로드캐스트로 넘기기
         }
     }
+
+    private fun averageFace() {
+
+    }
+
+    private fun faceTime() {
+
+    }
 }

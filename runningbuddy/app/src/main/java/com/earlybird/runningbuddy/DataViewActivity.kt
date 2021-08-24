@@ -51,6 +51,7 @@ class DataViewActivity : AppCompatActivity() {
 
         binding.runTimeTextView.text = intent.getStringExtra("FormatTime")
         binding.runDistanceTextView.text = "%.1f km".format(distance)
+        binding.runPaceTextView.text = getAverageFace(distance, time)
 
         // 칼로리 계산을 위해 사용자의 체중을 가져오기
         val db: FirebaseFirestore = Firebase.firestore
@@ -67,5 +68,12 @@ class DataViewActivity : AppCompatActivity() {
     private fun getCalorie(weight: Double, time: Double): String {
         val calorie = (weight * (time / 60) * 0.07)
         return String.format("%.1f", calorie)
+    }
+
+
+    // 시간을 초에서 분으로 만들고, 총거리를 시간으로 나눈다.
+    private fun getAverageFace (distance: Double, time: Double): String {
+        val averageFace = (distance * (time / 60))
+        return String.format("%.2f", averageFace)
     }
 }
