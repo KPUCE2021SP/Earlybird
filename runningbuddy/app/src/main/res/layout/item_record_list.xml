@@ -30,7 +30,7 @@
         app:layout_constraintTop_toTopOf="@+id/img_map" />
 
     <TextView
-        android:id="@+id/jogging_information"
+        android:id="@+id/jogging_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
@@ -39,6 +39,17 @@
         android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/jogging_date"
         app:layout_constraintTop_toBottomOf="@id/jogging_date" />
+
+    <TextView
+        android:id="@+id/jogging_distance"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:hint="정보"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/jogging_time"
+        app:layout_constraintTop_toTopOf="@+id/jogging_time" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,10 @@ package com.earlybird.runningbuddy
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.earlybird.runningbuddy.databinding.ActivityRecordListBinding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 
 class RecordListActivity : AppCompatActivity() {
     private lateinit var binding : ActivityRecordListBinding
@@ -30,8 +34,15 @@ class RecordListActivity : AppCompatActivity() {
 
             profileAdapter.datas = datas
             profileAdapter.notifyDataSetChanged()   //adpater에게 값이 변경되었음을 알려줌
-
         }
+    }
+    private fun callData(){
+        val db: FirebaseFirestore = Firebase.firestore
 
+        db.collection("users")
+            .document(Firebase.auth.currentUser?.uid ?: "No User").get()
+            .addOnSuccessListener {
+                binding.runCalorieTextView.text = getCalorie(weight.toDouble(), time)
+            }
     }
 }
