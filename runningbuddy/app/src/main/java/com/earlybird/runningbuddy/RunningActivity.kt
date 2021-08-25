@@ -9,6 +9,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.earlybird.runningbuddy.RunningService.Companion.DISTANCE_EXTRA
+import com.earlybird.runningbuddy.RunningService.Companion.TIME_EXTRA
 import com.earlybird.runningbuddy.databinding.ActivityLoginBinding
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
@@ -254,4 +256,5 @@ class RunningActivity : AppCompatActivity() {
             Log.d("service22", "broadCast : $distance")
         }
     }
+
 }
