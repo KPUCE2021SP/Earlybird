@@ -13,23 +13,8 @@
         android:roundIcon="@mipmap/icon_bird"
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
-
         <activity
-            android:name=".RecordListActivity"
-            android:exported="true" />
-        <activity
-            android:name=".RecordDetailActivity"
-            android:exported="true" />
-        <service
-            android:name=".RunningService"
-            android:enabled="true"/>
-
-        <activity
-            android:name=".SignUpActivity"
-            android:exported="true"
-            android:parentActivityName=".LoginActivity"/>
-        <activity
-            android:name=".AfterLoginActivity"
+            android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -37,12 +22,27 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".RecordListActivity"
+            android:exported="true" />
+        <activity
+            android:name=".RecordDetailActivity"
+            android:exported="true" />
+
+        <service
+            android:name=".RunningService"
+            android:enabled="true" />
 
         <activity
+            android:name=".SignUpActivity"
+            android:exported="true"
+            android:parentActivityName=".LoginActivity" />
+        <activity
+            android:name=".AfterLoginActivity"
+            android:exported="true" />
+        <activity
             android:name=".LoginActivity"
-            android:exported="true">
-        </activity>
-
+            android:exported="true" />
         <activity
             android:name=".RunningActivity"
             android:exported="true" />

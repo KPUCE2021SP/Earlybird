@@ -4,12 +4,14 @@ import android.content.*
 import android.location.LocationManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.FragmentTransaction
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
+import com.google.firebase.auth.FirebaseAuth
 
 class MainActivity : AppCompatActivity() {
 
@@ -33,6 +35,13 @@ class MainActivity : AppCompatActivity() {
         activityIntent = Intent(this,RunningActivity::class.java) //RunningActivity와 intent
 
         startRunning()
+
+        binding.signOutButton.setOnClickListener {
+            FirebaseAuth.getInstance().signOut()
+            Handler().postDelayed({
+                System.exit(0)
+            }, 1000)
+        }
     }
 
     private fun startRunning(){
