@@ -121,18 +121,10 @@ class RunningService : Service() {
     private inner class TimeTask(private var time: Double) : TimerTask() {   //시간 작업(task)
         override fun run() {
             val intent = Intent(TIMER_UPDATED)  //전송될 값 intent
-            if(RunningActivity.mBound)
-            time++
+            if (RunningActivity.mBound)
+                time++
             intent.putExtra(TIME_EXTRA, time)    //time값 TIMER_UPDATED로 넘기기
             sendBroadcast(intent)   //TIMER_UPDATED 브로드캐스트로 넘기기
         }
-    }
-
-    private fun averageFace() {
-
-    }
-
-    private fun faceTime() {
-
     }
 }

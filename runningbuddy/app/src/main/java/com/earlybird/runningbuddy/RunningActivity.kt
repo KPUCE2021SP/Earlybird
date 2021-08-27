@@ -9,6 +9,8 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.earlybird.runningbuddy.RunningService.Companion.DISTANCE_EXTRA
+import com.earlybird.runningbuddy.RunningService.Companion.TIME_EXTRA
 import com.earlybird.runningbuddy.databinding.ActivityLoginBinding
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
@@ -37,6 +39,9 @@ class RunningActivity : AppCompatActivity() {
     private lateinit var serviceIntent: Intent //RunningService의 값을 받기 위한 intent
 
     private var time = 0.0
+    private var initpace = 0.0
+    private var pace = 0.0
+    private var pacearray = doubleArrayOf()
 
     private var distance = 0.0
     private var pathList = ArrayList<LatLng>()
@@ -254,4 +259,18 @@ class RunningActivity : AppCompatActivity() {
             Log.d("service22", "broadCast : $distance")
         }
     }
+
+    private fun calculatePace() {
+        var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
+        var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
+
+        for (int i = 0; )
+
+        if(time == 60.0){
+            initpace = distance
+        } else if(time % 60 == 0.0){
+            pace = dista
+        }
+    }
+
 }
