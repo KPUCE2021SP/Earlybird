@@ -3,10 +3,13 @@ package com.earlybird.runningbuddy
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import com.earlybird.runningbuddy.databinding.ActivityLoginBinding
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
@@ -51,10 +54,17 @@ class LoginActivity : AppCompatActivity() {
         Firebase.auth.signInWithEmailAndPassword(userEmail, password)
             .addOnCompleteListener(this) { // it: Task<AuthResult!>
 
-                //인증에 성공하면 다음 화면으로 넘어가면서 현재 액티비티는 finish() 함수로 종료시킴
+                //인증에 성공하면 메인 화면으로 넘어가면서 db에 현재 기기값 넣고 현재 액티비티는 finish() 함수로 종료시킴
                 if (it.isSuccessful) {
+
+                    val db: FirebaseFirestore = Firebase.firestore
+                    val currentUid = Firebase.auth.currentUser?.uid ?: "No User"
+                    val currentAndroidID = Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
+                    val loginInfoMap = hashMapOf("AndroidID" to currentAndroidID)
+                    db.collection("logins").document(currentUid).set(loginInfoMap)
+
                     startActivity(
-                        Intent(this, AfterLoginActivity::class.java)
+                        Intent(this, MainActivity::class.java)
                     )
                     finish()
 
