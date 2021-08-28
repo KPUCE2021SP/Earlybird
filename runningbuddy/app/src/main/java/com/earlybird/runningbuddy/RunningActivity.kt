@@ -41,7 +41,7 @@ class RunningActivity : AppCompatActivity() {
     private var time = 0.0
     private var initpace = 0.0
     private var pace = 0.0
-    private var pacearray = doubleArrayOf()
+    private var pacearray = mutableListOf<Double>()
 
     private var distance = 0.0
     private var pathList = ArrayList<LatLng>()
@@ -99,6 +99,8 @@ class RunningActivity : AppCompatActivity() {
             Log.d("HAN_RunningActivity", "RunningActivity onStart()")
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
+
+        binding.paceView.text = calculatePace(pace)
     }
 
     override fun onPause() {
@@ -260,17 +262,25 @@ class RunningActivity : AppCompatActivity() {
         }
     }
 
-    private fun calculatePace() {
+    private fun calculatePace(pace: Double): String {
         var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
         var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
+        var pacesize: Int = pacearray.size
 
-        for (int i = 0; )
 
-        if(time == 60.0){
-            initpace = distance
-        } else if(time % 60 == 0.0){
-            pace = dista
+
+        // 1kma마다 시간을 배열에 저장
+        if(distance % 1 == 0.0){
+            pacearray.add(time)
         }
+
+
+        if(distance == 1.0){
+            this@RunningActivity.pace = distance
+        } else if(distance % 1 == 0.0){
+            this@RunningActivity.pace = time - pacearray.get(pacesize -1)
+        }
+        return String.format("%.2f km/m", pace)
     }
 
 }
