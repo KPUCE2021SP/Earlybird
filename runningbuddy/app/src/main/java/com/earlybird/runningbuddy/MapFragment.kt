@@ -107,7 +107,7 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
 
     override fun onPause() {
         super.onPause()
-        //mapView.onPause()
+        mapView.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -117,7 +117,7 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
 
     override fun onStop() {
         super.onStop()
-        //mapView.onStop()
+        mapView.onStop()
     }
 
     override fun onDestroyView() {
