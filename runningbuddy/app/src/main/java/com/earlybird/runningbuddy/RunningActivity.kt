@@ -38,10 +38,10 @@ class RunningActivity : AppCompatActivity() {
     private lateinit var dataViewIntent: Intent    //DataViewActivity에 값을 주기 위한 intent
     private lateinit var serviceIntent: Intent //RunningService의 값을 받기 위한 intent
 
-    private var time = 0.0
-    private var initpace = 0.0
+
     private var pace = 0.0
-    private var pacearray = doubleArrayOf()
+    private var time = 0.0
+    private var pacearray = mutableListOf<Double>()
 
     private var distance = 0.0
     private var pathList = ArrayList<LatLng>()
@@ -79,6 +79,7 @@ class RunningActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRunningBinding.inflate(layoutInflater)
+        binding.paceView.text = calculatePace(pace)
         setContentView(binding.root)
 
         setIntent()
@@ -99,6 +100,7 @@ class RunningActivity : AppCompatActivity() {
             Log.d("HAN_RunningActivity", "RunningActivity onStart()")
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
+
     }
 
     override fun onPause() {
@@ -260,17 +262,23 @@ class RunningActivity : AppCompatActivity() {
         }
     }
 
-    private fun calculatePace() {
+    private fun calculatePace(pace1: Double): String {
         var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
         var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
+        var pacesize: Int = pacearray.size
 
-        for (int i = 0; )
-
-        if(time == 60.0){
-            initpace = distance
-        } else if(time % 60 == 0.0){
-            pace = dista
+        // 1kma마다 시간을 배열에 저장
+        if(distance % 1 == 0.0){
+            pacearray.add(time)
         }
+
+        if(distance == 1.0){
+            pace = distance
+        } else if(distance % 1 == 0.0) {
+            pace = time - pacearray.get(pacesize - 1)
+        }
+
+        return String.format("%.2lf km/m", pace1)
     }
 
 }
