@@ -2,6 +2,7 @@ package com.earlybird.runningbuddy
 
 import android.content.*
 import android.location.LocationManager
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
@@ -9,9 +10,12 @@ import android.os.IBinder
 import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.fragment.app.FragmentTransaction
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
 
@@ -63,9 +67,11 @@ class MainActivity : AppCompatActivity() {
                         })
                         show()
                     }
-            }else{
+            }
+            else{
                 startActivity(activityIntent)
             }
         }
     }
+
 }

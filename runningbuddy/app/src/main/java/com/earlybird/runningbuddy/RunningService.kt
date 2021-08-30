@@ -1,8 +1,13 @@
 package com.earlybird.runningbuddy
 
+import android.Manifest
 import android.app.Service
+import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Binder
 import android.os.Build
 import android.os.Bundle
@@ -10,7 +15,11 @@ import android.os.IBinder
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
+import androidx.core.app.ActivityCompat
+import androidx.core.content.PermissionChecker
 import com.naver.maps.geometry.LatLng
+import com.naver.maps.map.LocationSource
+import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.PathOverlay
 import kotlinx.coroutines.CoroutineScope
@@ -52,10 +61,44 @@ class RunningService : Service() {
     private lateinit var naverMap: NaverMap  //naver 객체
     private val binder = MyBinder()
 
+
+    // TODO locationManager 로 테스트해보기
+//    private lateinit var lm: LocationManager
+//    private var lastKnownLocation: Location? = null
+//
+//    private val locationListener: LocationListener = object : LocationListener {
+//
+//        override fun onLocationChanged(location: Location) {
+//            naverMap.locationTrackingMode = LocationTrackingMode.Follow
+//            lastKnownLocation = location
+//            Log.d("locationListener","onLocationChanged = $location")
+//        }
+//
+//        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+//            super.onStatusChanged(provider, status, extras)
+//            Log.d("locationListener","onStatusChanged")
+//
+//        }
+//
+//        override fun onProviderEnabled(provider: String) {
+//            super.onProviderEnabled(provider)
+//            Log.d("locationListener","onProviderEnabled")
+//        }
+//
+//        override fun onProviderDisabled(provider: String) {
+//            super.onProviderDisabled(provider)
+//            Log.d("locationListener","onProviderDisabled")
+//        }
+//
+//
+//    }
+
+    // TODO 테스트 위해서 잠시
+
     // 종료시 리스너 삭제를 위해
-    private val changeLocation = object : NaverMap.OnLocationChangeListener{
+    private val changeLocation = object : NaverMap.OnLocationChangeListener {
         override fun onLocationChange(location: Location) {
-            Log.d("service333","locationChange()")
+            Log.d("service333", "locationChange()")
 
             if (pathList.size < 2) {// 2개 이상 가지고 있어야 하므로
                 pathList.add(LatLng(location.latitude, location.longitude))
@@ -70,6 +113,7 @@ class RunningService : Service() {
                 sendBroadcast(pathListIntent)
                 setDistance()
             }
+            naverMap.locationTrackingMode=LocationTrackingMode.Follow
         }
 
     }
@@ -85,12 +129,14 @@ class RunningService : Service() {
     override fun onCreate() {
         //runningActivity.isMap
         Log.d("serviceCycle", "onCreate()")
+
         // runningBuddy 로 실행시
         initTextToSpeech()
+
     }
 
     override fun onBind(intent: Intent): IBinder {
-        Log.d("serviceCycle", "onBind()")
+        Log.d("service333", "onBind()")
 
         val time = intent.getDoubleExtra(TIME_EXTRA, 0.0)    //TIME_EXTRA 0.0으로 초기화
         timer.scheduleAtFixedRate(
@@ -108,9 +154,9 @@ class RunningService : Service() {
 
     // 서비스가 수신하는 마지막 호출
     override fun onDestroy() {
-        Log.d("service333","destroy()")
+        Log.d("service333", "destroy()")
         Log.d("serviceCycle", "service : onDestroy()")
-        naverMap.removeOnLocationChangeListener(changeLocation)
+        //naverMap.removeOnLocationChangeListener(changeLocation)
         mapThread.cancel()
         timer.cancel()
     }
@@ -120,10 +166,14 @@ class RunningService : Service() {
         Log.d("serviceCycle", "setNaverMap")
         this.naverMap = naverMap
         this.path = path
+
+
+        Log.d("serviceCycle", "${naverMap.locationSource}")
         locationChange()
+
     }
 
-    private fun locationChange() {
+    private fun locationChange() = mapThread.launch {
         naverMap.addOnLocationChangeListener(changeLocation)
     }
 
@@ -174,9 +224,12 @@ class RunningService : Service() {
                 time++
             intent.putExtra(TIME_EXTRA, time)    //time값 TIMER_UPDATED로 넘기기
             sendBroadcast(intent)   //TIMER_UPDATED 브로드캐스트로 넘기기
+            naverMap.locationTrackingMode = LocationTrackingMode.Follow
+            Log.d("service333","locationTrackingMode = ${naverMap.locationTrackingMode}")
+
             if (time >= 60 && (time % 60 == 0.0)) {
                 // 1 분 단위로
-                val setTime:Int = (time / 60).toInt()
+                val setTime: Int = (time / 60).toInt()
                 alertAlarmWithTTS(setTime)
             }
         }

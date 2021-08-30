@@ -69,6 +69,8 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
     }
 
+
+
     // NaverMap 인스턴스가 준비되면 호출되는 콜백 메서드.
     override fun onMapReady(naverMap: NaverMap) {
         Log.d("Map22", "MapFragment onMapReady()")
@@ -77,6 +79,7 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
 
         //지도 위치를 현 위치로 설정
         naverMap.locationSource = locationSource
+
 
 //        naverMap.minZoom = 18.0
 //        naverMap.maxZoom = 18.0
@@ -96,36 +99,43 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
 
     // MapView 의 라이프 사이클 메서드 호출
     override fun onStart() {
+        Log.d("service333","onStart()")
         super.onStart()
         mapView.onStart()
     }
 
     override fun onResume() {
+        Log.d("service333","onResume()")
         super.onResume()
         mapView.onResume()
     }
 
     override fun onPause() {
+        Log.d("service333","onPause()")
         super.onPause()
         //mapView.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
+        Log.d("service333","onSaveInstanceState()")
         super.onSaveInstanceState(outState)
-        mapView.onSaveInstanceState(outState)
+        //mapView.onSaveInstanceState(outState)
     }
 
     override fun onStop() {
+        Log.d("service333","onStop()")
         super.onStop()
         //mapView.onStop()
     }
 
     override fun onDestroyView() {
+        Log.d("service333","onDestroyView()")
         super.onDestroyView()
         mapView.onDestroy()
     }
 
     override fun onLowMemory() {
+        Log.d("service333","onLowMemory()")
         super.onLowMemory()
         mapView.onLowMemory()
     }
