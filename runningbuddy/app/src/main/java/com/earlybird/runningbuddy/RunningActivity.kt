@@ -79,7 +79,7 @@ class RunningActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRunningBinding.inflate(layoutInflater)
-        binding.paceView.text = calculatePace(pace)
+        binding.paceView.text = calculatePace()
         setContentView(binding.root)
 
         setIntent()
@@ -262,23 +262,25 @@ class RunningActivity : AppCompatActivity() {
         }
     }
 
-    private fun calculatePace(pace1: Double): String {
+    private fun calculatePace(): String {
         var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
         var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
         var pacesize: Int = pacearray.size
 
-        // 1kma마다 시간을 배열에 저장
+        // 1km마다 시간을 배열에 저장
         if(distance % 1 == 0.0){
             pacearray.add(time)
         }
 
         if(distance == 1.0){
             pace = distance
-        } else if(distance % 1 == 0.0) {
-            pace = time - pacearray.get(pacesize - 1)
+        } else if(pacesize != 0) {
+            if (distance % 1 == 0.0) {
+                pace = time - pacearray.get(pacesize - 1)
+            }
         }
 
-        return String.format("%.2lf km/m", pace1)
+        return String.format("%.1f km/m", pace)
     }
 
 }
