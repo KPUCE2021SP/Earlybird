@@ -224,8 +224,6 @@ class RunningService : Service() {
                 time++
             intent.putExtra(TIME_EXTRA, time)    //time값 TIMER_UPDATED로 넘기기
             sendBroadcast(intent)   //TIMER_UPDATED 브로드캐스트로 넘기기
-            naverMap.locationTrackingMode = LocationTrackingMode.Follow
-            Log.d("service333","locationTrackingMode = ${naverMap.locationTrackingMode}")
 
             if (time >= 60 && (time % 60 == 0.0)) {
                 // 1 분 단위로
