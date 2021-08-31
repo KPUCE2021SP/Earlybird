@@ -28,15 +28,16 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        transaction = supportFragmentManager.beginTransaction().add(R.id.map,MapFragment())
+        transaction = supportFragmentManager.beginTransaction().add(R.id.map, MapFragment())
         transaction.commit()
 
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        serviceIntent = Intent(applicationContext, RunningService::class.java)   //RunningService와 intent
-        activityIntent = Intent(this,RunningActivity::class.java) //RunningActivity와 intent
+        serviceIntent =
+            Intent(applicationContext, RunningService::class.java)   //RunningService와 intent
+        activityIntent = Intent(this, RunningActivity::class.java) //RunningActivity와 intent
 
         startRunning()
 
@@ -46,14 +47,22 @@ class MainActivity : AppCompatActivity() {
                 System.exit(0)
             }, 1000)
         }
+
+        binding.userInfoButton.setOnClickListener {
+            Handler().postDelayed({
+                startActivity(
+                    Intent(this, UserInfo::class.java)
+                )
+            }, 1000)
+        }
     }
 
-    private fun startRunning(){
+    private fun startRunning() {
         binding.runButton.setOnClickListener { //runButton클릭 시
             //LocationManager
-        val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
+            val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
             // gps 를 껏을 경우
-            if(!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+            if (!locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                 val builder = AlertDialog.Builder(this)
                     .apply {
                         setTitle("경고")
@@ -62,13 +71,12 @@ class MainActivity : AppCompatActivity() {
                             val intent = Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS)
                             startActivity(intent)
                         }
-                        setNegativeButton("아니오",DialogInterface.OnClickListener{ dialog, which ->
+                        setNegativeButton("아니오", DialogInterface.OnClickListener { dialog, which ->
                             return@OnClickListener
                         })
                         show()
                     }
-            }
-            else{
+            } else {
                 startActivity(activityIntent)
             }
         }
