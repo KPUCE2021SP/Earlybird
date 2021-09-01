@@ -15,10 +15,6 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
         <activity
-            android:name=".UserInfo"
-            android:exported="true"
-            android:parentActivityName=".MainActivity" />
-        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>
@@ -45,6 +41,7 @@
         <activity
             android:name=".AfterLoginActivity"
             android:exported="true" />
+
         <activity
             android:name=".LoginActivity"
             android:exported="true" />

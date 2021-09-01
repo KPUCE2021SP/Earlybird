@@ -42,7 +42,7 @@ class SplashActivity : AppCompatActivity() {
                             Intent(this, MainActivity::class.java)
                         )
                         ActivityCompat.finishAffinity(this)
-                    }, 1500)
+                    }, 2000)
                 } else {
                     Handler().postDelayed({
                         Toast.makeText(this, "자동 로그인 실패", Toast.LENGTH_SHORT).show()
@@ -50,15 +50,15 @@ class SplashActivity : AppCompatActivity() {
                             Intent(this, LoginActivity::class.java)
                         )
                         ActivityCompat.finishAffinity(this)
-                    }, 1500)
+                    }, 2000)
                 }
             } else {
                 Toast.makeText(this, "인터넷 연결을 확인해주세요\n 2초뒤에 종료됩니다.", Toast.LENGTH_SHORT).show()
                 Handler().postDelayed({
                     System.exit(0)
-                }, 1500)
+                }, 2000)
             }
-        }, 1500)
+        }, 1000)
     }
 
     fun isOnline(context: Context): Boolean {
