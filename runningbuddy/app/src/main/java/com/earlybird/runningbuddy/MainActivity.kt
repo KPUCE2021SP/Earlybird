@@ -63,7 +63,7 @@ class MainActivity : AppCompatActivity() {
             // 권한 부여
             //requestPermission()
 //        // 권한 설정
-            val a = requestPermissionRationale()
+            if(!requestPermissionRationale()) return@setOnClickListener
 
             //LocationManager
             val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
@@ -102,6 +102,14 @@ class MainActivity : AppCompatActivity() {
                 BACKGROUND_LOCATION
             )
         }
+
+        if(permission == "fineLocation"){
+            ActivityCompat.requestPermissions(
+                this@MainActivity,
+                arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION
+            )
+        }
+
     }
 
     override fun onRequestPermissionsResult(
@@ -122,13 +130,36 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 권한이 필요한 이유 설명
-    private fun requestPermissionRationale() {
+    private fun requestPermissionRationale() :Boolean{
         Log.d("permissionCheck", "requestPermissionRationale()")
+        var result = true
         if (ActivityCompat.shouldShowRequestPermissionRationale(
                 this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             )
         ) {
+
+            if (ActivityCompat.shouldShowRequestPermissionRationale(
+                    this,
+                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+                )
+            ) {
+                Log.d("permissionCheck", "항상위치권한 확인")
+                val builder = AlertDialog.Builder(this)
+                    .apply {
+                        setTitle("경고")
+                        setMessage("위치 권한을 항상허용하지 않았을 경우 앱이 정상작동 하지 않을 수 있습니다. \n위치 권한을 항상 허용으로 설정 하시겠습니까?")
+                        setPositiveButton("네") { _, _ ->
+                            // 권한 요청
+                            requestPermission("background")
+                        }
+                        setNegativeButton("아니오") { _, _ ->
+                            result = false
+                        }
+                        show()
+                    }
+            }
+
             // 이전에 거부한 경우 권한 필요성 설명 및 권한 요청
             val builder = AlertDialog.Builder(this)
                 .apply {
@@ -137,36 +168,16 @@ class MainActivity : AppCompatActivity() {
                     setTitle("경고")
                     setMessage("위치 권한을 거부한 경우 앱이 정상작동 하지 않을 수 있습니다. \n위치 권한을 설정 하시겠습니까?")
                     setPositiveButton("네") { _, _ ->
-                        ActivityCompat.requestPermissions(
-                            this@MainActivity,
-                            arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION
-                        )
-                    }
-                    show()
-                }
-        }
-
-        if (ActivityCompat.shouldShowRequestPermissionRationale(
-                this,
-                android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
-            )
-        ) {
-            Log.d("permissionCheck", "항상위치권한 확인")
-            val builder = AlertDialog.Builder(this)
-                .apply {
-                    setTitle("경고")
-                    setMessage("위치 권한을 항상허용하지 않았을 경우 앱이 정상작동 하지 않을 수 있습니다. \n위치 권한을 항상 허용으로 설정 하시겠습니까?")
-                    setPositiveButton("네") { _, _ ->
-                        // 권한 요청
-                        requestPermission("background")
+                        requestPermission("fineLocation")
                     }
                     setNegativeButton("아니오") { _, _ ->
-
+                        result = false
                     }
                     show()
                 }
         }
-        return
+
+        return result
     }
 
     companion object {
