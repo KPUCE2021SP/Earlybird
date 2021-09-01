@@ -65,7 +65,7 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
         permissions: Array<String>,
         grantResults: IntArray
     ) {
-        Log.d("permissionCheck","onRequestPermissionsResult()")
+        Log.d("permissionCheck","MapFragment : onRequestPermissionsResult()")
 
         if (locationSource.onRequestPermissionsResult(
                 requestCode, permissions,
