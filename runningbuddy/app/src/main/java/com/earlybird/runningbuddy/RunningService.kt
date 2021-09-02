@@ -150,6 +150,32 @@ class RunningService : Service() {
         distanceIntent.putExtra(DISTANCE_EXTRA, distance)
         sendBroadcast(distanceIntent)
     }
+
+    // tts 관련
+    private fun initTextToSpeech() {
+        // 버전 확인 롤리팝 이상이여야 TTS 사용 가능
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Toast.makeText(this, "SDK version is low", Toast.LENGTH_SHORT).show()
+            return
+        }
+        tts = TextToSpeech(this) {
+            if (it == TextToSpeech.SUCCESS) {
+                val result = tts?.setLanguage(Locale.KOREAN)
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show()
+                    return@TextToSpeech
+                }
+                Toast.makeText(this, "TTS setting successed", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "TTS init failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun ttsSpeak(strTTS: String) {
+        tts?.speak(strTTS, TextToSpeech.QUEUE_FLUSH, null, null)
+    }
+
     // 지도에 경로 그리기
     private fun drawPath() {
         path.coords = pathList

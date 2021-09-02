@@ -208,6 +208,7 @@ class RunningActivity : AppCompatActivity() {
         mBound = false
     }
 
+
     // tts 관련
     private fun initTextToSpeech() {
         // 버전 확인 롤리팝 이상이여야 TTS 사용 가능
