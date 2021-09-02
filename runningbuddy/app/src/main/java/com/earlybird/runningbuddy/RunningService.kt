@@ -9,8 +9,10 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Binder
+import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
+import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -42,6 +44,8 @@ class RunningService : Service() {
         const val PATH_UPDATED = "PathListService"
         const val PATH_EXTRA = "pathList"
     }
+
+    private var tts: TextToSpeech? = null
 
 //     Dispatchers.Main : 기본 Android 스레드에서 코투린을 실행
 //     UI와 상호작용하고 빠른 작업을 실행하기 위해서만 사용해야함
@@ -146,6 +150,32 @@ class RunningService : Service() {
         distanceIntent.putExtra(DISTANCE_EXTRA, distance)
         sendBroadcast(distanceIntent)
     }
+
+    // tts 관련
+    private fun initTextToSpeech() {
+        // 버전 확인 롤리팝 이상이여야 TTS 사용 가능
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Toast.makeText(this, "SDK version is low", Toast.LENGTH_SHORT).show()
+            return
+        }
+        tts = TextToSpeech(this) {
+            if (it == TextToSpeech.SUCCESS) {
+                val result = tts?.setLanguage(Locale.KOREAN)
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show()
+                    return@TextToSpeech
+                }
+                Toast.makeText(this, "TTS setting successed", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "TTS init failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun ttsSpeak(strTTS: String) {
+        tts?.speak(strTTS, TextToSpeech.QUEUE_FLUSH, null, null)
+    }
+
     // 지도에 경로 그리기
     private fun drawPath() {
         path.coords = pathList
