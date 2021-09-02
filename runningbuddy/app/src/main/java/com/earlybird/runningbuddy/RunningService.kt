@@ -1,24 +1,15 @@
 package com.earlybird.runningbuddy
 
-import android.Manifest
 import android.app.Service
-import android.content.Context
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.location.Location
-import android.location.LocationListener
-import android.location.LocationManager
 import android.os.Binder
 import android.os.Build
-import android.os.Bundle
 import android.os.IBinder
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
-import androidx.core.app.ActivityCompat
-import androidx.core.content.PermissionChecker
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.map.LocationSource
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.PathOverlay
@@ -33,6 +24,15 @@ class RunningService : Service() {
 
     // 시간 계산을 위한 변수
     private val timer = Timer() //timer객체
+    var currentTime = 0.0
+
+    // pace 를 위한 변수
+    private var lastDistance = 0
+    private var currentDistance = -1
+    private var compareTime: Int = 0
+
+    //    private var pace = 0.0
+    private var pacearray = mutableListOf<Double>()
 
     companion object {   //단순 시간저장공간
         const val TIMER_UPDATED = "timerUpdated"    //전송될 값
@@ -43,6 +43,9 @@ class RunningService : Service() {
 
         const val PATH_UPDATED = "PathListService"
         const val PATH_EXTRA = "pathList"
+
+        const val PACE_UPDATE = "paceUpdated"
+        const val PACE_EXTRA = "paceExtra"
     }
 
     private var tts: TextToSpeech? = null
@@ -79,8 +82,9 @@ class RunningService : Service() {
                 pathListIntent.putExtra(PATH_EXTRA, pathList)
                 sendBroadcast(pathListIntent)
                 setDistance()
+                calculatePace()
             }
-            naverMap.locationTrackingMode=LocationTrackingMode.Follow
+            naverMap.locationTrackingMode = LocationTrackingMode.Follow
         }
 
     }
@@ -88,7 +92,7 @@ class RunningService : Service() {
     inner class MyBinder : Binder() {
         //  클라이언트가 서비스와 상호작용하는 데 사용할 수 있는 프로그래밍 인터페이스를 정의하는 IBinder 객체를 반환
         fun getService(): RunningService {
-            Log.d("serviceCycle","RunningService binder()")
+            Log.d("serviceCycle", "RunningService binder()")
             return this@RunningService
         }
     }
@@ -102,15 +106,16 @@ class RunningService : Service() {
 
 
     }
+
     override fun onBind(intent: Intent): IBinder {
         Log.d("service333", "onBind()")
 
         val time = intent.getDoubleExtra(TIME_EXTRA, 0.0)    //TIME_EXTRA 0.0으로 초기화
-            timer.scheduleAtFixedRate(
-                TimeTask(time),
-                1000,
-                1000
-            ) //일정한 시간(delay)이 지난후에 일정 간격(period)으로 지정한 작업(task)을 수행
+        timer.scheduleAtFixedRate(
+            TimeTask(time),
+            1000,
+            1000
+        ) //일정한 시간(delay)이 지난후에 일정 간격(period)으로 지정한 작업(task)을 수행
         return binder
     }
 
@@ -118,6 +123,7 @@ class RunningService : Service() {
         Log.d("serviceCycle", "onUnbind()")
         return false
     }
+
     // 서비스가 수신하는 마지막 호출
     override fun onDestroy() {
         Log.d("service333", "destroy()")
@@ -126,6 +132,7 @@ class RunningService : Service() {
         mapThread.cancel()
         timer.cancel()
     }
+
     // mapFragment 에 그려진 지도 설정
     fun setNaverMap(naverMap: NaverMap, path: PathOverlay) {
         Log.d("serviceCycle", "setNaverMap")
@@ -142,10 +149,12 @@ class RunningService : Service() {
     private fun locationChange() = mapThread.launch {
         naverMap.addOnLocationChangeListener(changeLocation)
     }
+
     // km 로 변환하여 전달
     private fun setDistance() {
         val mDistance = pathList[pathList.size - 1].distanceTo(pathList[pathList.size - 2])
         this.distance += mDistance / 1000f
+
 
         distanceIntent.putExtra(DISTANCE_EXTRA, distance)
         sendBroadcast(distanceIntent)
@@ -186,8 +195,10 @@ class RunningService : Service() {
     private inner class TimeTask(private var time: Double) : TimerTask() {   //시간 작업(task)
         override fun run() {
             val intent = Intent(TIMER_UPDATED)  //전송될 값 intent
-            if (RunningActivity.mBound)
+            if (RunningActivity.mBound) {
                 time++
+                currentTime = time
+            }
             intent.putExtra(TIME_EXTRA, time)    //time값 TIMER_UPDATED로 넘기기
             sendBroadcast(intent)   //TIMER_UPDATED 브로드캐스트로 넘기기
             if (time >= 60 && (time % 60 == 0.0)) {
@@ -197,9 +208,58 @@ class RunningService : Service() {
             }
         }
 
+        fun getTime() = time
+
         private fun alertAlarmWithTTS(time: Int) {
             ttsSpeak("$time 분 경과 했습니다.")
 
         }
     }
+
+    private fun calculatePace() {
+
+        currentDistance = distance.toInt()
+        var pace = 0 // 초
+        Log.d("distancetag123123", "currentDistance:${currentDistance}")
+        if (lastDistance == currentDistance) {
+            Log.d("distancetag123123", "같은 km")
+            return
+        } else {
+            Log.d("distancetag123123", "1km 마다")
+            pace = (currentTime - compareTime).toInt()
+            Log.d("distancetag123123", "pace $pace")
+            val intent = Intent(PACE_UPDATE)
+            intent.putExtra(PACE_EXTRA, pace)
+            sendBroadcast(intent)
+            lastDistance = currentDistance
+            compareTime=currentTime.toInt()
+        }
+//        Log.d("timetag123123", currentTime.toString())
+//
+//        var distance = this.distance
+//        var pacearraySize: Int = pacearray.size
+//
+//        // 1km마다 시간을 배열에 저장
+//        if(distance % 1 == 0.0){
+//            pacearray.add(currentTime)
+//            Log.d("distancetag123123",distance.toString())
+//            Log.d("timetag123123", "distance%1==0")
+//            pacearraySize = pacearray.size
+//        }
+//
+//        if(distance == 1.0){
+//            pace = currentTime
+//            Log.d("timetag123123", "distance==1")
+//            Log.d("distancetag123123",distance.toString())
+//        } else if(pacearraySize != 0) {
+//            if (distance % 1 == 0.0) {
+//                pace = currentTime - pacearray.get(pacearraySize - 1)
+//                Log.d("timetag123123","distance%1 >= 1")
+//                Log.d("distancetag123123",distance.toString())
+//            }
+//        }
+//
+//        return String.format("%.1f km/m", pace)
+    }
+
 }
