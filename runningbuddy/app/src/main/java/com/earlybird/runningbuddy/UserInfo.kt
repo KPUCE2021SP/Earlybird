@@ -10,6 +10,7 @@ import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
+// 유저 정보
 class UserInfo : AppCompatActivity() {
     private lateinit var binding: ActivityUserInfoBinding
 

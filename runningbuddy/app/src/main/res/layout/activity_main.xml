@@ -7,6 +7,7 @@
     android:background="@color/defaultBackground"
     tools:context=".MainActivity">
 
+    <!--수정중-->
     <FrameLayout
         android:id="@+id/map"
         android:layout_width="0dp"
