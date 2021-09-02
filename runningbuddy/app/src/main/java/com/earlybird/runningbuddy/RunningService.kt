@@ -9,10 +9,8 @@ import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Binder
-import android.os.Build
 import android.os.Bundle
 import android.os.IBinder
-import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
@@ -45,8 +43,6 @@ class RunningService : Service() {
         const val PATH_EXTRA = "pathList"
     }
 
-    private var tts: TextToSpeech? = null
-
 //     Dispatchers.Main : 기본 Android 스레드에서 코투린을 실행
 //     UI와 상호작용하고 빠른 작업을 실행하기 위해서만 사용해야함
 //    private val timerThread = CoroutineScope(Dispatchers.Main)  // timer 코루틴을 위한 객체
@@ -61,39 +57,6 @@ class RunningService : Service() {
     private lateinit var naverMap: NaverMap  //naver 객체
     private val binder = MyBinder()
 
-
-    // TODO locationManager 로 테스트해보기
-//    private lateinit var lm: LocationManager
-//    private var lastKnownLocation: Location? = null
-//
-//    private val locationListener: LocationListener = object : LocationListener {
-//
-//        override fun onLocationChanged(location: Location) {
-//            naverMap.locationTrackingMode = LocationTrackingMode.Follow
-//            lastKnownLocation = location
-//            Log.d("locationListener","onLocationChanged = $location")
-//        }
-//
-//        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-//            super.onStatusChanged(provider, status, extras)
-//            Log.d("locationListener","onStatusChanged")
-//
-//        }
-//
-//        override fun onProviderEnabled(provider: String) {
-//            super.onProviderEnabled(provider)
-//            Log.d("locationListener","onProviderEnabled")
-//        }
-//
-//        override fun onProviderDisabled(provider: String) {
-//            super.onProviderDisabled(provider)
-//            Log.d("locationListener","onProviderDisabled")
-//        }
-//
-//
-//    }
-
-    // TODO 테스트 위해서 잠시
 
     // 종료시 리스너 삭제를 위해
     private val changeLocation = object : NaverMap.OnLocationChangeListener {
@@ -121,7 +84,7 @@ class RunningService : Service() {
     inner class MyBinder : Binder() {
         //  클라이언트가 서비스와 상호작용하는 데 사용할 수 있는 프로그래밍 인터페이스를 정의하는 IBinder 객체를 반환
         fun getService(): RunningService {
-            Log.d("serviceCycle", "RunningService binder()")
+            Log.d("serviceCycle","RunningService binder()")
             return this@RunningService
         }
     }
@@ -133,17 +96,17 @@ class RunningService : Service() {
         // runningBuddy 로 실행시
         initTextToSpeech()
 
-    }
 
+    }
     override fun onBind(intent: Intent): IBinder {
         Log.d("service333", "onBind()")
 
         val time = intent.getDoubleExtra(TIME_EXTRA, 0.0)    //TIME_EXTRA 0.0으로 초기화
-        timer.scheduleAtFixedRate(
-            TimeTask(time),
-            1000,
-            1000
-        ) //일정한 시간(delay)이 지난후에 일정 간격(period)으로 지정한 작업(task)을 수행
+            timer.scheduleAtFixedRate(
+                TimeTask(time),
+                1000,
+                1000
+            ) //일정한 시간(delay)이 지난후에 일정 간격(period)으로 지정한 작업(task)을 수행
         return binder
     }
 
@@ -151,7 +114,6 @@ class RunningService : Service() {
         Log.d("serviceCycle", "onUnbind()")
         return false
     }
-
     // 서비스가 수신하는 마지막 호출
     override fun onDestroy() {
         Log.d("service333", "destroy()")
@@ -160,7 +122,6 @@ class RunningService : Service() {
         mapThread.cancel()
         timer.cancel()
     }
-
     // mapFragment 에 그려진 지도 설정
     fun setNaverMap(naverMap: NaverMap, path: PathOverlay) {
         Log.d("serviceCycle", "setNaverMap")
@@ -173,10 +134,10 @@ class RunningService : Service() {
 
     }
 
+
     private fun locationChange() = mapThread.launch {
         naverMap.addOnLocationChangeListener(changeLocation)
     }
-
     // km 로 변환하여 전달
     private fun setDistance() {
         val mDistance = pathList[pathList.size - 1].distanceTo(pathList[pathList.size - 2])
@@ -185,36 +146,10 @@ class RunningService : Service() {
         distanceIntent.putExtra(DISTANCE_EXTRA, distance)
         sendBroadcast(distanceIntent)
     }
-
     // 지도에 경로 그리기
     private fun drawPath() {
         path.coords = pathList
         path.map = naverMap
-    }
-
-    // tts 관련
-    private fun initTextToSpeech() {
-        // 버전 확인 롤리팝 이상이여야 TTS 사용 가능
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Toast.makeText(this, "SDK version is low", Toast.LENGTH_SHORT).show()
-            return
-        }
-        tts = TextToSpeech(this) {
-            if (it == TextToSpeech.SUCCESS) {
-                val result = tts?.setLanguage(Locale.KOREAN)
-                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show()
-                    return@TextToSpeech
-                }
-                Toast.makeText(this, "TTS setting successed", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "TTS init failed", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-    private fun ttsSpeak(strTTS: String) {
-        tts?.speak(strTTS, TextToSpeech.QUEUE_FLUSH, null, null)
     }
 
     private inner class TimeTask(private var time: Double) : TimerTask() {   //시간 작업(task)
@@ -224,7 +159,6 @@ class RunningService : Service() {
                 time++
             intent.putExtra(TIME_EXTRA, time)    //time값 TIMER_UPDATED로 넘기기
             sendBroadcast(intent)   //TIMER_UPDATED 브로드캐스트로 넘기기
-
             if (time >= 60 && (time % 60 == 0.0)) {
                 // 1 분 단위로
                 val setTime: Int = (time / 60).toInt()
@@ -234,6 +168,7 @@ class RunningService : Service() {
 
         private fun alertAlarmWithTTS(time: Int) {
             ttsSpeak("$time 분 경과 했습니다.")
+
         }
     }
 }

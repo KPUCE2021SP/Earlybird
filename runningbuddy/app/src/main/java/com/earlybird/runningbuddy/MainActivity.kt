@@ -27,6 +27,12 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var transaction: FragmentTransaction
 
+    @RequiresApi(Build.VERSION_CODES.Q)
+    val permissionArray = arrayOf(
+        android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
+        android.Manifest.permission.ACCESS_FINE_LOCATION
+    )
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -35,6 +41,8 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
+
+
 
         serviceIntent =
             Intent(applicationContext, RunningService::class.java)   //RunningService 와 intent
@@ -60,8 +68,9 @@ class MainActivity : AppCompatActivity() {
 
     private fun startRunning() {
         binding.runButton.setOnClickListener { //runButton 클릭 시
-
-           // 권한 설정, 권한을 거부할 경우 실행 못하게
+            // 권한 부여
+            //requestPermission()
+//        // 권한 설정
             if(!requestPermissionRationale()) return@setOnClickListener
 
             //LocationManager

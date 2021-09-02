@@ -65,7 +65,7 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
         permissions: Array<String>,
         grantResults: IntArray
     ) {
-        Log.d("permissionCheck","MapFragment : onRequestPermissionsResult()")
+        Log.d("permissionCheck","onRequestPermissionsResult()")
 
         if (locationSource.onRequestPermissionsResult(
                 requestCode, permissions,
@@ -122,7 +122,7 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
     override fun onPause() {
         Log.d("service333", "onPause()")
         super.onPause()
-        //mapView.onPause()
+        mapView.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -134,7 +134,7 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
     override fun onStop() {
         Log.d("service333", "onStop()")
         super.onStop()
-        //mapView.onStop()
+        mapView.onStop()
     }
 
     override fun onDestroyView() {
