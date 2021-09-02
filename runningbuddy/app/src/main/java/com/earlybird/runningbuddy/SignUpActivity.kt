@@ -25,14 +25,14 @@ class SignUpActivity : AppCompatActivity() {
         val db: FirebaseFirestore = Firebase.firestore
 
         //성별을 저장하기 위한 'sex' 변수 선언, 사용자의 남/여 버튼 선택에 따라 sex 변수의 값과 사용자의 현재선택 성별을 보여주는 'sexView' 의 내용이 변경됨
-        var sex : String = ""
+        var Sex : String = ""
         binding.MaleButton.setOnClickListener {
             binding.sexView.text = "남자"
-            sex = "male"
+            Sex = "male"
         }
         binding.FemaleButton.setOnClickListener {
             binding.sexView.text = "여자"
-            sex = "female"
+            Sex = "female"
         }
 
         //사용자가 회원가입을 위한 정보를 모두 입력 후 맨아래 버튼인 EndButton 을 누르면 리스너가 동작함
@@ -44,7 +44,7 @@ class SignUpActivity : AppCompatActivity() {
                 || binding.NameText.text.toString().equals("")
                 || binding.HeightText.text.toString().equals("")
                 || binding.WeightText.text.toString().equals("")
-                || sex.equals("")
+                || Sex.equals("")
             ) {
 
                 //빈칸이 있다면 빈칸을 채워달라는 텍스트를 출력하고 그대로 화면이 멈춤.
@@ -67,7 +67,7 @@ class SignUpActivity : AppCompatActivity() {
                             "Name" to binding.NameText.text.toString(),
                             "Height" to binding.HeightText.text.toString().toDouble(),
                             "Weight" to binding.WeightText.text.toString().toDouble(),
-                            "sex" to sex
+                            "Sex" to Sex
                         )
 
 

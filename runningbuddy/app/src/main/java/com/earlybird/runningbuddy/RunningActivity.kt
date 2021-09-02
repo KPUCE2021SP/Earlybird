@@ -7,12 +7,22 @@ import android.os.IBinder
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.earlybird.runningbuddy.RunningService.Companion.DISTANCE_EXTRA
+import com.earlybird.runningbuddy.RunningService.Companion.TIME_EXTRA
 import com.earlybird.runningbuddy.databinding.ActivityLoginBinding
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
 import com.google.android.gms.common.internal.Objects
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.SetOptions
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
+import java.time.LocalDateTime
+import java.time.format.DateTimeFormatter
 import java.util.*
 import kotlin.math.roundToInt
 import kotlin.collections.ArrayList
@@ -28,7 +38,10 @@ class RunningActivity : AppCompatActivity() {
     private lateinit var dataViewIntent: Intent    //DataViewActivity에 값을 주기 위한 intent
     private lateinit var serviceIntent: Intent //RunningService의 값을 받기 위한 intent
 
+
+    private var pace = 0.0
     private var time = 0.0
+    private var pacearray = mutableListOf<Double>()
 
     private var distance = 0.0
     private var pathList = ArrayList<LatLng>()
@@ -61,11 +74,12 @@ class RunningActivity : AppCompatActivity() {
 
     private var tts: TextToSpeech? = null
 
-
+    @RequiresApi(Build.VERSION_CODES.O) // 현재시간을 표시하는 LocalDateTime.now() 함수를 쓰러면 이 코드를 추가해야만함
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRunningBinding.inflate(layoutInflater)
+        binding.paceView.text = calculatePace()
         setContentView(binding.root)
 
         setIntent()
@@ -86,6 +100,7 @@ class RunningActivity : AppCompatActivity() {
             Log.d("HAN_RunningActivity", "RunningActivity onStart()")
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
+
     }
 
     override fun onPause() {
@@ -125,9 +140,36 @@ class RunningActivity : AppCompatActivity() {
         registerReceiver(RunningBroadCast(), intentFilter)
     }
 
+    @RequiresApi(Build.VERSION_CODES.O) // 현재시간을 표시하는 LocalDateTime.now() 함수를 쓰러면 이 코드를 추가해야만함
     private fun setButton() {
         binding.stopButton.setOnClickListener {
-            stopRunning()
+            stopRunning() // 러닝 종료버튼
+
+            //db에 접근하기위해 forestore 객체 할당
+            val db: FirebaseFirestore = Firebase.firestore
+
+            //현재 시간을 불러오는 LocalDateTime.now() 함수를 사용, 원하는 문자열 양식으로 포맷팅 한뒤 formatedDate 변수에 할당
+            val currentDate = LocalDateTime.now()
+            val formatedDate: String = currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
+
+            //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌
+            val currentRecordMap = hashMapOf(
+                "Time" to time,
+                "Distance" to distance,
+                "PathList" to pathList,
+                "Date" to formatedDate,
+                "UserID" to Firebase.auth.currentUser!!.uid
+            )
+
+            //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
+            // 러닝 기록은 회원마다 여러개니까 "db에 기존 기록이 있건없건 빈 공간에 merge 함"
+            db.collection("records")
+                .add(currentRecordMap)
+
+            // 데이터 뷰에 보이는 것은 db에서 가져오는 것보다 인텐트로 하는 것이 더 효율적이라 판단하여 인텐트로 데이터 전달
+            dataViewIntent.putExtra("Time", time)        // 칼로리 계산을 위해
+            dataViewIntent.putExtra("FormatTime", binding.TimeView.text)         // 달린 시간을 보여주기 위해
+            dataViewIntent.putExtra("Distance", distance)
             startActivity(dataViewIntent)
         }
 
@@ -161,9 +203,11 @@ class RunningActivity : AppCompatActivity() {
     private fun stopRunning() {
         Log.d("serviceCycle", "stopRunning()")
         unbindService(connection)
+        stopService(serviceIntent)
         binding.pauseButton.text = "재시작"
         mBound = false
     }
+
 
     // tts 관련
     private fun initTextToSpeech() {
@@ -186,9 +230,11 @@ class RunningActivity : AppCompatActivity() {
         }
     }
 
+
     private fun ttsSpeak(strTTS:String){
         tts?.speak(strTTS,TextToSpeech.QUEUE_FLUSH,null,null)
     }
+
 
     private fun makeTimeString(hours: Int, minutes: Int, seconds: Int): String = //문자 합치기
         String.format("%02d:%02d:%02d", hours, minutes, seconds)
@@ -197,24 +243,44 @@ class RunningActivity : AppCompatActivity() {
         override fun onReceive(context: Context?, intent: Intent) {
             when (intent.action) {
                 "timerUpdated" -> {
-                    time = intent.getDoubleExtra(RunningService.TIME_EXTRA, 0.0)
+                    time = intent.getDoubleExtra(RunningService.TIME_EXTRA, 0.0) //시간표시
 
                     binding.TimeView.text = getTimeStringFromDouble(time)
                 }
                 "DistanceService" -> {
                     Log.d("service22", "BroadcastReceiver distanceService")
-                    distance = intent.getDoubleExtra(RunningService.DISTANCE_EXTRA, 0.0)
+                    distance = intent.getDoubleExtra(RunningService.DISTANCE_EXTRA, 0.0) //거리표시
                     binding.distanceView.text = "%.1f km".format(distance)
                 }
                 "PathListService" -> {
                     pathList =
-                        intent.getParcelableArrayListExtra<LatLng>("pathList") as ArrayList<LatLng>
+                        intent.getParcelableArrayListExtra<LatLng>("pathList") as ArrayList<LatLng> //구간좌표 표시
                     Log.d("service22", "pathList : $pathList")
                 }
             }
-            binding.TimeView.text = getTimeStringFromDouble(time)
-            binding.distanceView.text = "%.1f km".format(distance)
             Log.d("service22", "broadCast : $distance")
         }
+    }
+
+
+    private fun calculatePace(): String {
+        var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
+        var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
+        var pacesize: Int = pacearray.size
+
+        // 1km마다 시간을 배열에 저장
+        if(distance % 1 == 0.0){
+            pacearray.add(time)
+        }
+
+        if(distance == 1.0){
+            pace = distance
+        } else if(pacesize != 0) {
+            if (distance % 1 == 0.0) {
+                pace = time - pacearray.get(pacesize - 1)
+            }
+        }
+
+        return String.format("%.1f km/m", pace)
     }
 }
