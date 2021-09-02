@@ -29,37 +29,36 @@ class SplashActivity : AppCompatActivity() {
             Settings.Secure.getString(contentResolver, Settings.Secure.ANDROID_ID)
         val currentUid = Firebase.auth.currentUser?.uid ?: "No User"
         val db: FirebaseFirestore = Firebase.firestore
-
+        var dbAndroidID: String = ""
         db.collection("logins").document(currentUid).get().addOnSuccessListener {
-            binding.dbTextView.setText(it["AndroidID"].toString())
+            dbAndroidID = it["AndroidID"].toString()
         }
-        val dbAndroidID = binding.dbTextView.text.toString()
-        binding.uidView.text = currentUid
-
-        if (isOnline(this)) {
-            if (isAutoLogin(currentUid, currentAndroidID, dbAndroidID)) {
-                Handler().postDelayed({
-                    Toast.makeText(this, "자동 로그인 성공", Toast.LENGTH_SHORT).show()
-                    startActivity(
-                        Intent(this, MainActivity::class.java)
-                    )
-                    ActivityCompat.finishAffinity(this)
-                }, 3000)
+        Handler().postDelayed({
+            if (isOnline(this)) {
+                if (isAutoLogin(currentUid, currentAndroidID, dbAndroidID)) {
+                    Handler().postDelayed({
+                        Toast.makeText(this, "자동 로그인 성공", Toast.LENGTH_SHORT).show()
+                        startActivity(
+                            Intent(this, MainActivity::class.java)
+                        )
+                        ActivityCompat.finishAffinity(this)
+                    }, 2000)
+                } else {
+                    Handler().postDelayed({
+                        Toast.makeText(this, "자동 로그인 실패", Toast.LENGTH_SHORT).show()
+                        startActivity(
+                            Intent(this, LoginActivity::class.java)
+                        )
+                        ActivityCompat.finishAffinity(this)
+                    }, 2000)
+                }
             } else {
+                Toast.makeText(this, "인터넷 연결을 확인해주세요\n 2초뒤에 종료됩니다.", Toast.LENGTH_SHORT).show()
                 Handler().postDelayed({
-                    Toast.makeText(this, "자동 로그인 실패", Toast.LENGTH_SHORT).show()
-                    startActivity(
-                        Intent(this, LoginActivity::class.java)
-                    )
-                    ActivityCompat.finishAffinity(this)
-                }, 3000)
+                    System.exit(0)
+                }, 2000)
             }
-        } else {
-            Toast.makeText(this, "인터넷 연결을 확인해주세요\n 2초뒤에 종료됩니다.", Toast.LENGTH_SHORT).show()
-            Handler().postDelayed({
-                System.exit(0)
-            }, 3000)
-        }
+        }, 1000)
     }
 
     fun isOnline(context: Context): Boolean {

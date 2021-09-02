@@ -262,6 +262,7 @@ class RunningActivity : AppCompatActivity() {
         }
     }
 
+
     private fun calculatePace(): String {
         var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
         var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
@@ -282,5 +283,4 @@ class RunningActivity : AppCompatActivity() {
 
         return String.format("%.1f km/m", pace)
     }
-
 }
