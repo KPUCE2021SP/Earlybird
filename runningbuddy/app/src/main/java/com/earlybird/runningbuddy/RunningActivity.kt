@@ -9,15 +9,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.earlybird.runningbuddy.RunningService.Companion.DISTANCE_EXTRA
-import com.earlybird.runningbuddy.RunningService.Companion.TIME_EXTRA
-import com.earlybird.runningbuddy.databinding.ActivityLoginBinding
-import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
-import com.google.android.gms.common.internal.Objects
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
@@ -39,9 +33,9 @@ class RunningActivity : AppCompatActivity() {
     private lateinit var serviceIntent: Intent //RunningService의 값을 받기 위한 intent
 
 
-    private var pace = 0.0
+    private var pace = 0
     private var time = 0.0
-    private var pacearray = mutableListOf<Double>()
+//    private var pacearray = mutableListOf<Double>()
 
     private var distance = 0.0
     private var pathList = ArrayList<LatLng>()
@@ -79,7 +73,6 @@ class RunningActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRunningBinding.inflate(layoutInflater)
-        binding.paceView.text = calculatePace()
         setContentView(binding.root)
 
         setIntent()
@@ -137,6 +130,7 @@ class RunningActivity : AppCompatActivity() {
         intentFilter.addAction("DistanceService")
         intentFilter.addAction("timerUpdated")
         intentFilter.addAction("PathListService")
+        intentFilter.addAction("paceUpdated")
         registerReceiver(RunningBroadCast(), intentFilter)
     }
 
@@ -190,6 +184,7 @@ class RunningActivity : AppCompatActivity() {
 
         return makeTimeString(hours, minutes, seconds)
     }
+
 
     private fun restartRunning() {
         serviceIntent.putExtra(RunningService.TIME_EXTRA, time)
@@ -257,30 +252,40 @@ class RunningActivity : AppCompatActivity() {
                         intent.getParcelableArrayListExtra<LatLng>("pathList") as ArrayList<LatLng> //구간좌표 표시
                     Log.d("service22", "pathList : $pathList")
                 }
+                "paceUpdated" -> {
+                    pace = intent.getIntExtra(RunningService.PACE_EXTRA,0)
+                    Log.d("distancetag123123",pace.toString())
+                    binding.paceView.text = "${pace}초"
+
+                }
+                else->{
+                    Log.d("distancetag123123","else")
+                }
             }
             Log.d("service22", "broadCast : $distance")
         }
     }
 
 
-    private fun calculatePace(): String {
-        var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
-        var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
-        var pacesize: Int = pacearray.size
-
-        // 1km마다 시간을 배열에 저장
-        if(distance % 1 == 0.0){
-            pacearray.add(time)
-        }
-
-        if(distance == 1.0){
-            pace = distance
-        } else if(pacesize != 0) {
-            if (distance % 1 == 0.0) {
-                pace = time - pacearray.get(pacesize - 1)
-            }
-        }
-
-        return String.format("%.1f km/m", pace)
-    }
+//    private fun calculatePace(): String {
+//        var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
+//        var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
+//        var pacesize: Int = pacearray.size
+//
+//        // 1km마다 시간을 배열에 저장
+//        if(distance % 1 == 0.0){
+//            pacearray.add(time)
+//            pacesize = pacearray.size
+//        }
+//
+//        if(distance == 1.0){
+//            pace = distance
+//        } else if(pacesize != 0) {
+//            if (distance % 1 == 0.0) {
+//                pace = time - pacearray.get(pacesize - 1)
+//            }
+//        }
+//
+//        return String.format("%.1f km/m", pace)
+//    }
 }

@@ -66,4 +66,13 @@
         app:layout_constraintStart_toStartOf="@+id/runPaceTextView"
         app:layout_constraintTop_toBottomOf="@+id/runPaceTextView" />
 
+    <TextView
+        android:id="@+id/runSpeedTextView"
+        app:layout_constraintTop_toBottomOf="@id/runCalorieTextView"
+        app:layout_constraintStart_toStartOf="@id/runCalorieTextView"
+        android:text="속도"
+        android:textSize="34sp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 </androidx.constraintlayout.widget.ConstraintLayout>
