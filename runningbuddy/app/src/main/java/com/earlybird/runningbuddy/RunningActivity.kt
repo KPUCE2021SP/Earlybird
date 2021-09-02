@@ -38,7 +38,10 @@ class RunningActivity : AppCompatActivity() {
     private lateinit var dataViewIntent: Intent    //DataViewActivity에 값을 주기 위한 intent
     private lateinit var serviceIntent: Intent //RunningService의 값을 받기 위한 intent
 
+
+    private var pace = 0.0
     private var time = 0.0
+    private var pacearray = mutableListOf<Double>()
 
     private var distance = 0.0
     private var pathList = ArrayList<LatLng>()
@@ -69,12 +72,14 @@ class RunningActivity : AppCompatActivity() {
         }
     }
 
+    private var tts: TextToSpeech? = null
 
     @RequiresApi(Build.VERSION_CODES.O) // 현재시간을 표시하는 LocalDateTime.now() 함수를 쓰러면 이 코드를 추가해야만함
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRunningBinding.inflate(layoutInflater)
+        binding.paceView.text = calculatePace()
         setContentView(binding.root)
 
         setIntent()
@@ -95,6 +100,7 @@ class RunningActivity : AppCompatActivity() {
             Log.d("HAN_RunningActivity", "RunningActivity onStart()")
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
+
     }
 
     override fun onPause() {
@@ -205,7 +211,30 @@ class RunningActivity : AppCompatActivity() {
         mBound = false
     }
 
+    // tts 관련
+    private fun initTextToSpeech() {
+        // 버전 확인 롤리팝 이상이여야 TTS 사용 가능
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
+            Toast.makeText(this, "SDK version is low", Toast.LENGTH_SHORT).show()
+            return
+        }
+        tts = TextToSpeech(this) {
+            if (it == TextToSpeech.SUCCESS) {
+                val result = tts?.setLanguage(Locale.KOREAN)
+                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
+                    Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show()
+                    return@TextToSpeech
+                }
+                Toast.makeText(this, "TTS setting successed", Toast.LENGTH_SHORT).show()
+            } else {
+                Toast.makeText(this, "TTS init failed", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
 
+    private fun ttsSpeak(strTTS:String){
+        tts?.speak(strTTS,TextToSpeech.QUEUE_FLUSH,null,null)
+    }
 
     private fun makeTimeString(hours: Int, minutes: Int, seconds: Int): String = //문자 합치기
         String.format("%02d:%02d:%02d", hours, minutes, seconds)
@@ -233,4 +262,25 @@ class RunningActivity : AppCompatActivity() {
         }
     }
 
+
+    private fun calculatePace(): String {
+        var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
+        var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
+        var pacesize: Int = pacearray.size
+
+        // 1km마다 시간을 배열에 저장
+        if(distance % 1 == 0.0){
+            pacearray.add(time)
+        }
+
+        if(distance == 1.0){
+            pace = distance
+        } else if(pacesize != 0) {
+            if (distance % 1 == 0.0) {
+                pace = time - pacearray.get(pacesize - 1)
+            }
+        }
+
+        return String.format("%.1f km/m", pace)
+    }
 }
