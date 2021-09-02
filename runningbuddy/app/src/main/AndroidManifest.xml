@@ -15,6 +15,10 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
         <activity
+            android:name=".UserInfo"
+            android:exported="true"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".SplashActivity"
             android:exported="true">
             <intent-filter>

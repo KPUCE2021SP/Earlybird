@@ -56,6 +56,14 @@ class MainActivity : AppCompatActivity() {
                 System.exit(0)
             }, 1000)
         }
+
+        binding.userInfoButton.setOnClickListener {
+            Handler().postDelayed({
+                startActivity(
+                    Intent(this, UserInfo::class.java)
+                )
+            }, 1000)
+        }
     }
 
     private fun startRunning() {
@@ -135,31 +143,29 @@ class MainActivity : AppCompatActivity() {
         var result = true
         if (ActivityCompat.shouldShowRequestPermissionRationale(
                 this,
+                android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
+            )
+        ) {
+            Log.d("permissionCheck", "항상위치권한 확인")
+            val builder = AlertDialog.Builder(this)
+                .apply {
+                    setTitle("경고")
+                    setMessage("위치 권한을 항상허용하지 않았을 경우 앱이 정상작동 하지 않을 수 있습니다. \n위치 권한을 항상 허용으로 설정 하시겠습니까?")
+                    setPositiveButton("네") { _, _ ->
+                        // 권한 요청
+                        requestPermission("background")
+                    }
+                    setNegativeButton("아니오") { _, _ ->
+                        result = false
+                    }
+                    show()
+                }
+        }
+        if (ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
             )
         ) {
-
-            if (ActivityCompat.shouldShowRequestPermissionRationale(
-                    this,
-                    android.Manifest.permission.ACCESS_BACKGROUND_LOCATION
-                )
-            ) {
-                Log.d("permissionCheck", "항상위치권한 확인")
-                val builder = AlertDialog.Builder(this)
-                    .apply {
-                        setTitle("경고")
-                        setMessage("위치 권한을 항상허용하지 않았을 경우 앱이 정상작동 하지 않을 수 있습니다. \n위치 권한을 항상 허용으로 설정 하시겠습니까?")
-                        setPositiveButton("네") { _, _ ->
-                            // 권한 요청
-                            requestPermission("background")
-                        }
-                        setNegativeButton("아니오") { _, _ ->
-                            result = false
-                        }
-                        show()
-                    }
-            }
-
             // 이전에 거부한 경우 권한 필요성 설명 및 권한 요청
             val builder = AlertDialog.Builder(this)
                 .apply {
