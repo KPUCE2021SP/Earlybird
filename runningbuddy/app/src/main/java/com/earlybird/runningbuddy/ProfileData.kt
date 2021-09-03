@@ -1,4 +1,6 @@
 package com.earlybird.runningbuddy
 
+import android.os.Parcelable
+import kotlinx.android.parcel.Parcelize
 
-data class ProfileData( val date : String? = null, val time : Double? =null ,val distance : Double? = null, val img : Int? = null)
+data class ProfileData( val date : String, val time : String ,val distance : String)

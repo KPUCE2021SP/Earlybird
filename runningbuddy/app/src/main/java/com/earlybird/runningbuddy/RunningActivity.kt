@@ -38,7 +38,6 @@ class RunningActivity : AppCompatActivity() {
     private lateinit var dataViewIntent: Intent    //DataViewActivity에 값을 주기 위한 intent
     private lateinit var serviceIntent: Intent //RunningService의 값을 받기 위한 intent
 
-
     private var pace = 0.0
     private var time = 0.0
     private var pacearray = mutableListOf<Double>()
@@ -143,8 +142,9 @@ class RunningActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O) // 현재시간을 표시하는 LocalDateTime.now() 함수를 쓰러면 이 코드를 추가해야만함
     private fun setButton() {
         binding.stopButton.setOnClickListener {
-            stopRunning() // 러닝 종료버튼
-
+            if(mBound == true) {
+                stopRunning() // 러닝 종료버튼
+            }
             //db에 접근하기위해 forestore 객체 할당
             val db: FirebaseFirestore = Firebase.firestore
 
