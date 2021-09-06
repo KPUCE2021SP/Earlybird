@@ -32,17 +32,14 @@ class RunningActivity : AppCompatActivity() {
     private lateinit var dataViewIntent: Intent    //DataViewActivity에 값을 주기 위한 intent
     private lateinit var serviceIntent: Intent //RunningService의 값을 받기 위한 intent
 
-    private var pace = 0
-
-    private var time = 0.0
-//    private var pacearray = mutableListOf<Double>()
-
-    private var distance = 0.0
-    private var pathList = ArrayList<LatLng>()
-
+    private var pace: Int = 0 //페이스
+    private var time: Double = 0.0 //시간
+    private var distance: Double = 0.0 //거리
+    private var pathList = ArrayList<LatLng>() //경로
     private var isMap = false   // mapFragment
-
     private val intentFilter = IntentFilter()
+
+
 
     lateinit var mService: RunningService   //RunningService 에 접근하기 위한 변수
 
@@ -273,25 +270,5 @@ class RunningActivity : AppCompatActivity() {
     }
 
 
-//    private fun calculatePace(): String {
-//        var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
-//        var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
-//        var pacesize: Int = pacearray.size
-//
-//        // 1km마다 시간을 배열에 저장
-//        if(distance % 1 == 0.0){
-//            pacearray.add(time)
-//            pacesize = pacearray.size
-//        }
-//
-//        if(distance == 1.0){
-//            pace = distance
-//        } else if(pacesize != 0) {
-//            if (distance % 1 == 0.0) {
-//                pace = time - pacearray.get(pacesize - 1)
-//            }
-//        }
-//
-//        return String.format("%.1f km/m", pace)
-//    }
+
 }
