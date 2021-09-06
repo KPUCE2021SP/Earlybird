@@ -9,15 +9,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import com.earlybird.runningbuddy.RunningService.Companion.DISTANCE_EXTRA
-import com.earlybird.runningbuddy.RunningService.Companion.TIME_EXTRA
-import com.earlybird.runningbuddy.databinding.ActivityLoginBinding
-import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
-import com.google.android.gms.common.internal.Objects
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.naver.maps.geometry.LatLng
@@ -38,9 +32,10 @@ class RunningActivity : AppCompatActivity() {
     private lateinit var dataViewIntent: Intent    //DataViewActivity에 값을 주기 위한 intent
     private lateinit var serviceIntent: Intent //RunningService의 값을 받기 위한 intent
 
-    private var pace = 0.0
+    private var pace = 0
+
     private var time = 0.0
-    private var pacearray = mutableListOf<Double>()
+//    private var pacearray = mutableListOf<Double>()
 
     private var distance = 0.0
     private var pathList = ArrayList<LatLng>()
@@ -78,7 +73,6 @@ class RunningActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         binding = ActivityRunningBinding.inflate(layoutInflater)
-        binding.paceView.text = calculatePace()
         setContentView(binding.root)
 
         setIntent()
@@ -136,6 +130,7 @@ class RunningActivity : AppCompatActivity() {
         intentFilter.addAction("DistanceService")
         intentFilter.addAction("timerUpdated")
         intentFilter.addAction("PathListService")
+        intentFilter.addAction("paceUpdated")
         registerReceiver(RunningBroadCast(), intentFilter)
     }
 
@@ -145,32 +140,37 @@ class RunningActivity : AppCompatActivity() {
             if(mBound == true) {
                 stopRunning() // 러닝 종료버튼
             }
-            //db에 접근하기위해 forestore 객체 할당
-            val db: FirebaseFirestore = Firebase.firestore
 
-            //현재 시간을 불러오는 LocalDateTime.now() 함수를 사용, 원하는 문자열 양식으로 포맷팅 한뒤 formatedDate 변수에 할당
-            val currentDate = LocalDateTime.now()
-            val formatedDate: String = currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
+                //db에 접근하기위해 forestore 객체 할당
+                val db: FirebaseFirestore = Firebase.firestore
 
-            //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌
-            val currentRecordMap = hashMapOf(
-                "Time" to time,
-                "Distance" to distance,
-                "PathList" to pathList,
-                "Date" to formatedDate,
-                "UserID" to Firebase.auth.currentUser!!.uid
-            )
+                //현재 시간을 불러오는 LocalDateTime.now() 함수를 사용, 원하는 문자열 양식으로 포맷팅 한뒤 formatedDate 변수에 할당
+                val currentDate = LocalDateTime.now()
+                val formatedDate: String =
+                    currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
 
-            //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
-            // 러닝 기록은 회원마다 여러개니까 "db에 기존 기록이 있건없건 빈 공간에 merge 함"
-            db.collection("records")
-                .add(currentRecordMap)
+                //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌
+                val currentRecordMap = hashMapOf(
+                    "Time" to time,
+                    "Distance" to distance,
+                    "PathList" to pathList,
+                    "Date" to formatedDate,
+                    "UserID" to Firebase.auth.currentUser!!.uid
+                )
 
-            // 데이터 뷰에 보이는 것은 db에서 가져오는 것보다 인텐트로 하는 것이 더 효율적이라 판단하여 인텐트로 데이터 전달
-            dataViewIntent.putExtra("Time", time)        // 칼로리 계산을 위해
-            dataViewIntent.putExtra("FormatTime", binding.TimeView.text)         // 달린 시간을 보여주기 위해
-            dataViewIntent.putExtra("Distance", distance)
-            startActivity(dataViewIntent)
+                //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
+                // 러닝 기록은 회원마다 여러개니까 "db에 기존 기록이 있건없건 빈 공간에 merge 함"
+                db.collection("records")
+                    .add(currentRecordMap)
+
+                // 데이터 뷰에 보이는 것은 db에서 가져오는 것보다 인텐트로 하는 것이 더 효율적이라 판단하여 인텐트로 데이터 전달
+                dataViewIntent.putExtra("Time", time)        // 칼로리 계산을 위해
+                dataViewIntent.putExtra(
+                    "FormatTime",
+                    binding.TimeView.text
+                )         // 달린 시간을 보여주기 위해
+                dataViewIntent.putExtra("Distance", distance)
+                startActivity(dataViewIntent)
         }
 
         binding.pauseButton.setOnClickListener {
@@ -190,6 +190,7 @@ class RunningActivity : AppCompatActivity() {
 
         return makeTimeString(hours, minutes, seconds)
     }
+
 
     private fun restartRunning() {
         serviceIntent.putExtra(RunningService.TIME_EXTRA, time)
@@ -257,30 +258,40 @@ class RunningActivity : AppCompatActivity() {
                         intent.getParcelableArrayListExtra<LatLng>("pathList") as ArrayList<LatLng> //구간좌표 표시
                     Log.d("service22", "pathList : $pathList")
                 }
+                "paceUpdated" -> {
+                    pace = intent.getIntExtra(RunningService.PACE_EXTRA,0)
+                    Log.d("distancetag123123",pace.toString())
+                    binding.paceView.text = "${pace}초"
+
+                }
+                else->{
+                    Log.d("distancetag123123","else")
+                }
             }
             Log.d("service22", "broadCast : $distance")
         }
     }
 
 
-    private fun calculatePace(): String {
-        var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
-        var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
-        var pacesize: Int = pacearray.size
-
-        // 1km마다 시간을 배열에 저장
-        if(distance % 1 == 0.0){
-            pacearray.add(time)
-        }
-
-        if(distance == 1.0){
-            pace = distance
-        } else if(pacesize != 0) {
-            if (distance % 1 == 0.0) {
-                pace = time - pacearray.get(pacesize - 1)
-            }
-        }
-
-        return String.format("%.1f km/m", pace)
-    }
+//    private fun calculatePace(): String {
+//        var time = intent.getDoubleExtra(TIME_EXTRA, 0.0)
+//        var distance = intent.getDoubleExtra(DISTANCE_EXTRA, 0.0)
+//        var pacesize: Int = pacearray.size
+//
+//        // 1km마다 시간을 배열에 저장
+//        if(distance % 1 == 0.0){
+//            pacearray.add(time)
+//            pacesize = pacearray.size
+//        }
+//
+//        if(distance == 1.0){
+//            pace = distance
+//        } else if(pacesize != 0) {
+//            if (distance % 1 == 0.0) {
+//                pace = time - pacearray.get(pacesize - 1)
+//            }
+//        }
+//
+//        return String.format("%.1f km/m", pace)
+//    }
 }
