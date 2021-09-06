@@ -17,7 +17,6 @@ class RecordDetailActivity : AppCompatActivity() {
 
         datas = intent.getParcelableExtra<Parcelable>("data") as ProfileData
 
-        Glide.with(this).load(datas.img).into(binding.imgProfile)
         binding.joggingDate.text = datas.date
     }
 }
