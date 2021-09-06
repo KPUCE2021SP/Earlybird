@@ -1,6 +1,7 @@
 package com.earlybird.runningbuddy
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -29,6 +30,7 @@ class RecordListActivity : AppCompatActivity() {
     }
 
     private fun EventChangeListener() {     //DB데이터보여주기
+        var mdocument: String? = null
         //데이터가져오기
         var profileArrayList = arrayListOf<ProfileData>()
         if (user != null) {
@@ -38,6 +40,9 @@ class RecordListActivity : AppCompatActivity() {
                 .addOnSuccessListener { result ->
                     for (document in result) {
                         if (document.data?.get("UserID").toString().equals(user.uid)) {
+                            Log.d("HHHHA","${document.id}")
+                            mdocument = document.id
+                            //Log.d("HHHHA","${document}")
                             var date = document.data?.get("Date").toString()
                             var time = document.data?.get("Time").toString()
                             var distance = document.data?.get("Distance").toString()
@@ -48,7 +53,13 @@ class RecordListActivity : AppCompatActivity() {
                     binding.recyclerView.layoutManager =
                         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                     binding.recyclerView.setHasFixedSize(true)
-                    binding.recyclerView.adapter = ProfileAdapter(profileArrayList)
+                    binding.recyclerView.adapter = ProfileAdapter(profileArrayList, itemClickedListener = {
+                        Log.d("HHH","click")
+                        val intent = Intent(this,RecordDetailActivity::class.java)
+                        intent.putExtra("document","$mdocument")
+                        startActivity(intent)
+                    })
+
                 }
         }
     }
