@@ -137,34 +137,39 @@ class RunningActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O) // 현재시간을 표시하는 LocalDateTime.now() 함수를 쓰러면 이 코드를 추가해야만함
     private fun setButton() {
         binding.stopButton.setOnClickListener {
-            stopRunning() // 러닝 종료버튼
+            if(mBound == true) {
+                stopRunning() // 러닝 종료버튼
+            }
+                //db에 접근하기위해 forestore 객체 할당
+                val db: FirebaseFirestore = Firebase.firestore
 
-            //db에 접근하기위해 forestore 객체 할당
-            val db: FirebaseFirestore = Firebase.firestore
+                //현재 시간을 불러오는 LocalDateTime.now() 함수를 사용, 원하는 문자열 양식으로 포맷팅 한뒤 formatedDate 변수에 할당
+                val currentDate = LocalDateTime.now()
+                val formatedDate: String =
+                    currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
 
-            //현재 시간을 불러오는 LocalDateTime.now() 함수를 사용, 원하는 문자열 양식으로 포맷팅 한뒤 formatedDate 변수에 할당
-            val currentDate = LocalDateTime.now()
-            val formatedDate: String = currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
+                //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌
+                val currentRecordMap = hashMapOf(
+                    "Time" to time,
+                    "Distance" to distance,
+                    "PathList" to pathList,
+                    "Date" to formatedDate,
+                    "UserID" to Firebase.auth.currentUser!!.uid
+                )
 
-            //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌
-            val currentRecordMap = hashMapOf(
-                "Time" to time,
-                "Distance" to distance,
-                "PathList" to pathList,
-                "Date" to formatedDate,
-                "UserID" to Firebase.auth.currentUser!!.uid
-            )
+                //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
+                // 러닝 기록은 회원마다 여러개니까 "db에 기존 기록이 있건없건 빈 공간에 merge 함"
+                db.collection("records")
+                    .add(currentRecordMap)
 
-            //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
-            // 러닝 기록은 회원마다 여러개니까 "db에 기존 기록이 있건없건 빈 공간에 merge 함"
-            db.collection("records")
-                .add(currentRecordMap)
-
-            // 데이터 뷰에 보이는 것은 db에서 가져오는 것보다 인텐트로 하는 것이 더 효율적이라 판단하여 인텐트로 데이터 전달
-            dataViewIntent.putExtra("Time", time)        // 칼로리 계산을 위해
-            dataViewIntent.putExtra("FormatTime", binding.TimeView.text)         // 달린 시간을 보여주기 위해
-            dataViewIntent.putExtra("Distance", distance)
-            startActivity(dataViewIntent)
+                // 데이터 뷰에 보이는 것은 db에서 가져오는 것보다 인텐트로 하는 것이 더 효율적이라 판단하여 인텐트로 데이터 전달
+                dataViewIntent.putExtra("Time", time)        // 칼로리 계산을 위해
+                dataViewIntent.putExtra(
+                    "FormatTime",
+                    binding.TimeView.text
+                )         // 달린 시간을 보여주기 위해
+                dataViewIntent.putExtra("Distance", distance)
+                startActivity(dataViewIntent)
         }
 
         binding.pauseButton.setOnClickListener {
