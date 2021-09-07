@@ -26,7 +26,10 @@ import com.naver.maps.map.util.FusedLocationSource
 import java.util.jar.Manifest
 
 
-class MapFragment(private val runningActivity: RunningActivity? = null) : Fragment(),
+class MapFragment(
+    private val runningActivity: RunningActivity? = null,
+    private val recordDetailActivity: RecordDetailActivity? = null
+) : Fragment(),
     OnMapReadyCallback {
 
     private lateinit var locationSource: FusedLocationSource
@@ -36,7 +39,7 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
     private lateinit var binding: FragmentMapBinding
     private lateinit var runningService: RunningService
 
-    private var mainActivity:Activity = MainActivity()
+    private var mainActivity: Activity = MainActivity()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,7 +68,7 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
         permissions: Array<String>,
         grantResults: IntArray
     ) {
-        Log.d("permissionCheck","onRequestPermissionsResult()")
+        Log.d("permissionCheck", "onRequestPermissionsResult()")
 
         if (locationSource.onRequestPermissionsResult(
                 requestCode, permissions,
@@ -103,7 +106,7 @@ class MapFragment(private val runningActivity: RunningActivity? = null) : Fragme
         if (runningActivity != null) {
             Log.d("Map22", "${runningActivity.mService}")
             runningActivity.mService.setNaverMap(naverMap, path)
-        }
+        } else recordDetailActivity?.setMap(naverMap, path)
     }
 
     // MapView 의 라이프 사이클 메서드 호출

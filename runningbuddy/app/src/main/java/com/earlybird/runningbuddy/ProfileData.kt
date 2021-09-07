@@ -7,4 +7,5 @@ data class ProfileData(
     val date: String,
     val time: String,
     val distance: String,
+    val document:String?
 )
