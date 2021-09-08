@@ -7,5 +7,6 @@ data class ProfileData(
     val date: String,
     val time: String,
     val distance: String,
-    val document:String?
+    val document:String?,
+    val timePerDistance : MutableList<Double>
 )

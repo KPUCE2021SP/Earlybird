@@ -46,7 +46,10 @@ class RecordListActivity : AppCompatActivity() {
                             var date = document.data?.get("Date").toString()
                             var time = document.data?.get("Time").toString()
                             var distance = document.data?.get("Distance").toString()
-                            profileArrayList.add(ProfileData(date, time, distance, mdocument))
+                            var timePerDistance = document.data?.get("timePerDistance")
+                            profileArrayList.add(ProfileData(date, time, distance, mdocument,
+                                timePerDistance as MutableList<Double>
+                            ))
                         }
                     }
                     //레이아웃 연결
