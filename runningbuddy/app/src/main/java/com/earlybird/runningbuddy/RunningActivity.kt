@@ -36,6 +36,8 @@ class RunningActivity : AppCompatActivity() {
     private var time: Double = 0.0 //시간
     private var distance: Double = 0.0 //거리
     private var pathList = ArrayList<LatLng>() //경로
+    private var temporalTime = 0.0
+    private var timePerDistance = mutableListOf<Double>()  //시간별 거리
     private var isMap = false   // mapFragment
     private val intentFilter = IntentFilter()
 
@@ -128,6 +130,7 @@ class RunningActivity : AppCompatActivity() {
         intentFilter.addAction("timerUpdated")
         intentFilter.addAction("PathListService")
         intentFilter.addAction("paceUpdated")
+        intentFilter.addAction("timePerDistancUpdate")
         registerReceiver(RunningBroadCast(), intentFilter)
     }
 
@@ -152,7 +155,8 @@ class RunningActivity : AppCompatActivity() {
                     "Distance" to distance,
                     "PathList" to pathList,
                     "Date" to formatedDate,
-                    "UserID" to Firebase.auth.currentUser!!.uid
+                    "UserID" to Firebase.auth.currentUser!!.uid,
+                    "timePerDistance" to timePerDistance
                 )
 
                 //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
@@ -261,6 +265,13 @@ class RunningActivity : AppCompatActivity() {
                     binding.paceView.text = "${pace}초"
 
                 }
+                "DistanceUpdated" -> {
+                    temporalTime = intent.getDoubleExtra(RunningService.TIMEPERDISTANCE_EXTRA,0.0)
+                    binding.temp.text = "${temporalTime}"
+                    timePerDistance.add(temporalTime)
+                    Log.d("service22","timePerDistance ${timePerDistance}")
+                }
+
                 else->{
                     Log.d("distancetag123123","else")
                 }

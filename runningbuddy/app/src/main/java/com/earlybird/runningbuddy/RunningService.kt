@@ -6,6 +6,7 @@ import android.location.Location
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
+import android.os.Parcelable
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
@@ -25,7 +26,7 @@ class RunningService : Service() {
     // 시간 계산을 위한 변수
     private val timer = Timer() //timer객체
     var currentTime = 0.0
-
+    private var timePerDistance = 0.0
     // pace 를 위한 변수
     private var lastDistance = 0
     private var currentDistance = -1
@@ -33,6 +34,7 @@ class RunningService : Service() {
 
     //    private var pace = 0.0
     private var pacearray = mutableListOf<Double>()
+    private var temporalDistanceArray = mutableListOf<Double>()
 
     companion object {   //단순 시간저장공간
         const val TIMER_UPDATED = "timerUpdated"    //전송될 값
@@ -46,6 +48,9 @@ class RunningService : Service() {
 
         const val PACE_UPDATE = "paceUpdated"
         const val PACE_EXTRA = "paceExtra"
+
+        const val TIMEPERDISTANCE_UPDATE = "timePerDistancUpdate"
+        const val TIMEPERDISTANCE_EXTRA = "timePerDistanceExtra"
     }
 
     private var tts: TextToSpeech? = null
@@ -83,6 +88,7 @@ class RunningService : Service() {
                 sendBroadcast(pathListIntent)
                 setDistance()
                 calculatePace()
+                saveTemporalDistance()
             }
             naverMap.locationTrackingMode = LocationTrackingMode.Follow
         }
@@ -215,7 +221,6 @@ class RunningService : Service() {
     }
 
     private fun calculatePace() {
-
         currentDistance = distance.toInt()
         var pace = 0 // 초
         if (lastDistance == currentDistance) { //같은 km
@@ -230,4 +235,14 @@ class RunningService : Service() {
         }
     }
 
+    private fun saveTemporalDistance(){
+
+        if(currentTime % 60 == 0.0) {
+//            temporalDistanceArray.add(distance)
+            val intent = Intent(TIMEPERDISTANCE_UPDATE)
+            intent.putExtra(TIMEPERDISTANCE_EXTRA,currentDistance)
+            sendBroadcast(intent)
+        }
+
+    }
 }
