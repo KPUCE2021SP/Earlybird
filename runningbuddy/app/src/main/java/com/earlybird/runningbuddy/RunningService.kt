@@ -88,7 +88,6 @@ class RunningService : Service() {
                 sendBroadcast(pathListIntent)
                 setDistance()
                 calculatePace()
-                saveTemporalDistance()
             }
             naverMap.locationTrackingMode = LocationTrackingMode.Follow
         }
@@ -204,6 +203,8 @@ class RunningService : Service() {
             if (RunningActivity.mBound) {
                 time++
                 currentTime = time
+                timePerDistance = time
+                saveTemporalDistance()
             }
             intent.putExtra(TIME_EXTRA, time)    //time값 TIMER_UPDATED로 넘기기
             sendBroadcast(intent)   //TIMER_UPDATED 브로드캐스트로 넘기기
@@ -236,13 +237,10 @@ class RunningService : Service() {
     }
 
     private fun saveTemporalDistance(){
-
-        if(currentTime % 60 == 0.0) {
-//            temporalDistanceArray.add(distance)
+        if(timePerDistance >= 2 && (timePerDistance % 2 == 0.0)) {
             val intent = Intent(TIMEPERDISTANCE_UPDATE)
-            intent.putExtra(TIMEPERDISTANCE_EXTRA,currentDistance)
+            intent.putExtra(TIMEPERDISTANCE_EXTRA,distance)
             sendBroadcast(intent)
         }
-
     }
 }

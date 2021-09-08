@@ -265,7 +265,7 @@ class RunningActivity : AppCompatActivity() {
                     binding.paceView.text = "${pace}초"
 
                 }
-                "DistanceUpdated" -> {
+                "timePerDistancUpdate" -> {
                     temporalTime = intent.getDoubleExtra(RunningService.TIMEPERDISTANCE_EXTRA,0.0)
                     binding.temp.text = "${temporalTime}"
                     timePerDistance.add(temporalTime)
