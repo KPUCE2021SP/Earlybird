@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var transaction: FragmentTransaction
 
-    private var isBuddy = false    //Buddy모드 확인
+
 
     @RequiresApi(Build.VERSION_CODES.Q)
     val permissionArray = arrayOf(
@@ -70,8 +70,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         binding.buddyButton.setOnClickListener {
+            isBuddy = !isBuddy
+            Log.d("isBuddy","")
             recordListIntent = Intent(this, RecordListActivity::class.java)
-            recordListIntent.putExtra("isBuddy", true)
             startActivity(recordListIntent)
         }
     }
@@ -199,6 +200,7 @@ class MainActivity : AppCompatActivity() {
     companion object {
         public const val BACKGROUND_LOCATION = 1000
         public const val FINE_LOCATION = 2000
+        var isBuddy: Boolean = false
     }
 
 }

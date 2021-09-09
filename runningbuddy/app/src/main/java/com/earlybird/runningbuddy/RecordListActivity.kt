@@ -22,16 +22,12 @@ class RecordListActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var mainIntent : Intent
 
-    private var isBuddy = false
-
     val user = Firebase.auth.currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecordListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        isBuddy = intent.getBooleanExtra("isBuddy",false)
-        Log.d("isBuddy","${isBuddy}")
         EventChangeListener()
     }
 
@@ -56,13 +52,14 @@ class RecordListActivity : AppCompatActivity() {
                             profileArrayList.add(ProfileData(date, time, distance, mdocument,
                                 timePerDistance as MutableList<Double>
                             ))
+//                            Log.d("isBuddy","RecordListActivity : timePerDistance = ${timePerDistance as MutableList<Double>}")
                         }
                     }
                     //레이아웃 연결
                     binding.recyclerView.layoutManager =
                         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                     binding.recyclerView.setHasFixedSize(true)
-                    binding.recyclerView.adapter = ProfileAdapter(profileArrayList,this, isBuddy)
+                    binding.recyclerView.adapter = ProfileAdapter(profileArrayList,this)
 
                 }
         }

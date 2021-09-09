@@ -40,8 +40,6 @@ class RunningActivity : AppCompatActivity() {
     private var timePerDistance = mutableListOf<Double>()  //시간별 거리
     private var isMap = false   // mapFragment
     private val intentFilter = IntentFilter()
-    private var runningBuddyDistance = 0.0
-
 
 
     lateinit var mService: RunningService   //RunningService 에 접근하기 위한 변수
@@ -92,19 +90,6 @@ class RunningActivity : AppCompatActivity() {
         Intent(this, RunningService::class.java).also { intent ->
             Log.d("HAN_RunningActivity", "RunningActivity onStart()")
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
-        }
-
-        val isBuddy = intent.getBooleanExtra("isBuddy", false)
-        if(isBuddy){
-            val timePerDistance = intent.getSerializableExtra("timePerDistance")
-            RunningBuddy()
-        }
-
-    }
-
-    private fun RunningBuddy(){
-        if(time % 2 == 0 && time >= 2){
-
         }
     }
 

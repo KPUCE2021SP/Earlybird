@@ -17,9 +17,13 @@ import java.io.Serializable
 
 class ProfileAdapter(
     private val profileList: ArrayList<ProfileData>,
-    private val context: Context,
-    private val isBuddy: Boolean
+    private val context: Context
 ) : RecyclerView.Adapter<ProfileAdapter.ViewHolder>() {
+
+    companion object{
+        var savedTimePerDistance : MutableList<Double>? = null
+        var savedDistance : Double? = null
+    }
 
     override fun onCreateViewHolder(
         parent: ViewGroup,
@@ -59,12 +63,15 @@ class ProfileAdapter(
             binding.joggingTime.text = record.time
 
             binding.root.setOnClickListener {
-
-                if(isBuddy) {
+                if(MainActivity.isBuddy == true) {
+                    Log.d("isBuddy","Profile : isBuddy = ${MainActivity.isBuddy}")
                     val intent = Intent(context, RunningActivity::class.java)
-                    intent.putExtra("isBuddy",isBuddy)
-                    intent.putExtra("timePerDistance",record.timePerDistance as Serializable)
-                    Log.d("isBuddy","${record.timePerDistance as Serializable}")
+//                    val serviceIntent = Intent(context, RunningService::class.java)
+//                    serviceIntent.putExtra("savedTimePerDistance",record.timePerDistance as Serializable)
+//                    Log.d("isBuddy","ProfileAdapter : timePerDistance = ${record.timePerDistance as Serializable}")
+                    savedTimePerDistance = record.timePerDistance as MutableList<Double>
+                    savedDistance = record.distance as Double
+                    Log.d("isBuddy","Profile : savedTimePerDistance = ${savedTimePerDistance}")
                     startActivity(context,intent,null)
                 }else{
                     Log.d("HHH", "click")
