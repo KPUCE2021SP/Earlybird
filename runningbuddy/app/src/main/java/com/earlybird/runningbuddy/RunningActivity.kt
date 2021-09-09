@@ -40,6 +40,7 @@ class RunningActivity : AppCompatActivity() {
     private var timePerDistance = mutableListOf<Double>()  //시간별 거리
     private var isMap = false   // mapFragment
     private val intentFilter = IntentFilter()
+    private var runningBuddyDistance = 0.0
 
 
 
@@ -93,6 +94,18 @@ class RunningActivity : AppCompatActivity() {
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
 
+        val isBuddy = intent.getBooleanExtra("isBuddy", false)
+        if(isBuddy){
+            val timePerDistance = intent.getSerializableExtra("timePerDistance")
+            RunningBuddy()
+        }
+
+    }
+
+    private fun RunningBuddy(){
+        if(time % 2 == 0 && time >= 2){
+
+        }
     }
 
     override fun onPause() {

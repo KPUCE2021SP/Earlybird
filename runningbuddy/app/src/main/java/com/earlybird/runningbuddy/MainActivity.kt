@@ -24,8 +24,12 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private lateinit var serviceIntent: Intent  //RunningService 를 위한 intent
     private lateinit var activityIntent: Intent    //RunningActivity 를 위한 intent
+    private lateinit var recordListIntent: Intent
+    private lateinit var adapterIntent: Intent
 
     private lateinit var transaction: FragmentTransaction
+
+    private var isBuddy = false    //Buddy모드 확인
 
     @RequiresApi(Build.VERSION_CODES.Q)
     val permissionArray = arrayOf(
@@ -63,6 +67,12 @@ class MainActivity : AppCompatActivity() {
                     Intent(this, UserInfo::class.java)
                 )
             }, 1000)
+        }
+
+        binding.buddyButton.setOnClickListener {
+            recordListIntent = Intent(this, RecordListActivity::class.java)
+            recordListIntent.putExtra("isBuddy", true)
+            startActivity(recordListIntent)
         }
     }
 

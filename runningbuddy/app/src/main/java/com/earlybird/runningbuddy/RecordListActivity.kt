@@ -20,12 +20,18 @@ class RecordListActivity : AppCompatActivity() {
     private lateinit var binding: ActivityRecordListBinding
 
     private lateinit var db: FirebaseFirestore
+    private lateinit var mainIntent : Intent
+
+    private var isBuddy = false
+
     val user = Firebase.auth.currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityRecordListBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        isBuddy = intent.getBooleanExtra("isBuddy",false)
+        Log.d("isBuddy","${isBuddy}")
         EventChangeListener()
     }
 
@@ -56,7 +62,7 @@ class RecordListActivity : AppCompatActivity() {
                     binding.recyclerView.layoutManager =
                         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                     binding.recyclerView.setHasFixedSize(true)
-                    binding.recyclerView.adapter = ProfileAdapter(profileArrayList,this)
+                    binding.recyclerView.adapter = ProfileAdapter(profileArrayList,this, isBuddy)
 
                 }
         }
