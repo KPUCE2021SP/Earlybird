@@ -273,11 +273,9 @@ class RunningService : Service() {
                 }
                 count++
                 Log.d("isBuddy", "${count}")
-            } else if(currentTime % 10 == 0.0 && currentTime >= 10){
+            } else {
                 ttsSpeak("당신은 과거의 당신에게 지셨습니다")
                 plag = true
-
-
             }
 
         }
