@@ -29,9 +29,6 @@ class RecordListActivity : AppCompatActivity() {
         EventChangeListener()
     }
 
-    override fun onBackPressed() {
-        return
-    }
 
     private fun EventChangeListener() {     //DB데이터보여주기
         var mdocument: String? = null

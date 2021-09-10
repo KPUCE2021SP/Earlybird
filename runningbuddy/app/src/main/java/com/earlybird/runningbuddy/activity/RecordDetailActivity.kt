@@ -72,7 +72,9 @@ class RecordDetailActivity : AppCompatActivity() {
     }
 
     override fun onBackPressed() {
-        return
+        finish()
+        super.onBackPressed()
+
     }
 
     private fun dataFormat() {

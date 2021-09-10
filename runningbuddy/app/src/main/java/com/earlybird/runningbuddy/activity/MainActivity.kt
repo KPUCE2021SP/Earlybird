@@ -1,5 +1,6 @@
 package com.earlybird.runningbuddy.activity
 
+import android.app.Activity
 import android.content.*
 import android.content.pm.PackageManager
 import android.location.LocationManager
@@ -29,12 +30,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var transaction: FragmentTransaction
 
 
-    @RequiresApi(Build.VERSION_CODES.Q)
-    val permissionArray = arrayOf(
-        android.Manifest.permission.ACCESS_BACKGROUND_LOCATION,
-        android.Manifest.permission.ACCESS_FINE_LOCATION
-    )
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -45,11 +40,10 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-        serviceIntent =
-            Intent(applicationContext, RunningService::class.java)   //RunningService 와 intent
+        serviceIntent = Intent(applicationContext, RunningService::class.java)   //RunningService 와 intent
         activityIntent = Intent(this, RunningActivity::class.java) //RunningActivity 와 intent
-
         recordListIntent = Intent(this, RecordListActivity::class.java)
+
         startRunning()
 
         binding.signOutButton.setOnClickListener {
@@ -61,6 +55,8 @@ class MainActivity : AppCompatActivity() {
                     setPositiveButton("네") { _, _ ->
                         FirebaseAuth.getInstance().signOut()
                         Handler().postDelayed({
+                            ActivityCompat.finishAffinity(this@MainActivity)
+                            System.runFinalization()
                             System.exit(0)
                         }, 1000)
                     }
@@ -69,21 +65,24 @@ class MainActivity : AppCompatActivity() {
                     }
                     show()
                 }
-//            FirebaseAuth.getInstance().signOut()
-//            Handler().postDelayed({
-//                System.exit(0)
-//            }, 1000)
         }
 
         binding.userInfoButton.setOnClickListener {
+            binding.userInfoButton.isEnabled = false
+
             Handler().postDelayed({
                 startActivity(
                     Intent(this, UserInfo::class.java)
                 )
             }, 1000)
+
+
         }
+    }
 
-
+    override fun onStart() {
+        super.onStart()
+        binding.userInfoButton.isEnabled = true
     }
 
     override fun onBackPressed() {
