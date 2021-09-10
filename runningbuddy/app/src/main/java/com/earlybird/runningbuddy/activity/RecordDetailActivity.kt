@@ -1,16 +1,17 @@
-package com.earlybird.runningbuddy
+package com.earlybird.runningbuddy.activity
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import androidx.fragment.app.FragmentTransaction
+import com.earlybird.runningbuddy.MapFragment
+import com.earlybird.runningbuddy.ProfileData
+import com.earlybird.runningbuddy.R
 import com.earlybird.runningbuddy.databinding.ActivityRecordDetailBinding
 import com.google.firebase.firestore.FirebaseFirestore
 import com.naver.maps.geometry.LatLng
-import com.naver.maps.geometry.LatLngBounds
 import com.naver.maps.map.CameraUpdate
-import com.naver.maps.map.LocationSource
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.PathOverlay
@@ -64,7 +65,14 @@ class RecordDetailActivity : AppCompatActivity() {
                 }
         }
 
+        binding.homeButton.setOnClickListener {
+            startActivity(Intent(this,MainActivity::class.java))
+        }
 
+    }
+
+    override fun onBackPressed() {
+        return
     }
 
     private fun StringToArrayList() {

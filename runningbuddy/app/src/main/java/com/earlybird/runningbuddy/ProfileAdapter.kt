@@ -2,18 +2,15 @@ package com.earlybird.runningbuddy
 
 import android.content.Context
 import android.content.Intent
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.earlybird.runningbuddy.activity.MainActivity
+import com.earlybird.runningbuddy.activity.RecordDetailActivity
+import com.earlybird.runningbuddy.activity.RunningActivity
 import com.earlybird.runningbuddy.databinding.ItemRecordListBinding
-import java.io.Serializable
 
 class ProfileAdapter(
     private val profileList: ArrayList<ProfileData>,
@@ -70,7 +67,7 @@ class ProfileAdapter(
 //                    serviceIntent.putExtra("savedTimePerDistance",record.timePerDistance as Serializable)
 //                    Log.d("isBuddy","ProfileAdapter : timePerDistance = ${record.timePerDistance as Serializable}")
                     savedTimePerDistance = record.timePerDistance as MutableList<Double>
-                    savedDistance = record.distance as Double
+                    savedDistance = record.distance.toDouble()
                     Log.d("isBuddy","Profile : savedTimePerDistance = ${savedTimePerDistance}")
                     startActivity(context,intent,null)
                 }else{

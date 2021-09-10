@@ -6,10 +6,11 @@ import android.location.Location
 import android.os.Binder
 import android.os.Build
 import android.os.IBinder
-import android.os.Parcelable
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
+import com.earlybird.runningbuddy.activity.MainActivity
+import com.earlybird.runningbuddy.activity.RunningActivity
 import com.naver.maps.geometry.LatLng
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.NaverMap
@@ -263,14 +264,18 @@ class RunningService : Service() {
                     "RunningService : savedTimePerDistance = ${ProfileAdapter.savedTimePerDistance}"
                 )
                 var runningBuddyDistance: Double = distance
-
+                val intent = Intent("Text")
                 if (runningBuddyDistance > ProfileAdapter.savedTimePerDistance!!.get(count)) {
                     ttsSpeak("지금 당신은 어제보다 빠릅니다")
+                    intent.putExtra("text","지금 당신은 어제보다 빠릅니다")
                 } else if (runningBuddyDistance < ProfileAdapter.savedTimePerDistance!!.get(count)) {
                     ttsSpeak("지금 당신은 어제보다 느립니다")
+                    intent.putExtra("text","지금 당신은 어제보다 느립니다")
                 } else if (runningBuddyDistance == ProfileAdapter.savedTimePerDistance!!.get(count)) {
                     ttsSpeak("지금 당신은 어제와 같습니다")
+                    intent.putExtra("text","지금 당신은 어제와 같습니다")
                 }
+                sendBroadcast(intent)
                 count++
                 Log.d("isBuddy", "${count}")
             } else if(currentTime % 10 == 0.0 && currentTime >= 10){

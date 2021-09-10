@@ -6,20 +6,27 @@
     android:layout_height="match_parent"
     android:background="@color/defaultBackground">
 
-    <Button
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:src="@drawable/ic_baseline_home_50"
+        android:background="@drawable/shape_button"
+        android:textColor="@color/white"
         android:id="@+id/homeButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
         android:layout_marginBottom="20dp"
         android:text="홈"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:src="@drawable/ic_baseline_leaderboard_24"
+
+        android:background="@drawable/shape_button"
+        android:textColor="@color/white"
         android:id="@+id/recordButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="70dp"
+        android:layout_height="60dp"
         android:layout_marginStart="20dp"
         android:text="기록"
         app:layout_constraintBottom_toBottomOf="@+id/homeButton"

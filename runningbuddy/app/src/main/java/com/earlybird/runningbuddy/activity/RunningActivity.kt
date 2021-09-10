@@ -1,4 +1,4 @@
-package com.earlybird.runningbuddy
+package com.earlybird.runningbuddy.activity
 
 import android.content.*
 import android.os.Build
@@ -9,6 +9,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.earlybird.runningbuddy.MapFragment
+import com.earlybird.runningbuddy.R
+import com.earlybird.runningbuddy.RunningService
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -129,6 +132,7 @@ class RunningActivity : AppCompatActivity() {
         intentFilter.addAction("PathListService")
         intentFilter.addAction("paceUpdated")
         intentFilter.addAction("timePerDistancUpdate")
+        intentFilter.addAction("Text")
         registerReceiver(RunningBroadCast(), intentFilter)
     }
 
@@ -156,6 +160,7 @@ class RunningActivity : AppCompatActivity() {
                     "UserID" to Firebase.auth.currentUser!!.uid,
                     "timePerDistance" to timePerDistance
                 )
+            MainActivity.isBuddy = false
 
                 //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
                 // 러닝 기록은 회원마다 여러개니까 "db에 기존 기록이 있건없건 빈 공간에 merge 함"
@@ -196,7 +201,7 @@ class RunningActivity : AppCompatActivity() {
         val restart = true
         serviceIntent.putExtra("restart", restart)
         bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
-        binding.pauseButton.text = "일시정지"
+        binding.pauseButton.setImageResource(R.drawable.ic_baseline_pause_24)
         mBound = true
     }
 
@@ -204,36 +209,10 @@ class RunningActivity : AppCompatActivity() {
         Log.d("serviceCycle", "stopRunning()")
         unbindService(connection)
         stopService(serviceIntent)
-        binding.pauseButton.text = "재시작"
+        binding.pauseButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)// = "재시작"
         mBound = false
     }
 
-
-    // tts 관련
-    private fun initTextToSpeech() {
-        // 버전 확인 롤리팝 이상이여야 TTS 사용 가능
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Toast.makeText(this, "SDK version is low", Toast.LENGTH_SHORT).show()
-            return
-        }
-        tts = TextToSpeech(this) {
-            if (it == TextToSpeech.SUCCESS) {
-                val result = tts?.setLanguage(Locale.KOREAN)
-                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show()
-                    return@TextToSpeech
-                }
-                Toast.makeText(this, "TTS setting successed", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "TTS init failed", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-
-    private fun ttsSpeak(strTTS:String){
-        tts?.speak(strTTS,TextToSpeech.QUEUE_FLUSH,null,null)
-    }
 
 
     private fun makeTimeString(hours: Int, minutes: Int, seconds: Int): String = //문자 합치기
@@ -265,9 +244,14 @@ class RunningActivity : AppCompatActivity() {
                 }
                 "timePerDistancUpdate" -> {
                     temporalTime = intent.getDoubleExtra(RunningService.TIMEPERDISTANCE_EXTRA,0.0)
-                    binding.temp.text = "${temporalTime}"
+                    //binding.temp.text = "${temporalTime}"
                     timePerDistance.add(temporalTime)
                     Log.d("service22","timePerDistance ${timePerDistance}")
+                }
+                "Text"->{
+                    val text = intent.getStringExtra("text")
+                    binding.temp.text = text
+                    Log.d("HHHHH","$text")
                 }
 
                 else->{

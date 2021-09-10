@@ -1,12 +1,9 @@
-package com.earlybird.runningbuddy
+package com.earlybird.runningbuddy.activity
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import com.earlybird.runningbuddy.databinding.ActivityAfterLoginBinding
 import com.earlybird.runningbuddy.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore

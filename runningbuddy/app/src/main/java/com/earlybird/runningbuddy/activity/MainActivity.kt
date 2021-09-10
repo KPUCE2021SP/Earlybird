@@ -1,4 +1,4 @@
-package com.earlybird.runningbuddy
+package com.earlybird.runningbuddy.activity
 
 import android.content.*
 import android.content.pm.PackageManager
@@ -9,15 +9,14 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.util.Log
-import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.FragmentTransaction
+import com.earlybird.runningbuddy.*
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
-import java.util.jar.Manifest
 
 class MainActivity : AppCompatActivity() {
 
@@ -28,7 +27,6 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapterIntent: Intent
 
     private lateinit var transaction: FragmentTransaction
-
 
 
     @RequiresApi(Build.VERSION_CODES.Q)
@@ -47,18 +45,34 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
 
-
         serviceIntent =
             Intent(applicationContext, RunningService::class.java)   //RunningService 와 intent
         activityIntent = Intent(this, RunningActivity::class.java) //RunningActivity 와 intent
 
+        recordListIntent = Intent(this, RecordListActivity::class.java)
         startRunning()
 
         binding.signOutButton.setOnClickListener {
-            FirebaseAuth.getInstance().signOut()
-            Handler().postDelayed({
-                System.exit(0)
-            }, 1000)
+
+            val builder = AlertDialog.Builder(this)
+                .apply {
+                    setTitle("check")
+                    setMessage("logout?")
+                    setPositiveButton("yes") { _, _ ->
+                        FirebaseAuth.getInstance().signOut()
+                        Handler().postDelayed({
+                            System.exit(0)
+                        }, 1000)
+                    }
+                    setNegativeButton("no"){_,_,->
+                        return@setNegativeButton
+                    }
+                    show()
+                }
+//            FirebaseAuth.getInstance().signOut()
+//            Handler().postDelayed({
+//                System.exit(0)
+//            }, 1000)
         }
 
         binding.userInfoButton.setOnClickListener {
@@ -69,12 +83,11 @@ class MainActivity : AppCompatActivity() {
             }, 1000)
         }
 
-        binding.buddyButton.setOnClickListener {
-            isBuddy = !isBuddy
-            Log.d("isBuddy","")
-            recordListIntent = Intent(this, RecordListActivity::class.java)
-            startActivity(recordListIntent)
-        }
+
+    }
+
+    override fun onBackPressed() {
+        return
     }
 
     private fun startRunning() {
@@ -82,7 +95,7 @@ class MainActivity : AppCompatActivity() {
             // 권한 부여
             //requestPermission()
 //        // 권한 설정
-            if(!requestPermissionRationale()) return@setOnClickListener
+            if (!requestPermissionRationale()) return@setOnClickListener
 
             //LocationManager
             val locationManager = getSystemService(LOCATION_SERVICE) as LocationManager
@@ -101,20 +114,42 @@ class MainActivity : AppCompatActivity() {
                         })
                         show()
                     }
-            } else {
-                if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
-                == PackageManager.PERMISSION_GRANTED)
-                startActivity(activityIntent)
             }
+
+            val builder = AlertDialog.Builder(this)
+                .apply {
+                    setTitle("check")
+                    setMessage("buddy?")
+                    setPositiveButton("buddy") { _, _ ->
+                        isBuddy = !isBuddy
+                        Log.d("isBuddy", "")
+                        startActivity(recordListIntent)
+                    }
+                    setNegativeButton("normal") { _, _ ->
+                        startActivity(activityIntent)
+                    }
+                    show()
+                }
+//            } else if(ContextCompat.checkSelfPermission(this,android.Manifest.permission.ACCESS_BACKGROUND_LOCATION)
+//                == PackageManager.PERMISSION_GRANTED)
+//                startActivity(activityIntent)
+
         }
+
+//        binding.buddyButton.setOnClickListener {
+//            isBuddy = !isBuddy
+//            Log.d("isBuddy","")
+//            recordListIntent = Intent(this, RecordListActivity::class.java)
+//            startActivity(recordListIntent)
+//        }
     }
 
 
     // 권한 부여
-    private fun requestPermission(permission:String) {
+    private fun requestPermission(permission: String) {
         Log.d("permissionCheck", "requestPermission()")
 
-        if(permission == "background"){
+        if (permission == "background") {
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(android.Manifest.permission.ACCESS_BACKGROUND_LOCATION),
@@ -122,7 +157,7 @@ class MainActivity : AppCompatActivity() {
             )
         }
 
-        if(permission == "fineLocation"){
+        if (permission == "fineLocation") {
             ActivityCompat.requestPermissions(
                 this@MainActivity,
                 arrayOf(android.Manifest.permission.ACCESS_FINE_LOCATION), FINE_LOCATION
@@ -136,11 +171,11 @@ class MainActivity : AppCompatActivity() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-        when(requestCode){
-            requestCode ->{
-                if (grantResults.size>0 && grantResults[0] == PackageManager.PERMISSION_GRANTED){
+        when (requestCode) {
+            requestCode -> {
+                if (grantResults.size > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     // 권한 허가된 경우 처리
-                } else{
+                } else {
                     // 권한 거절된 경우 처리
                 }
             }
@@ -149,7 +184,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     // 권한이 필요한 이유 설명
-    private fun requestPermissionRationale() :Boolean{
+    private fun requestPermissionRationale(): Boolean {
         Log.d("permissionCheck", "requestPermissionRationale()")
         var result = true
         if (ActivityCompat.shouldShowRequestPermissionRationale(

@@ -1,21 +1,15 @@
 package com.earlybird.runningbuddy
 
 import android.app.Activity
-import android.content.ComponentName
-import android.content.Intent
-import android.content.ServiceConnection
-import android.content.pm.PackageManager
-import android.os.Build
 import android.os.Bundle
-import android.os.IBinder
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import androidx.annotation.RequiresApi
-import androidx.core.app.ActivityCompat
+import com.earlybird.runningbuddy.activity.MainActivity
+import com.earlybird.runningbuddy.activity.RecordDetailActivity
+import com.earlybird.runningbuddy.activity.RunningActivity
 import com.earlybird.runningbuddy.databinding.FragmentMapBinding
 import com.naver.maps.map.LocationTrackingMode
 import com.naver.maps.map.MapView
@@ -23,7 +17,6 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.OnMapReadyCallback
 import com.naver.maps.map.overlay.PathOverlay
 import com.naver.maps.map.util.FusedLocationSource
-import java.util.jar.Manifest
 
 
 class MapFragment(
