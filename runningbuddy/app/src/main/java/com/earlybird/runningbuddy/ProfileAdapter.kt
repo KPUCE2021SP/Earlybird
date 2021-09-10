@@ -11,6 +11,7 @@ import com.earlybird.runningbuddy.activity.MainActivity
 import com.earlybird.runningbuddy.activity.RecordDetailActivity
 import com.earlybird.runningbuddy.activity.RunningActivity
 import com.earlybird.runningbuddy.databinding.ItemRecordListBinding
+import kotlin.math.roundToInt
 
 class ProfileAdapter(
     private val profileList: ArrayList<ProfileData>,
@@ -53,9 +54,10 @@ class ProfileAdapter(
 
         fun bind(record: ProfileData) {
             Log.d("HHHVIEWHOLDER", "bind()")
-            binding.joggingDate.text = record.date
-            binding.joggingDistance.text = record.distance
-            binding.joggingTime.text = record.time
+            val date=record.date.substring(0,10)
+            binding.joggingDate.text = date
+            binding.joggingDistance.text = "%.1f km".format((record.distance).toDouble())
+            binding.joggingTime.text = getTimeStringFromDouble((record.time).toDouble())
 
             binding.root.setOnClickListener {
                 if(MainActivity.isBuddy == true) {
@@ -76,6 +78,19 @@ class ProfileAdapter(
                 }
             }
         }
+
+        private fun getTimeStringFromDouble(time: Double): String { //시간을 스트링으로 변환
+            val resultInt = time.roundToInt()
+            val hours = resultInt % 86400 / 3600
+            val minutes = resultInt % 86400 % 3600 / 60
+            val seconds = resultInt % 86400 % 3600 % 60
+
+            return makeTimeString(hours, minutes, seconds)
+        }
+
+        private fun makeTimeString(hours: Int, minutes: Int, seconds: Int): String = //문자 합치기
+            String.format("%02d:%02d:%02d", hours, minutes, seconds)
+
 
     }
 }

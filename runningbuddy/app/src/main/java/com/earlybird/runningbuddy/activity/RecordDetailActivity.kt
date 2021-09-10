@@ -17,48 +17,48 @@ import com.naver.maps.map.NaverMap
 import com.naver.maps.map.overlay.PathOverlay
 import org.json.JSONArray
 import org.json.JSONException
+import kotlin.math.roundToInt
 
 class RecordDetailActivity : AppCompatActivity() {
-    private lateinit var datas: ProfileData
+
     private lateinit var binding: ActivityRecordDetailBinding
 
     private lateinit var path: PathOverlay
     private lateinit var naverMap: NaverMap
     private val pathList = ArrayList<LatLng>()  // 경로 저장하기 위한 리스트
-
-    //private var firebasePathList = ArrayList<LatLng>() //경로
     private lateinit var pathListString: String
 
-    //private val firebasePathList: ArrayList<LatLng>()
     private lateinit var transaction: FragmentTransaction
 
+    private var date = ""
+    private var distance = 0.0
+    private var time = 0.0
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         binding = ActivityRecordDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
         val mdocument = intent.getStringExtra("document")
-        //Log.d("HHH","$mdocument")
 
         val db = FirebaseFirestore.getInstance()
+
         if (mdocument != null) {
             db.collection("records")
                 .document(mdocument)
                 .get()
                 .addOnSuccessListener { document ->
-                    binding.joggingDate.text = document.data?.get("Date").toString()
-                    binding.joggingDistance.text = document.data?.get("Distance").toString()
-                    binding.joggingTime.text = document.data?.get("Time").toString()
+                    date = document.data?.get("Date").toString()
+                    distance = document.data?.get("Distance").toString().toDouble()
+                    time = document.data?.get("Time").toString().toDouble()
 
                     pathListString = document.data?.get("PathList").toString()
-//                    Log.d("HHHAAAA", "PathList : ${document.data?.get("PathList")}")
-//                    val path = pathListString.substring(1,pathListString.length-1)
-//                    Log.d("HHHAAAA", "PathList : ${path}")
-//                    val splitArray = pathListString.split("}")
-//                    Log.d("HHHAAAA","0 : ${splitArray[0]},1 : ${splitArray[1]}")
-                    StringToArrayList()
-//                    if(document!=null) Log.d("HHH","DocumentSnapshot data: ${document.data}")
-//                    else Log.d("HHH","No such document")
+
+                    stringToArrayList()
+                    dataFormat()
+
                 }
                 .addOnFailureListener {
                     Log.d("HHH", "addOnFailureListener", it)
@@ -66,7 +66,7 @@ class RecordDetailActivity : AppCompatActivity() {
         }
 
         binding.homeButton.setOnClickListener {
-            startActivity(Intent(this,MainActivity::class.java))
+            startActivity(Intent(this, MainActivity::class.java))
         }
 
     }
@@ -75,17 +75,37 @@ class RecordDetailActivity : AppCompatActivity() {
         return
     }
 
-    private fun StringToArrayList() {
+    private fun dataFormat() {
+        date = date.substring(0, 10)
+        binding.joggingDate.text = date
+        binding.joggingDistance.text = "%.1f km".format(distance)
+        binding.joggingTime.text = getTimeStringFromDouble(time)
+
+    }
+
+    private fun getTimeStringFromDouble(time: Double): String { //시간을 스트링으로 변환
+        val resultInt = time.roundToInt()
+        val hours = resultInt % 86400 / 3600
+        val minutes = resultInt % 86400 % 3600 / 60
+        val seconds = resultInt % 86400 % 3600 % 60
+
+        return makeTimeString(hours, minutes, seconds)
+    }
+
+    private fun makeTimeString(hours: Int, minutes: Int, seconds: Int): String = //문자 합치기
+        String.format("%02d:%02d:%02d", hours, minutes, seconds)
+
+    private fun stringToArrayList() {
         try {
             val jsonArray = JSONArray(pathListString)
-            val size = pathListString.length -1
-            Log.d("HHHAAAA","pathListString : $pathListString")
+            val size = pathListString.length - 1
+            Log.d("HHHAAAA", "pathListString : $pathListString")
             for (i in 0..size) {
                 val jObject = jsonArray.getJSONObject(i)
                 val latitude = jObject.getString("latitude").toDouble()
                 val longitude = jObject.getString("longitude").toDouble()
 
-                Log.d("HHHAAAA","json $i, latitude : $latitude, longitude : $longitude")
+                Log.d("HHHAAAA", "json $i, latitude : $latitude, longitude : $longitude")
 
                 pathList.add(LatLng(latitude, longitude))
             }
@@ -113,7 +133,7 @@ class RecordDetailActivity : AppCompatActivity() {
 
     }
 
-    private fun drawPath(){
+    private fun drawPath() {
         if (pathList.size < 2) {
             Log.d("HHHAAA", "firebasePathList.size < 2")
             Log.d("HHHAAA", "path.coords : ${pathList}")

@@ -53,8 +53,7 @@ class RecordListActivity : AppCompatActivity() {
                             var timePerDistance = document.data?.get("timePerDistance")
                             profileArrayList.add(
                                 ProfileData(date, time, distance, mdocument,
-                                timePerDistance as MutableList<Double>
-                            )
+                                timePerDistance as MutableList<Double>)
                             )
 //                            Log.d("isBuddy","RecordListActivity : timePerDistance = ${timePerDistance as MutableList<Double>}")
                         }
@@ -64,9 +63,7 @@ class RecordListActivity : AppCompatActivity() {
                         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                     binding.recyclerView.setHasFixedSize(true)
                     binding.recyclerView.adapter = ProfileAdapter(profileArrayList,this)
-
                 }
         }
-
     }
 }
