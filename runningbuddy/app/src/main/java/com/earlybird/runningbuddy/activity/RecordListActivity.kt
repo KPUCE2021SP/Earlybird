@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.earlybird.runningbuddy.ProfileAdapter
 import com.earlybird.runningbuddy.ProfileData
@@ -25,7 +26,8 @@ class RecordListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRecordListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        val ab : ActionBar? = supportActionBar
+        ab?.setTitle("내 기록")
         EventChangeListener()
     }
 

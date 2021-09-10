@@ -70,7 +70,7 @@ class ProfileAdapter(
                     savedDistance = record.distance.toDouble()
                     Log.d("isBuddy","Profile : savedTimePerDistance = ${savedTimePerDistance}")
                     startActivity(context,intent,null)
-                }else{
+                } else {
                     Log.d("HHH", "click")
                     val intent = Intent(context, RecordDetailActivity::class.java)
                     intent.putExtra("document", record.document)

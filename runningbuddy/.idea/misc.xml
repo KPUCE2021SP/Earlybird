@@ -6,6 +6,7 @@
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/drawable/button_cycle.xml" value="0.38229166666666664" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/drawable/ic_baseline_directions_run_24.xml" value="0.38229166666666664" />
+        <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/drawable/ic_icon_birld4.xml" value="0.22135416666666666" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/drawable/ic_launcher_background.xml" value="0.26979166666666665" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_after_login.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_dataview.xml" value="0.36614583333333334" />
@@ -15,7 +16,7 @@
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_running.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_running_buddy.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_sign_up.xml" value="0.25364583333333335" />
-        <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_splash.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_splash.xml" value="0.25" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_user_info.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/fragment_map.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/item_record_list.xml" value="0.36614583333333334" />

@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.ActionBar
 import androidx.fragment.app.FragmentTransaction
 import com.earlybird.runningbuddy.MapFragment
 import com.earlybird.runningbuddy.ProfileData
@@ -40,7 +41,8 @@ class RecordDetailActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRecordDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        val ab : ActionBar? = supportActionBar
+        ab?.setTitle("세부정보")
         val mdocument = intent.getStringExtra("document")
 
         val db = FirebaseFirestore.getInstance()
