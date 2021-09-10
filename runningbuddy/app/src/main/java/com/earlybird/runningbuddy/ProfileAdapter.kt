@@ -43,9 +43,7 @@ class ProfileAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d("HHHVIEWHOLDER", "onBindViewHolder()")
-
         holder.bind(profileList[position])
-
     }
 
     //View Holder : 각각의 뷰를 보관하는 Holder객채
