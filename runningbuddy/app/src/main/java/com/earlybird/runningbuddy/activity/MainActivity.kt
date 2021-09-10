@@ -56,15 +56,15 @@ class MainActivity : AppCompatActivity() {
 
             val builder = AlertDialog.Builder(this)
                 .apply {
-                    setTitle("check")
-                    setMessage("logout?")
-                    setPositiveButton("yes") { _, _ ->
+                    setTitle("알림")
+                    setMessage("로그아웃 하시겠습니까?")
+                    setPositiveButton("네") { _, _ ->
                         FirebaseAuth.getInstance().signOut()
                         Handler().postDelayed({
                             System.exit(0)
                         }, 1000)
                     }
-                    setNegativeButton("no"){_,_,->
+                    setNegativeButton("아니요"){_,_,->
                         return@setNegativeButton
                     }
                     show()
@@ -118,14 +118,14 @@ class MainActivity : AppCompatActivity() {
 
             val builder = AlertDialog.Builder(this)
                 .apply {
-                    setTitle("check")
-                    setMessage("buddy?")
-                    setPositiveButton("buddy") { _, _ ->
+                    setTitle("모드 선택")
+                    setMessage("어느 모드로 실행할까요?\n(첫 달리기는 일반으로 해야합니다.) ")
+                    setPositiveButton("버디") { _, _ ->
                         isBuddy = !isBuddy
                         Log.d("isBuddy", "")
                         startActivity(recordListIntent)
                     }
-                    setNegativeButton("normal") { _, _ ->
+                    setNegativeButton("일반") { _, _ ->
                         startActivity(activityIntent)
                     }
                     show()

@@ -62,7 +62,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/NameText" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="@drawable/shape_button"
+        android:textColor="@color/white"
         android:id="@+id/MaleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,7 +74,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/WeightText" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="@drawable/shape_button"
+        android:textColor="@color/white"
         android:id="@+id/FemaleButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -82,7 +86,9 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/WeightText" />
 
-    <Button
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="@drawable/shape_button"
+        android:textColor="@color/white"
         android:id="@+id/EndButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
