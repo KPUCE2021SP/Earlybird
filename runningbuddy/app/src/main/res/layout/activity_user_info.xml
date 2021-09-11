@@ -60,7 +60,7 @@
             android:background="@drawable/shape_button"
             android:gravity="center"
             android:padding="6dp"
-            android:text="키"
+            android:text="신장"
             android:textColor="@color/white"
             android:textSize="32sp" />
 
@@ -93,7 +93,7 @@
             android:background="@drawable/shape_button"
             android:gravity="center"
             android:padding="6dp"
-            android:text="몸무게"
+            android:text="체중"
             android:textColor="@color/white"
             android:textSize="32sp" />
 
