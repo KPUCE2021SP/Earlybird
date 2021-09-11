@@ -63,9 +63,7 @@ class ProfileAdapter(
                 if(MainActivity.isBuddy == true) {
                     Log.d("isBuddy","Profile : isBuddy = ${MainActivity.isBuddy}")
                     val intent = Intent(context, RunningActivity::class.java)
-//                    val serviceIntent = Intent(context, RunningService::class.java)
-//                    serviceIntent.putExtra("savedTimePerDistance",record.timePerDistance as Serializable)
-//                    Log.d("isBuddy","ProfileAdapter : timePerDistance = ${record.timePerDistance as Serializable}")
+
                     savedTimePerDistance = record.timePerDistance as MutableList<Double>
                     savedDistance = record.distance.toDouble()
                     Log.d("isBuddy","Profile : savedTimePerDistance = ${savedTimePerDistance}")
