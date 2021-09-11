@@ -8,6 +8,7 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.earlybird.runningbuddy.MapFragment
 import com.earlybird.runningbuddy.R
@@ -72,9 +73,10 @@ class RunningActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O) // 현재시간을 표시하는 LocalDateTime.now() 함수를 쓰러면 이 코드를 추가해야만함
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityRunningBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val ab : ActionBar? = supportActionBar
+        ab?.setTitle("달리기")
 
         setIntent()
 
@@ -161,6 +163,8 @@ class RunningActivity : AppCompatActivity() {
                 "UserID" to Firebase.auth.currentUser!!.uid,
                 "timePerDistance" to timePerDistance
             )
+
+            //아래의 변수로 달린 거리에서 km를 제거한 실수값이 0.1 미만일경우 기록을 저장하지 않도록 함.(기록 세부정보 창에서 어플 돌연사 방지)
             val distanceForCheck = binding.distanceView.text.toString().replace(" km","")
             if (distanceForCheck.toDouble() >= 0.1) {
 

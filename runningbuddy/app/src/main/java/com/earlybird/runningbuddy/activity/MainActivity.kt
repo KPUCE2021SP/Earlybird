@@ -11,6 +11,7 @@ import android.os.Handler
 import android.provider.Settings
 import android.util.Log
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -32,7 +33,8 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
+        val ab : ActionBar? = supportActionBar
+        ab?.setTitle("러닝버디 홈")
         transaction = supportFragmentManager.beginTransaction().add(R.id.map, MapFragment())
         transaction.commit()
 
