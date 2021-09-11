@@ -45,6 +45,9 @@ class RunningActivity : AppCompatActivity() {
     private var isMap = false   // mapFragment
     private val intentFilter = IntentFilter()
 
+    private var averageSpeed: Double? = null
+    private var averagePace: Double? = null
+
 
     lateinit var mService: RunningService   //RunningService 에 접근하기 위한 변수
 
@@ -145,29 +148,35 @@ class RunningActivity : AppCompatActivity() {
                 stopRunning() // 러닝 종료버튼
             }
 
-            //db에 접근하기위해 forestore 객체 할당
-            val db: FirebaseFirestore = Firebase.firestore
 
-            //현재 시간을 불러오는 LocalDateTime.now() 함수를 사용, 원하는 문자열 양식으로 포맷팅 한뒤 formatedDate 변수에 할당
-            val currentDate = LocalDateTime.now()
-            val formatedDate: String =
-                currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
+            averageSpeed = getAverageSpeed(time, distance)
+            averagePace = getAveragePace(time,distance)
 
-            //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌 (거리가 0이 아닌경우에만)
+                //db에 접근하기위해 forestore 객체 할당
+                val db: FirebaseFirestore = Firebase.firestore
 
-            val currentRecordMap = hashMapOf(
-                "Time" to time,
-                "Distance" to distance,
-                "PathList" to pathList,
-                "Date" to formatedDate,
-                "UserID" to Firebase.auth.currentUser!!.uid,
-                "timePerDistance" to timePerDistance
-            )
+                //현재 시간을 불러오는 LocalDateTime.now() 함수를 사용, 원하는 문자열 양식으로 포맷팅 한뒤 formatedDate 변수에 할당
+                val currentDate = LocalDateTime.now()
+                val formatedDate: String =
+                    currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
 
-            //아래의 변수로 달린 거리에서 km를 제거한 실수값이 0.1 미만일경우 기록을 저장하지 않도록 함.(기록 세부정보 창에서 어플 돌연사 방지)
-            val distanceForCheck = binding.distanceView.text.toString().replace(" km","")
-            if (distanceForCheck.toDouble() >= 0.1) {
 
+                //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌
+                val currentRecordMap = hashMapOf(
+                    "Time" to time,
+                    "Distance" to distance,
+                    "PathList" to pathList,
+                    "Date" to formatedDate,
+                    "UserID" t Firebase.auth.currentUser!!.uid,
+                    "timePerDistance" to timePerDistance,
+                    "averageSpeed" to averageSpeed,
+                    "averagePace" to averagePace
+
+                )
+                val distanceForCheck = binding.distanceView.text.toString().replace(" km","")
+                if (distanceForCheck.toDouble() >= 0.1) {
+                  
+                  
                 //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
                 // 러닝 기록은 회원마다 여러개니까 "db에 기존 기록이 있건없건 빈 공간에 merge 함"
                 db.collection("records")
@@ -268,6 +277,16 @@ class RunningActivity : AppCompatActivity() {
             }
             Log.d("service22", "broadCast : $distance")
         }
+    }
+
+    private fun getAverageSpeed(distance: Double, time: Double): Double {
+        val averageSpeed = ( distance / (time * 3600))  //시간당 거리를 구한다.
+        return averageSpeed
+    }
+
+    private fun getAveragePace(distance: Double, time: Double): Double {
+        val averagePcae = (time / distance)
+        return averagePcae //페이스는 1km당 걸린 시간을 초단위로 출력
     }
 
 

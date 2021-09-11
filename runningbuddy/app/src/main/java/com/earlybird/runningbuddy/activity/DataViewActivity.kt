@@ -70,7 +70,7 @@ class DataViewActivity : AppCompatActivity() {
 
     //    평균 속도 구하는 식
     private fun getAverageSpeed(distance: Double, time: Double): String {
-        val averageSpeed = ( distance / (time / 3600))  //시간당 거리를 구한다.
+        val averageSpeed = ( distance / (time * 3600))  //시간당 거리를 구한다.
         return String.format("%.1f km/h", averageSpeed)
     }
 
