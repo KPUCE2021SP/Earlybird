@@ -18,7 +18,7 @@
         android:layout_height="50dp"/>
 
     <FrameLayout
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="105dp"
         android:id="@+id/map"
         android:layout_width="250dp"
         android:layout_height="250dp"
@@ -107,6 +107,59 @@
             android:id="@+id/jogging_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/paceLinearLayout"
+        app:layout_constraintTop_toBottomOf="@id/timeLinearLayout"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:orientation="horizontal"
+        android:layout_margin="15dp"
+        android:gravity=""
+        android:padding="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:textSize="32sp"
+            android:id="@+id/pace"
+            android:text="Pace : "
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:textSize="36sp"
+            tools:text="00"
+            android:id="@+id/jogging_pace"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/speedLinearLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:gravity=""
+        android:orientation="horizontal"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/paceLinearLayout">
+
+        <TextView
+            android:id="@+id/speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Speed : "
+            android:textSize="32sp" />
+
+        <TextView
+            android:id="@+id/jogging_speed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="36sp"
+            tools:text="00" />
     </LinearLayout>
 
 

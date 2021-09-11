@@ -34,6 +34,8 @@ class RecordDetailActivity : AppCompatActivity() {
     private var date = ""
     private var distance = 0.0
     private var time = 0.0
+    private var pace = 0.0
+    private var speed = 0.0
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -55,6 +57,8 @@ class RecordDetailActivity : AppCompatActivity() {
                     date = document.data?.get("Date").toString()
                     distance = document.data?.get("Distance").toString().toDouble()
                     time = document.data?.get("Time").toString().toDouble()
+                    pace = document.data?.get("averagePace").toString().toDouble()
+                    speed = document.data?.get("averageSpeed").toString().toDouble()
 
                     pathListString = document.data?.get("PathList").toString()
 
@@ -84,6 +88,8 @@ class RecordDetailActivity : AppCompatActivity() {
         binding.joggingDate.text = date
         binding.joggingDistance.text = "%.1f km".format(distance)
         binding.joggingTime.text = getTimeStringFromDouble(time)
+        binding.joggingPace.text = "km당 %.1f 초".format(pace)
+        binding.joggingSpeed.text = "%.1f km/h".format(speed)
 
     }
 
