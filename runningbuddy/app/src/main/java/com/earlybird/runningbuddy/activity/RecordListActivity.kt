@@ -1,17 +1,16 @@
-package com.earlybird.runningbuddy
+package com.earlybird.runningbuddy.activity
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.appcompat.app.ActionBar
 import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
+import com.earlybird.runningbuddy.ProfileAdapter
+import com.earlybird.runningbuddy.ProfileData
 import com.earlybird.runningbuddy.databinding.ActivityRecordListBinding
-import com.google.android.gms.tasks.OnSuccessListener
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
-import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 
 
@@ -27,9 +26,11 @@ class RecordListActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityRecordListBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        val ab : ActionBar? = supportActionBar
+        ab?.setTitle("내 기록")
         EventChangeListener()
     }
+
 
     private fun EventChangeListener() {     //DB데이터보여주기
         var mdocument: String? = null
@@ -49,9 +50,10 @@ class RecordListActivity : AppCompatActivity() {
                             var time = document.data?.get("Time").toString()
                             var distance = document.data?.get("Distance").toString()
                             var timePerDistance = document.data?.get("timePerDistance")
-                            profileArrayList.add(ProfileData(date, time, distance, mdocument,
-                                timePerDistance as MutableList<Double>
-                            ))
+                            profileArrayList.add(
+                                ProfileData(date, time, distance, mdocument,
+                                timePerDistance as MutableList<Double>)
+                            )
 //                            Log.d("isBuddy","RecordListActivity : timePerDistance = ${timePerDistance as MutableList<Double>}")
                         }
                     }
@@ -60,9 +62,7 @@ class RecordListActivity : AppCompatActivity() {
                         LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false)
                     binding.recyclerView.setHasFixedSize(true)
                     binding.recyclerView.adapter = ProfileAdapter(profileArrayList,this)
-
                 }
         }
-
     }
 }

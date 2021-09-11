@@ -20,18 +20,19 @@
         app:layout_constraintVertical_bias="0.0" />
 
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:src="@drawable/ic_baseline_stop_24"
         android:id="@+id/stopButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/shape_button"
+        android:background="@drawable/button_cycle"
         android:text="종료"
         android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="@id/distanceView"
+        app:layout_constraintEnd_toEndOf="@id/distanceView"/>
 
     <TextView
         android:id="@+id/TimeView"
@@ -73,24 +74,24 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/TimeView" />
 
-    <androidx.appcompat.widget.AppCompatButton
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:src="@drawable/ic_baseline_pause_24"
         android:id="@+id/pauseButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="16dp"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
         android:layout_marginBottom="16dp"
-        android:background="@drawable/shape_button"
+        android:background="@drawable/button_cycle"
         android:text="일시정지"
         android:textColor="@color/white"
         android:textSize="20sp"
+        app:layout_constraintStart_toStartOf="@id/paceView"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="@id/paceView" />
 
     <TextView
         android:id="@+id/temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="TextView"
         app:layout_constraintEnd_toStartOf="@+id/paceView"
         app:layout_constraintStart_toEndOf="@+id/distanceView"
         app:layout_constraintTop_toTopOf="@+id/distanceView" />

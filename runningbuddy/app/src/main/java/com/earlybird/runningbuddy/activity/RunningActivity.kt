@@ -1,4 +1,4 @@
-package com.earlybird.runningbuddy
+package com.earlybird.runningbuddy.activity
 
 import android.content.*
 import android.os.Build
@@ -9,6 +9,9 @@ import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import com.earlybird.runningbuddy.MapFragment
+import com.earlybird.runningbuddy.R
+import com.earlybird.runningbuddy.RunningService
 import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -129,47 +132,54 @@ class RunningActivity : AppCompatActivity() {
         intentFilter.addAction("PathListService")
         intentFilter.addAction("paceUpdated")
         intentFilter.addAction("timePerDistancUpdate")
+        intentFilter.addAction("Text")
         registerReceiver(RunningBroadCast(), intentFilter)
     }
 
     @RequiresApi(Build.VERSION_CODES.O) // 현재시간을 표시하는 LocalDateTime.now() 함수를 쓰러면 이 코드를 추가해야만함
     private fun setButton() {
         binding.stopButton.setOnClickListener {
-            if(mBound == true) {
+            if (mBound == true) {
                 stopRunning() // 러닝 종료버튼
             }
 
-                //db에 접근하기위해 forestore 객체 할당
-                val db: FirebaseFirestore = Firebase.firestore
+            //db에 접근하기위해 forestore 객체 할당
+            val db: FirebaseFirestore = Firebase.firestore
 
-                //현재 시간을 불러오는 LocalDateTime.now() 함수를 사용, 원하는 문자열 양식으로 포맷팅 한뒤 formatedDate 변수에 할당
-                val currentDate = LocalDateTime.now()
-                val formatedDate: String =
-                    currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
+            //현재 시간을 불러오는 LocalDateTime.now() 함수를 사용, 원하는 문자열 양식으로 포맷팅 한뒤 formatedDate 변수에 할당
+            val currentDate = LocalDateTime.now()
+            val formatedDate: String =
+                currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
 
-                //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌
-                val currentRecordMap = hashMapOf(
-                    "Time" to time,
-                    "Distance" to distance,
-                    "PathList" to pathList,
-                    "Date" to formatedDate,
-                    "UserID" to Firebase.auth.currentUser!!.uid,
-                    "timePerDistance" to timePerDistance
-                )
+            //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌 (거리가 0이 아닌경우에만)
+
+            val currentRecordMap = hashMapOf(
+                "Time" to time,
+                "Distance" to distance,
+                "PathList" to pathList,
+                "Date" to formatedDate,
+                "UserID" to Firebase.auth.currentUser!!.uid,
+                "timePerDistance" to timePerDistance
+            )
+            val distanceForCheck = binding.distanceView.text.toString().replace(" km","")
+            if (distanceForCheck.toDouble() >= 0.1) {
 
                 //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
                 // 러닝 기록은 회원마다 여러개니까 "db에 기존 기록이 있건없건 빈 공간에 merge 함"
                 db.collection("records")
                     .add(currentRecordMap)
+            }
+            MainActivity.isBuddy = false
 
-                // 데이터 뷰에 보이는 것은 db에서 가져오는 것보다 인텐트로 하는 것이 더 효율적이라 판단하여 인텐트로 데이터 전달
-                dataViewIntent.putExtra("Time", time)        // 칼로리 계산을 위해
-                dataViewIntent.putExtra(
-                    "FormatTime",
-                    binding.TimeView.text
-                )         // 달린 시간을 보여주기 위해
-                dataViewIntent.putExtra("Distance", distance)
-                startActivity(dataViewIntent)
+
+            // 데이터 뷰에 보이는 것은 db에서 가져오는 것보다 인텐트로 하는 것이 더 효율적이라 판단하여 인텐트로 데이터 전달
+            dataViewIntent.putExtra("Time", time)        // 칼로리 계산을 위해
+            dataViewIntent.putExtra(
+                "FormatTime",
+                binding.TimeView.text
+            )         // 달린 시간을 보여주기 위해
+            dataViewIntent.putExtra("Distance", distance)
+            startActivity(dataViewIntent)
         }
 
         binding.pauseButton.setOnClickListener {
@@ -196,7 +206,7 @@ class RunningActivity : AppCompatActivity() {
         val restart = true
         serviceIntent.putExtra("restart", restart)
         bindService(serviceIntent, connection, Context.BIND_AUTO_CREATE)
-        binding.pauseButton.text = "일시정지"
+        binding.pauseButton.setImageResource(R.drawable.ic_baseline_pause_24)
         mBound = true
     }
 
@@ -204,35 +214,8 @@ class RunningActivity : AppCompatActivity() {
         Log.d("serviceCycle", "stopRunning()")
         unbindService(connection)
         stopService(serviceIntent)
-        binding.pauseButton.text = "재시작"
+        binding.pauseButton.setImageResource(R.drawable.ic_baseline_play_arrow_24)// = "재시작"
         mBound = false
-    }
-
-
-    // tts 관련
-    private fun initTextToSpeech() {
-        // 버전 확인 롤리팝 이상이여야 TTS 사용 가능
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP) {
-            Toast.makeText(this, "SDK version is low", Toast.LENGTH_SHORT).show()
-            return
-        }
-        tts = TextToSpeech(this) {
-            if (it == TextToSpeech.SUCCESS) {
-                val result = tts?.setLanguage(Locale.KOREAN)
-                if (result == TextToSpeech.LANG_MISSING_DATA || result == TextToSpeech.LANG_NOT_SUPPORTED) {
-                    Toast.makeText(this, "Language not supported", Toast.LENGTH_SHORT).show()
-                    return@TextToSpeech
-                }
-                Toast.makeText(this, "TTS setting successed", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "TTS init failed", Toast.LENGTH_SHORT).show()
-            }
-        }
-    }
-
-
-    private fun ttsSpeak(strTTS:String){
-        tts?.speak(strTTS,TextToSpeech.QUEUE_FLUSH,null,null)
     }
 
 
@@ -258,26 +241,30 @@ class RunningActivity : AppCompatActivity() {
                     Log.d("service22", "pathList : $pathList")
                 }
                 "paceUpdated" -> {
-                    pace = intent.getIntExtra(RunningService.PACE_EXTRA,0)
-                    Log.d("distancetag123123",pace.toString())
+                    pace = intent.getIntExtra(RunningService.PACE_EXTRA, 0)
+                    Log.d("distancetag123123", pace.toString())
                     binding.paceView.text = "${pace}초"
 
                 }
                 "timePerDistancUpdate" -> {
-                    temporalTime = intent.getDoubleExtra(RunningService.TIMEPERDISTANCE_EXTRA,0.0)
-                    binding.temp.text = "${temporalTime}"
+                    temporalTime = intent.getDoubleExtra(RunningService.TIMEPERDISTANCE_EXTRA, 0.0)
+                    //binding.temp.text = "${temporalTime}"
                     timePerDistance.add(temporalTime)
-                    Log.d("service22","timePerDistance ${timePerDistance}")
+                    Log.d("service22", "timePerDistance ${timePerDistance}")
+                }
+                "Text" -> {
+                    val text = intent.getStringExtra("text")
+                    binding.temp.text = text
+                    Log.d("HHHHH", "$text")
                 }
 
-                else->{
-                    Log.d("distancetag123123","else")
+                else -> {
+                    Log.d("distancetag123123", "else")
                 }
             }
             Log.d("service22", "broadCast : $distance")
         }
     }
-
 
 
 }

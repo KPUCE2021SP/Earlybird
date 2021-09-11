@@ -5,12 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/defaultBackground"
-    tools:context=".RecordDetailActivity">
+    tools:context=".activity.RecordDetailActivity">
+
+    <androidx.appcompat.widget.AppCompatImageButton
+        android:id="@+id/homeButton"
+        android:background="@color/defaultBackground"
+        android:src="@drawable/ic_baseline_home_24"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_margin="16dp"
+        android:layout_width="50dp"
+        android:layout_height="50dp"/>
 
     <FrameLayout
+        android:layout_marginTop="120dp"
         android:id="@+id/map"
-        android:layout_width="200dp"
-        android:layout_height="200dp"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
         android:layout_marginBottom="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

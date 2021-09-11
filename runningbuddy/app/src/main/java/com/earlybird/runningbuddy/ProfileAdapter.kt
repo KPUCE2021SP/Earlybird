@@ -2,18 +2,16 @@ package com.earlybird.runningbuddy
 
 import android.content.Context
 import android.content.Intent
-import android.os.Parcelable
 import android.util.Log
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
 import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
+import com.earlybird.runningbuddy.activity.MainActivity
+import com.earlybird.runningbuddy.activity.RecordDetailActivity
+import com.earlybird.runningbuddy.activity.RunningActivity
 import com.earlybird.runningbuddy.databinding.ItemRecordListBinding
-import java.io.Serializable
+import kotlin.math.roundToInt
 
 class ProfileAdapter(
     private val profileList: ArrayList<ProfileData>,
@@ -46,9 +44,7 @@ class ProfileAdapter(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         Log.d("HHHVIEWHOLDER", "onBindViewHolder()")
-
         holder.bind(profileList[position])
-
     }
 
     //View Holder : 각각의 뷰를 보관하는 Holder객채
@@ -58,9 +54,10 @@ class ProfileAdapter(
 
         fun bind(record: ProfileData) {
             Log.d("HHHVIEWHOLDER", "bind()")
-            binding.joggingDate.text = record.date
-            binding.joggingDistance.text = record.distance
-            binding.joggingTime.text = record.time
+            val date=record.date.substring(0,10)
+            binding.joggingDate.text = date
+            binding.joggingDistance.text = "%.1f km".format((record.distance).toDouble())
+            binding.joggingTime.text = getTimeStringFromDouble((record.time).toDouble())
 
             binding.root.setOnClickListener {
                 if(MainActivity.isBuddy == true) {
@@ -70,10 +67,10 @@ class ProfileAdapter(
 //                    serviceIntent.putExtra("savedTimePerDistance",record.timePerDistance as Serializable)
 //                    Log.d("isBuddy","ProfileAdapter : timePerDistance = ${record.timePerDistance as Serializable}")
                     savedTimePerDistance = record.timePerDistance as MutableList<Double>
-                    savedDistance = record.distance as Double
+                    savedDistance = record.distance.toDouble()
                     Log.d("isBuddy","Profile : savedTimePerDistance = ${savedTimePerDistance}")
                     startActivity(context,intent,null)
-                }else{
+                } else {
                     Log.d("HHH", "click")
                     val intent = Intent(context, RecordDetailActivity::class.java)
                     intent.putExtra("document", record.document)
@@ -81,6 +78,19 @@ class ProfileAdapter(
                 }
             }
         }
+
+        private fun getTimeStringFromDouble(time: Double): String { //시간을 스트링으로 변환
+            val resultInt = time.roundToInt()
+            val hours = resultInt % 86400 / 3600
+            val minutes = resultInt % 86400 % 3600 / 60
+            val seconds = resultInt % 86400 % 3600 % 60
+
+            return makeTimeString(hours, minutes, seconds)
+        }
+
+        private fun makeTimeString(hours: Int, minutes: Int, seconds: Int): String = //문자 합치기
+            String.format("%02d:%02d:%02d", hours, minutes, seconds)
+
 
     }
 }

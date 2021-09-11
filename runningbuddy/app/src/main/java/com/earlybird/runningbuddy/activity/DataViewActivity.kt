@@ -1,19 +1,14 @@
-package com.earlybird.runningbuddy
+package com.earlybird.runningbuddy.activity
 
 import android.content.Intent
 import android.os.Bundle
-import android.os.PersistableBundle
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.earlybird.runningbuddy.databinding.ActivityDataviewBinding
-import com.earlybird.runningbuddy.databinding.ActivityRunningBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.SetOptions
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
-import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
-import kotlin.math.roundToInt
 
 class DataViewActivity : AppCompatActivity() {
     private lateinit var binding: ActivityDataviewBinding
@@ -24,7 +19,8 @@ class DataViewActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityDataviewBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        val ab : ActionBar? = supportActionBar
+        ab?.setTitle("러닝결과")
         recordListIntent = Intent(applicationContext, RecordListActivity::class.java)
 
         binding.recordButton.setOnClickListener {
