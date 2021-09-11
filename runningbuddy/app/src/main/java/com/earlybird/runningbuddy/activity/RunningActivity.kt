@@ -173,9 +173,8 @@ class RunningActivity : AppCompatActivity() {
                     "averagePace" to averagePace
 
                 )
-                val distanceForCheck = binding.distanceView.text.toString().replace("KM","",)
-                val distanceForCheck2 = distanceForCheck.replace(" km", "")
-                if (distanceForCheck2.toDouble() >= 0.1) {
+                val distanceForCheck = binding.distanceView.text.toString().replace("km","",)
+                if (distanceForCheck.toDouble() >= 0.1) {
                   
                   
                 //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
