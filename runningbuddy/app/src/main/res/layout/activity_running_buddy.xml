@@ -92,8 +92,9 @@
         android:id="@+id/temp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintEnd_toStartOf="@+id/paceView"
-        app:layout_constraintStart_toEndOf="@+id/distanceView"
-        app:layout_constraintTop_toTopOf="@+id/distanceView" />
+        app:layout_constraintBottom_toBottomOf="@id/distanceView"
+        app:layout_constraintEnd_toEndOf="@id/TimeView"
+        app:layout_constraintStart_toStartOf="@id/TimeView"
+        app:layout_constraintTop_toTopOf="@id/distanceView" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,12 +1,10 @@
-package com.earlybird.runningbuddy
+package com.earlybird.runningbuddy.activity
 
-import android.content.ContentValues.TAG
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
-import com.earlybird.runningbuddy.databinding.ActivityAfterLoginBinding
+import androidx.appcompat.app.ActionBar
 import com.earlybird.runningbuddy.databinding.ActivitySignUpBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -20,7 +18,8 @@ class SignUpActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivitySignUpBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        
+        val ab : ActionBar? = supportActionBar
+        ab?.setTitle("회원가입")
         //(주석은 위에서 아래로 읽여내려 가세요.) db 변수에 firebaseDB를 쓰기위한 객체를 할당함
         val db: FirebaseFirestore = Firebase.firestore
 

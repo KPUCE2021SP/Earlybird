@@ -3,6 +3,7 @@ package com.earlybird.runningbuddy
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import com.earlybird.runningbuddy.databinding.ActivitySplashBinding
 import com.earlybird.runningbuddy.databinding.ActivityUserInfoBinding
 import com.google.firebase.auth.ktx.auth
@@ -18,7 +19,8 @@ class UserInfo : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         binding = ActivityUserInfoBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
+        val ab : ActionBar? = supportActionBar
+        ab?.setTitle("내 정보")
         val db: FirebaseFirestore = Firebase.firestore
         val currentUid = Firebase.auth.currentUser?.uid ?: "No User"
 
