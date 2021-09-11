@@ -142,9 +142,10 @@ class RunningActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O) // 현재시간을 표시하는 LocalDateTime.now() 함수를 쓰러면 이 코드를 추가해야만함
     private fun setButton() {
         binding.stopButton.setOnClickListener {
-            if(mBound == true) {
+            if (mBound == true) {
                 stopRunning() // 러닝 종료버튼
             }
+
 
             averageSpeed = getAverageSpeed(time, distance)
             averagePace = getAveragePace(time,distance)
@@ -169,21 +170,25 @@ class RunningActivity : AppCompatActivity() {
                     "averagePace" to averagePace
 
                 )
-            MainActivity.isBuddy = false
+                val distanceForCheck = binding.distanceView.text.toString().replace(" km","")
+                if (distanceForCheck.toDouble() >= 0.1) {
 
                 //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
                 // 러닝 기록은 회원마다 여러개니까 "db에 기존 기록이 있건없건 빈 공간에 merge 함"
                 db.collection("records")
                     .add(currentRecordMap)
+            }
+            MainActivity.isBuddy = false
 
-                // 데이터 뷰에 보이는 것은 db에서 가져오는 것보다 인텐트로 하는 것이 더 효율적이라 판단하여 인텐트로 데이터 전달
-                dataViewIntent.putExtra("Time", time)        // 칼로리 계산을 위해
-                dataViewIntent.putExtra(
-                    "FormatTime",
-                    binding.TimeView.text
-                )         // 달린 시간을 보여주기 위해
-                dataViewIntent.putExtra("Distance", distance)
-                startActivity(dataViewIntent)
+
+            // 데이터 뷰에 보이는 것은 db에서 가져오는 것보다 인텐트로 하는 것이 더 효율적이라 판단하여 인텐트로 데이터 전달
+            dataViewIntent.putExtra("Time", time)        // 칼로리 계산을 위해
+            dataViewIntent.putExtra(
+                "FormatTime",
+                binding.TimeView.text
+            )         // 달린 시간을 보여주기 위해
+            dataViewIntent.putExtra("Distance", distance)
+            startActivity(dataViewIntent)
         }
 
         binding.pauseButton.setOnClickListener {
@@ -223,7 +228,6 @@ class RunningActivity : AppCompatActivity() {
     }
 
 
-
     private fun makeTimeString(hours: Int, minutes: Int, seconds: Int): String = //문자 합치기
         String.format("%02d:%02d:%02d", hours, minutes, seconds)
 
@@ -246,25 +250,25 @@ class RunningActivity : AppCompatActivity() {
                     Log.d("service22", "pathList : $pathList")
                 }
                 "paceUpdated" -> {
-                    pace = intent.getIntExtra(RunningService.PACE_EXTRA,0)
-                    Log.d("distancetag123123",pace.toString())
+                    pace = intent.getIntExtra(RunningService.PACE_EXTRA, 0)
+                    Log.d("distancetag123123", pace.toString())
                     binding.paceView.text = "${pace}초"
 
                 }
                 "timePerDistancUpdate" -> {
-                    temporalTime = intent.getDoubleExtra(RunningService.TIMEPERDISTANCE_EXTRA,0.0)
+                    temporalTime = intent.getDoubleExtra(RunningService.TIMEPERDISTANCE_EXTRA, 0.0)
                     //binding.temp.text = "${temporalTime}"
                     timePerDistance.add(temporalTime)
-                    Log.d("service22","timePerDistance ${timePerDistance}")
+                    Log.d("service22", "timePerDistance ${timePerDistance}")
                 }
-                "Text"->{
+                "Text" -> {
                     val text = intent.getStringExtra("text")
                     binding.temp.text = text
-                    Log.d("HHHHH","$text")
+                    Log.d("HHHHH", "$text")
                 }
 
-                else->{
-                    Log.d("distancetag123123","else")
+                else -> {
+                    Log.d("distancetag123123", "else")
                 }
             }
             Log.d("service22", "broadCast : $distance")
@@ -280,7 +284,6 @@ class RunningActivity : AppCompatActivity() {
         val averagePcae = (time / distance)
         return averagePcae //페이스는 1km당 걸린 시간을 초단위로 출력
     }
-
 
 
 }
