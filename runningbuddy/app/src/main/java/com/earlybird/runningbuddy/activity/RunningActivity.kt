@@ -44,6 +44,9 @@ class RunningActivity : AppCompatActivity() {
     private var isMap = false   // mapFragment
     private val intentFilter = IntentFilter()
 
+    private var averageSpeed: Double? = null
+    private var averagePace: Double? = null
+
 
     lateinit var mService: RunningService   //RunningService 에 접근하기 위한 변수
 
@@ -143,6 +146,9 @@ class RunningActivity : AppCompatActivity() {
                 stopRunning() // 러닝 종료버튼
             }
 
+            averageSpeed = getAverageSpeed(time, distance)
+            averagePace = getAveragePace(time,distance)
+
                 //db에 접근하기위해 forestore 객체 할당
                 val db: FirebaseFirestore = Firebase.firestore
 
@@ -158,7 +164,10 @@ class RunningActivity : AppCompatActivity() {
                     "PathList" to pathList,
                     "Date" to formatedDate,
                     "UserID" to Firebase.auth.currentUser!!.uid,
-                    "timePerDistance" to timePerDistance
+                    "timePerDistance" to timePerDistance,
+                    "averageSpeed" to averageSpeed,
+                    "averagePace" to averagePace
+
                 )
             MainActivity.isBuddy = false
 
@@ -260,6 +269,16 @@ class RunningActivity : AppCompatActivity() {
             }
             Log.d("service22", "broadCast : $distance")
         }
+    }
+
+    private fun getAverageSpeed(distance: Double, time: Double): Double {
+        val averageSpeed = ( distance / (time * 3600))  //시간당 거리를 구한다.
+        return averageSpeed
+    }
+
+    private fun getAveragePace(distance: Double, time: Double): Double {
+        val averagePcae = (time / distance)
+        return averagePcae //페이스는 1km당 걸린 시간을 초단위로 출력
     }
 
 
