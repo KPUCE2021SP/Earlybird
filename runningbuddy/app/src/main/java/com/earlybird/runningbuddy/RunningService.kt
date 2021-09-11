@@ -9,6 +9,7 @@ import android.os.IBinder
 import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.ActionBar
 import com.earlybird.runningbuddy.activity.MainActivity
 import com.earlybird.runningbuddy.activity.RunningActivity
 import com.naver.maps.geometry.LatLng
@@ -281,8 +282,6 @@ class RunningService : Service() {
             } else if(currentTime % 10 == 0.0 && currentTime >= 10){
                 ttsSpeak("당신은 과거의 당신에게 지셨습니다")
                 plag = true
-
-
             }
 
         }

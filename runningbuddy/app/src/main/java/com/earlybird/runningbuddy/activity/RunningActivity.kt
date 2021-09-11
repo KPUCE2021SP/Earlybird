@@ -8,6 +8,7 @@ import android.speech.tts.TextToSpeech
 import android.util.Log
 import android.widget.Toast
 import androidx.annotation.RequiresApi
+import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import com.earlybird.runningbuddy.MapFragment
 import com.earlybird.runningbuddy.R
@@ -75,9 +76,10 @@ class RunningActivity : AppCompatActivity() {
     @RequiresApi(Build.VERSION_CODES.O) // 현재시간을 표시하는 LocalDateTime.now() 함수를 쓰러면 이 코드를 추가해야만함
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
         binding = ActivityRunningBinding.inflate(layoutInflater)
         setContentView(binding.root)
+        val ab : ActionBar? = supportActionBar
+        ab?.setTitle("달리기")
 
         setIntent()
 
@@ -158,13 +160,14 @@ class RunningActivity : AppCompatActivity() {
                 val formatedDate: String =
                     currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
 
+
                 //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌
                 val currentRecordMap = hashMapOf(
                     "Time" to time,
                     "Distance" to distance,
                     "PathList" to pathList,
                     "Date" to formatedDate,
-                    "UserID" to Firebase.auth.currentUser!!.uid,
+                    "UserID" t Firebase.auth.currentUser!!.uid,
                     "timePerDistance" to timePerDistance,
                     "averageSpeed" to averageSpeed,
                     "averagePace" to averagePace
@@ -172,7 +175,8 @@ class RunningActivity : AppCompatActivity() {
                 )
                 val distanceForCheck = binding.distanceView.text.toString().replace(" km","")
                 if (distanceForCheck.toDouble() >= 0.1) {
-
+                  
+                  
                 //회원가입때와 달라진점 = .set 뒤에가 달라짐. 회원정보는 한 회원당 하나만 존재 하니까 "db에 덮어씌우고"
                 // 러닝 기록은 회원마다 여러개니까 "db에 기존 기록이 있건없건 빈 공간에 merge 함"
                 db.collection("records")
