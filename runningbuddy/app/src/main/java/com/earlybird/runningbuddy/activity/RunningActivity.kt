@@ -167,7 +167,7 @@ class RunningActivity : AppCompatActivity() {
                     "Distance" to distance,
                     "PathList" to pathList,
                     "Date" to formatedDate,
-                    "UserID" t Firebase.auth.currentUser!!.uid,
+                    "UserID" to Firebase.auth.currentUser!!.uid,
                     "timePerDistance" to timePerDistance,
                     "averageSpeed" to averageSpeed,
                     "averagePace" to averagePace
