@@ -160,7 +160,7 @@ class RunningActivity : AppCompatActivity() {
                 val formatedDate: String =
                     currentDate.format(DateTimeFormatter.ISO_LOCAL_DATE_TIME)!!
 
-
+          
                 //기록중 시간과 거리(path는 아직 미구현)를 map 형태의 자료구조로 담아줌
                 val currentRecordMap = hashMapOf(
                     "Time" to time,
@@ -171,7 +171,6 @@ class RunningActivity : AppCompatActivity() {
                     "timePerDistance" to timePerDistance,
                     "averageSpeed" to averageSpeed,
                     "averagePace" to averagePace
-
                 )
                 val distanceForCheck = binding.distanceView.text.toString().replace("km","",)
                 if (distanceForCheck.toDouble() >= 0.1) {
@@ -284,9 +283,11 @@ class RunningActivity : AppCompatActivity() {
         return averageSpeed
     }
 
+    // 평균 페이스 구하는 식 (1km당 걸린 시간 = 페이스)
     private fun getAveragePace(distance: Double, time: Double): Double {
-        val averagePcae = (time / distance)
-        return averagePcae //페이스는 1km당 걸린 시간을 초단위로 출력
+        val averagePace = (time / distance)
+        return averagePace
+
     }
 
 

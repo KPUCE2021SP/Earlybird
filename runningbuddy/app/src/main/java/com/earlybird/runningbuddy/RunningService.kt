@@ -37,6 +37,7 @@ class RunningService : Service() {
     private var isBuddyBuddy: Boolean = MainActivity.isBuddy
     private var num = 0
     private var plag = false //???
+    private var distanceGap = 0
 
     //    private var pace = 0.0
     private var pacearray = mutableListOf<Double>()
@@ -221,13 +222,23 @@ class RunningService : Service() {
 //                alertAlarmWithTTS(setTime)
 //            }
             Log.d("isBuddy","RunningServie : isBuddy = ${isBuddyBuddy}")
-            if (isBuddyBuddy == true && plag == false) runningBuddy()
+            if(currentTime % 10 == 0.0 && currentTime >= 10) {
+                if (isBuddyBuddy == true && plag == false) runningBuddy()
+                else if (isBuddyBuddy == true && plag == true && distance > ProfileAdapter.savedDistance!!) runningBUddyExtension()
+            }
         }
 
 //        private fun alertAlarmWithTTS(time: Int) {
 //            ttsSpeak("$time 분 경과 했습니다.")
 //
 //        }
+    }
+
+    private fun runningBUddyExtension() {
+        var runningBuddyDistance: Int = (distance*100).toInt()
+        distanceGap = runningBuddyDistance - (ProfileAdapter.savedDistance!! * 100).toInt()
+
+        ttsSpeak("선택하신 기록보다 ${distanceGap * 10}미터 더 달리셨습니다")
     }
 
     private fun calculatePace() {
@@ -255,7 +266,6 @@ class RunningService : Service() {
 
     private fun runningBuddy(){
 
-        if(currentTime % 10 == 0.0 && currentTime >= 10){
             num = ProfileAdapter.savedTimePerDistance?.size as Int
             Log.d("isBuddy","RunningServir : num = ${num}")
             if(count < num) {
@@ -264,27 +274,29 @@ class RunningService : Service() {
                     "isBuddy",
                     "RunningService : savedTimePerDistance = ${ProfileAdapter.savedTimePerDistance}"
                 )
-                var runningBuddyDistance: Double = distance
+                var runningBuddyDistance: Int = (distance*100).toInt()
                 val intent = Intent("Text")
-                if (runningBuddyDistance > ProfileAdapter.savedTimePerDistance!!.get(count)) {
-                    ttsSpeak("지금 당신은 어제보다 빠릅니다")
-                    intent.putExtra("text","지금 당신은 어제보다 빠릅니다")
-                } else if (runningBuddyDistance < ProfileAdapter.savedTimePerDistance!!.get(count)) {
-                    ttsSpeak("지금 당신은 어제보다 느립니다")
-                    intent.putExtra("text","지금 당신은 어제보다 느립니다")
-                } else if (runningBuddyDistance == ProfileAdapter.savedTimePerDistance!!.get(count)) {
-                    ttsSpeak("지금 당신은 어제와 같습니다")
+                var savedTimePerDistance : Int = (ProfileAdapter.savedTimePerDistance!!.get(count) * 100).toInt()
+
+                if (runningBuddyDistance > savedTimePerDistance) {
+                    distanceGap = runningBuddyDistance - savedTimePerDistance
+                    ttsSpeak("선택하신 기록보다 ${distanceGap * 10}미터 빠릅니다")
+                    intent.putExtra("text","${distanceGap}")
+                } else if (runningBuddyDistance < savedTimePerDistance) {
+                    distanceGap = savedTimePerDistance - runningBuddyDistance
+                    ttsSpeak("선택하신 기록보다 ${distanceGap*10}미터 느립니다")
+                    intent.putExtra("text","${distanceGap}")
+                } else if (runningBuddyDistance == savedTimePerDistance) {
+                    ttsSpeak("선택하신 기록과 같습니다")
                     intent.putExtra("text","지금 당신은 어제와 같습니다")
                 }
                 sendBroadcast(intent)
                 count++
                 Log.d("isBuddy", "${count}")
-            } else if(currentTime % 10 == 0.0 && currentTime >= 10){
+            } else {
                 ttsSpeak("당신은 과거의 당신에게 지셨습니다")
                 plag = true
             }
-
-        }
 
     }
 }

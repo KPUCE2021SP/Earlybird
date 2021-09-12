@@ -90,6 +90,7 @@ class RecordDetailActivity : AppCompatActivity() {
         binding.joggingTime.text = getTimeStringFromDouble(time)
         binding.joggingSpeed.text = "%.1f km/h".format(speed)
         binding.joggingPace.text = "km당 %.1f 초".format(pace)
+
     }
 
     private fun getTimeStringFromDouble(time: Double): String { //시간을 스트링으로 변환
