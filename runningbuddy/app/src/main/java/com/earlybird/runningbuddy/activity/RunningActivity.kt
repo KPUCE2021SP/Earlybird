@@ -173,7 +173,7 @@ class RunningActivity : AppCompatActivity() {
                     "averagePace" to averagePace
 
                 )
-                val distanceForCheck = binding.distanceView.text.toString().replace(" km","")
+                val distanceForCheck = binding.distanceView.text.toString().replace("km","",)
                 if (distanceForCheck.toDouble() >= 0.1) {
                   
                   
