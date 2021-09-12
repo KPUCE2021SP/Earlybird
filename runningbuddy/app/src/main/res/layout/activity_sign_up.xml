@@ -7,6 +7,20 @@
     tools:context=".activity.SignUpActivity"
     android:background="@color/defaultBackground">
 
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="403dp"
+        android:layout_height="387dp"
+        android:alpha="0.3"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.551"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.125"
+        app:srcCompat="@drawable/ic_icon_birld2"
+        tools:ignore="MissingConstraints" />
+
     <EditText
         android:id="@+id/IDtext"
         android:layout_width="wrap_content"
