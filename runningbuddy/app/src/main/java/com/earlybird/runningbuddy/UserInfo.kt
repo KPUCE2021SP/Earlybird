@@ -42,7 +42,7 @@ class UserInfo : AppCompatActivity() {
             return "비만"
         }
         else if (calResult > 23) {
-            return "과제중"
+            return "과체중"
         }
         else if (calResult > 18.5) {
             return "정상"
