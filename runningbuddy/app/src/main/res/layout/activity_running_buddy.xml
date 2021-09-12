@@ -54,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginBottom="20dp"
-        android:text="00Km"
+        android:text="0.0km"
         android:textColor="@color/darkGray"
         android:textSize="30sp"
         app:layout_constraintBottom_toTopOf="@+id/stopButton"

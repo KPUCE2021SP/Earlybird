@@ -57,7 +57,7 @@ class SplashActivity : AppCompatActivity() {
                     System.exit(0)
                 }, 2000)
             }
-        }, 1000)
+        }, 2000)
     }
 
     fun isOnline(context: Context): Boolean {

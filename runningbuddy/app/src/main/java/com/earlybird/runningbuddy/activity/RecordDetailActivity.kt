@@ -88,8 +88,8 @@ class RecordDetailActivity : AppCompatActivity() {
         binding.joggingDate.text = date
         binding.joggingDistance.text = "%.1f km".format(distance)
         binding.joggingTime.text = getTimeStringFromDouble(time)
-        binding.joggingPace.text = "km당 %.1f 초".format(pace)
         binding.joggingSpeed.text = "%.1f km/h".format(speed)
+        binding.joggingPace.text = "km당 %.1f 초".format(pace)
 
     }
 
