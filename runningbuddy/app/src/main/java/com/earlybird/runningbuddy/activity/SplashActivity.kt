@@ -1,4 +1,4 @@
-package com.earlybird.runningbuddy
+package com.earlybird.runningbuddy.activity
 
 import android.content.Context
 import android.content.Intent
@@ -11,7 +11,6 @@ import android.provider.Settings
 import android.util.Log
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
-import com.earlybird.runningbuddy.databinding.ActivitySignUpBinding
 import com.earlybird.runningbuddy.databinding.ActivitySplashBinding
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
@@ -58,7 +57,7 @@ class SplashActivity : AppCompatActivity() {
                     System.exit(0)
                 }, 2000)
             }
-        }, 1000)
+        }, 2000)
     }
 
     fun isOnline(context: Context): Boolean {

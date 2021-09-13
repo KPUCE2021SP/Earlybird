@@ -10,7 +10,7 @@
 
     <color name="orange">#FFFF5F00</color>
     <color name="blue">#FF000050</color>
-    <color name="defaultBackground">#FFD2FFD2</color>
+    <color name="defaultBackground">#FAFAFA</color>
     <color name="darkGray">#FF151515</color>
     <color name="transparent">#00000000</color>
     <color name="light_orange">#FFF8AD7B</color>
