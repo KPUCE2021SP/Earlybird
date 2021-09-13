@@ -26,6 +26,7 @@
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_sign_up.xml" value="0.25364583333333335" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_splash.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/activity_user_info.xml" value="0.36614583333333334" />
+        <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/alertdialog_edittext.xml" value="0.1" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/fragment_map.xml" value="0.36614583333333334" />
         <entry key="..\:/Users/Onki/AndroidStudioProjects/Earlybird/runningbuddy/app/src/main/res/layout/item_record_list.xml" value="0.17806484295845998" />
         <entry key="..\:/Users/Yoon/Earlybird/runningbuddy/app/src/main/res/layout/activity_after_login.xml" value="0.3179347826086957" />
@@ -37,6 +38,7 @@
         <entry key="..\:/Users/Yoon/Earlybird/runningbuddy/app/src/main/res/layout/activity_running.xml" value="0.3179347826086957" />
         <entry key="..\:/Users/Yoon/Earlybird/runningbuddy/app/src/main/res/layout/activity_sign_up.xml" value="0.38697916666666665" />
         <entry key="..\:/Users/Yoon/Earlybird/runningbuddy/app/src/main/res/layout/activity_user_info.xml" value="0.23802083333333332" />
+        <entry key="..\:/Users/Yoon/Earlybird/runningbuddy/app/src/main/res/layout/item_record_list.xml" value="0.1" />
         <entry key="..\:/Users/rkdrn/Documents/GitHub/Earlybird/runningbuddy/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.3770833333333333" />
         <entry key="..\:/Users/rkdrn/Documents/GitHub/Earlybird/runningbuddy/app/src/main/res/drawable/button_cycle.xml" value="0.3770833333333333" />
         <entry key="..\:/Users/rkdrn/Documents/GitHub/Earlybird/runningbuddy/app/src/main/res/drawable/ic_baseline_directions_run_24.xml" value="0.3770833333333333" />
@@ -76,7 +78,6 @@
         <entry key="..\:/gitHub/Earlybird/runningbuddy/app/src/main/res/drawable/ic_baseline_play_arrow_24.xml" value="0.1" />
         <entry key="..\:/gitHub/Earlybird/runningbuddy/app/src/main/res/drawable/ic_baseline_stop_24.xml" value="0.1962962962962963" />
         <entry key="..\:/gitHub/Earlybird/runningbuddy/app/src/main/res/drawable/ic_baseline_supervisor_account_24.xml" value="0.1" />
-        <entry key="..\:/Users/Yoon/Earlybird/runningbuddy/app/src/main/res/layout/item_record_list.xml" value="0.1" />
         <entry key="..\:/gitHub/Earlybird/runningbuddy/app/src/main/res/drawable/shape_button.xml" value="0.2359375" />
         <entry key="..\:/gitHub/Earlybird/runningbuddy/app/src/main/res/drawable/text_background.xml" value="0.24351851851851852" />
         <entry key="..\:/gitHub/Earlybird/runningbuddy/app/src/main/res/layout/activity_after_login.xml" value="0.10885416666666667" />
