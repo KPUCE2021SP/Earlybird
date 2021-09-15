@@ -40,64 +40,79 @@ class UserInfo : AppCompatActivity() {
             Toast.makeText(this, "내 정보 불러오기 실패. \n 다시 Login 해주세요.", Toast.LENGTH_SHORT).show()
         }
         binding.weightLayout.setOnClickListener() {
-            //val builder = AlertDialog.Builder(this)
             val builderItem = AlertdialogEdittextBinding.inflate(layoutInflater)
             val editText = builderItem.editText
 
-            val builder = AlertDialog.Builder(this).apply {
+            AlertDialog.Builder(this).apply {
                 setTitle("체중 변경")
                 setMessage("내 정보 화면 다시 입장시 반영됩니다.")
                 setView(builderItem.root)
                 setPositiveButton("OK") { _: DialogInterface, _: Int ->
-                    if (editText.text != null) {
+                    if (editText.text.toString() != "") {
                         val infoMap = hashMapOf(
                             "Weight" to editText.text.toString().toDouble()
                         )
                         db.collection("users")
                             .document(Firebase.auth.currentUser?.uid ?: "No User")
                             .set(infoMap, SetOptions.merge())
+                    } else {
+                        Toast.makeText(
+                            getApplicationContext(),
+                            "제대로된 값을 입력 해주세요",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }.show()
             }
         }
         binding.heightLayout.setOnClickListener() {
-            //val builder = AlertDialog.Builder(this)
             val builderItem = AlertdialogEdittextBinding.inflate(layoutInflater)
             val editText = builderItem.editText
 
-            val builder = AlertDialog.Builder(this).apply {
+            AlertDialog.Builder(this).apply {
                 setTitle("신장 변경")
                 setMessage("내 정보 화면 다시 입장시 반영됩니다.")
                 setView(builderItem.root)
                 setPositiveButton("OK") { _: DialogInterface, _: Int ->
-                    if (editText.text != null) {
+                    if (editText.text.toString() != "") {
                         val infoMap = hashMapOf(
                             "Height" to editText.text.toString().toDouble()
                         )
                         db.collection("users")
                             .document(Firebase.auth.currentUser?.uid ?: "No User")
                             .set(infoMap, SetOptions.merge())
+                    } else {
+                        Toast.makeText(
+                            getApplicationContext(),
+                            "제대로된 값을 입력 해주세요",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }.show()
             }
         }
         binding.nameLayout.setOnClickListener() {
-            //val builder = AlertDialog.Builder(this)
             val builderItem = AlertdialogEdittextBinding.inflate(layoutInflater)
             val editText = builderItem.editText
 
-            val builder = AlertDialog.Builder(this).apply {
+            AlertDialog.Builder(this).apply {
                 setTitle("이름 변경")
                 setMessage("내 정보 화면 다시 입장시 반영됩니다.")
                 setView(builderItem.root)
                 setPositiveButton("OK") { _: DialogInterface, _: Int ->
-                    if (editText.text != null) {
+                    if (editText.text.toString() != "") {
                         val infoMap = hashMapOf(
                             "Name" to editText.text.toString()
                         )
                         db.collection("users")
                             .document(Firebase.auth.currentUser?.uid ?: "No User")
                             .set(infoMap, SetOptions.merge())
+                    } else {
+                        Toast.makeText(
+                            getApplicationContext(),
+                            "제대로된 값을 입력 해주세요",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }.show()
             }
