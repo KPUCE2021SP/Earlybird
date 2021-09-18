@@ -79,7 +79,7 @@ class RunningService : Service() {
     // 종료시 리스너 삭제를 위해
     private val changeLocation = object : NaverMap.OnLocationChangeListener {
         override fun onLocationChange(location: Location) {
-            Log.d("service333", "locationChange()")
+            Log.d("HAN22", "locationChange()")
 
             if (pathList.size < 2) {// 2개 이상 가지고 있어야 하므로
                 pathList.add(LatLng(location.latitude, location.longitude))
@@ -199,8 +199,13 @@ class RunningService : Service() {
 
     // 지도에 경로 그리기
     private fun drawPath() {
+        Log.d("HAN22","RunningService : drawPath()")
         path.coords = pathList
         path.map = naverMap
+    }
+
+    public fun addPath(){
+
     }
 
 

@@ -118,7 +118,7 @@ class MapFragment(
     override fun onPause() {
         Log.d("service333", "onPause()")
         super.onPause()
-        mapView.onPause()
+        //mapView.onPause()
     }
 
     override fun onSaveInstanceState(outState: Bundle) {
@@ -130,7 +130,7 @@ class MapFragment(
     override fun onStop() {
         Log.d("service333", "onStop()")
         super.onStop()
-        mapView.onStop()
+        //mapView.onStop()
     }
 
     override fun onDestroyView() {

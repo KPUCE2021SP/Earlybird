@@ -99,14 +99,18 @@ class RunningActivity : AppCompatActivity() {
             Log.d("HAN_RunningActivity", "RunningActivity onStart()")
             bindService(intent, connection, Context.BIND_AUTO_CREATE)
         }
+
+        Log.d("HAN22","RunningActivity onStart()")
     }
 
     override fun onPause() {
+        Log.d("HAN22","RunningActivity onPause()")
         Log.d("serviceCycle", "RunningActivity onPause()")
         super.onPause()
     }
 
     override fun onStop() {
+        Log.d("HAN22","RunningActivity onStop(), mBound = $mBound")
         Log.d("serviceCycle", "RunningActivity onStop()")
         super.onStop()
     }
