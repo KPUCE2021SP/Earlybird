@@ -237,8 +237,10 @@ class RunningService : Service() {
     private fun runningBUddyExtension() {
         var runningBuddyDistance: Int = (distance*100).toInt()
         distanceGap = runningBuddyDistance - (ProfileAdapter.savedDistance!! * 100).toInt()
+        val intent = Intent("Text")
 
         ttsSpeak("선택하신 기록보다 ${distanceGap * 10}미터 더 달리셨습니다")
+        intent.putExtra("text","선택하신 기록보다 ${distanceGap * 10}미터 더 달리셨습니다.")
     }
 
     private fun calculatePace() {
@@ -281,20 +283,22 @@ class RunningService : Service() {
                 if (runningBuddyDistance > savedTimePerDistance) {
                     distanceGap = runningBuddyDistance - savedTimePerDistance
                     ttsSpeak("선택하신 기록보다 ${distanceGap * 10}미터 빠릅니다")
-                    intent.putExtra("text","${distanceGap}")
+                    intent.putExtra("text","선택하신 기록보다 ${distanceGap * 10}m 빠릅니다.")
                 } else if (runningBuddyDistance < savedTimePerDistance) {
                     distanceGap = savedTimePerDistance - runningBuddyDistance
                     ttsSpeak("선택하신 기록보다 ${distanceGap*10}미터 느립니다")
-                    intent.putExtra("text","${distanceGap}")
+                    intent.putExtra("text","선택하신 기록보다 ${distanceGap*10}m 느립니다.")
                 } else if (runningBuddyDistance == savedTimePerDistance) {
                     ttsSpeak("선택하신 기록과 같습니다")
-                    intent.putExtra("text","지금 당신은 어제와 같습니다")
+                    intent.putExtra("text","선택하신 기록과 같습니다.")
                 }
                 sendBroadcast(intent)
                 count++
                 Log.d("isBuddy", "${count}")
             } else {
-                ttsSpeak("당신은 과거의 당신에게 지셨습니다")
+                val intent = Intent("Text")
+                ttsSpeak("버디모드가 종료되었습니다")
+                intent.putExtra("text","버디모드가 종료되었습니다.")
                 plag = true
             }
 
