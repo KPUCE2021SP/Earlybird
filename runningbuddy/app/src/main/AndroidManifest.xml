@@ -5,7 +5,7 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
 
     <application
         android:allowBackup="true"
@@ -15,13 +15,21 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Runningbuddy">
         <activity
+            android:name=".RecordChart"
+            android:exported="true" />
+        <activity
+            android:name=".activity.RecordChart"
+            android:exported="true"
+            android:label="@string/title_activity_record_chart"
+            android:theme="@style/Theme.Runningbuddy.NoActionBar" />
+        <activity
             android:name=".UserInfo"
             android:exported="true"
             android:parentActivityName=".activity.MainActivity" />
         <activity
             android:name=".activity.SplashActivity"
-            android:theme="@style/splash"
-            android:exported="true">
+            android:exported="true"
+            android:theme="@style/splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -46,7 +54,6 @@
         <activity
             android:name=".activity.AfterLoginActivity"
             android:exported="true" />
-
         <activity
             android:name=".activity.LoginActivity"
             android:exported="true" />

@@ -16,9 +16,18 @@
 
     </style>
 
-    <style name="splash" parent = "Theme.MaterialComponents.Light.NoActionBar">
+    <style name="splash" parent="Theme.MaterialComponents.Light.NoActionBar">
         <item name="android:statusBarColor" tools:targetApi="l">@color/orange</item>
 
 
     </style>
+
+    <style name="Theme.Runningbuddy.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Runningbuddy.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.Runningbuddy.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>
