@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.earlybird.runningbuddy.ProfileAdapter
 import com.earlybird.runningbuddy.ProfileData
 import com.earlybird.runningbuddy.databinding.ActivityRecordListBinding
+import com.github.mikephil.charting.charts.PieChart
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
@@ -20,6 +21,7 @@ class RecordListActivity : AppCompatActivity() {
 
     private lateinit var db: FirebaseFirestore
     private lateinit var mainIntent : Intent
+    private lateinit var tempIntent: Intent
 
     val user = Firebase.auth.currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -29,6 +31,11 @@ class RecordListActivity : AppCompatActivity() {
         val ab : ActionBar? = supportActionBar
         ab?.setTitle("내 기록")
         EventChangeListener()
+        binding.tempbtn.setOnClickListener{
+            tempIntent = Intent(applicationContext, RecaordChartActivity::class.java)
+            Log.d("List","인텐트 확인")
+            startActivity(tempIntent)
+        }
     }
 
 
@@ -56,6 +63,22 @@ class RecordListActivity : AppCompatActivity() {
                             )
 //                            Log.d("isBuddy","RecordListActivity : timePerDistance = ${timePerDistance as MutableList<Double>}")
                         }
+                    }
+
+                    Log.d("profile","profileSzie : ${profileArrayList.size}")
+                    Log.d("profile","profileArraryLIst[0] : ${profileArrayList[0].date}")
+                    for (j in 1..(profileArrayList.size - 1)) {
+
+                        var key = profileArrayList[j]  //profileArrayList[j]를 정렬된 배열 profileArrayList[1..j-1]에 삽입한다.
+                        var i = j-1
+
+                        while(i>=0 && profileArrayList[i].date > key.date) {
+
+                            profileArrayList[i+1] = profileArrayList[i]
+                            i = i-1
+                        }
+                        profileArrayList[i+1] = key
+
                     }
                     //레이아웃 연결
                     binding.recyclerView.layoutManager =

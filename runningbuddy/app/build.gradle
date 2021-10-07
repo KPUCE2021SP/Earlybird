@@ -8,9 +8,6 @@ plugins {
 android {
     compileSdk 30
 
-    repositories {
-        maven { url "https://jitpack.io" }
-    }
 
     defaultConfig {
         applicationId "com.earlybird.runningbuddy"
