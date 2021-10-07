@@ -19,6 +19,11 @@ import com.github.mikephil.charting.data.Entry
 
 
 class RecaordChartActivity : AppCompatActivity() {
+
+    companion object {
+        val entries = arrayListOf<Entry>()
+    }
+
     private var lineChart: LineChart? = null
     private lateinit var binding: ActivityRecaordChartBinding
 
@@ -30,14 +35,9 @@ class RecaordChartActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         val lineChart = binding.chart
-        val entries = arrayListOf<Entry>()
       //  val entries: MutableList<Map.Entry<*, *>> = ArrayList()
         Log.d("Rec","데이터 전")
-        entries.add(Entry(1f,1f))
-        entries.add(Entry(2f,2f))
-        entries.add(Entry(3f,0f))
-        entries.add(Entry(4f,4f))
-        entries.add(Entry(5f,3f))
+
         Log.d("Rec","데이터 후")
        /* entries.add(MutableMap.MutableEntry<Any?, Any?>(1, 1))
         entries.add(MutableMap.MutableEntry<Any?, Any?>(2, 2))

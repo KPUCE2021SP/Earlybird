@@ -22,7 +22,7 @@ class RecordListActivity : AppCompatActivity() {
     private lateinit var db: FirebaseFirestore
     private lateinit var mainIntent : Intent
     private lateinit var tempIntent: Intent
-
+    var num = 0f
     val user = Firebase.auth.currentUser
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -57,6 +57,7 @@ class RecordListActivity : AppCompatActivity() {
                             var time = document.data?.get("Time").toString()
                             var distance = document.data?.get("Distance").toString()
                             var timePerDistance = document.data?.get("timePerDistance")
+                            RecordChartActivity.entries.add(Entry(num++,document.data?.get("Date").toFloat()))
                             profileArrayList.add(
                                 ProfileData(date, time, distance, mdocument,
                                 timePerDistance as MutableList<Double>)
@@ -67,18 +68,14 @@ class RecordListActivity : AppCompatActivity() {
 
                     Log.d("profile","profileSzie : ${profileArrayList.size}")
                     Log.d("profile","profileArraryLIst[0] : ${profileArrayList[0].date}")
-                    for (j in 1..(profileArrayList.size - 1)) {
-
+                    for (j in 1..(profileArrayList.size - 1)) { //삽입정렬함수를 이용해서 시간대로 정력
                         var key = profileArrayList[j]  //profileArrayList[j]를 정렬된 배열 profileArrayList[1..j-1]에 삽입한다.
                         var i = j-1
-
                         while(i>=0 && profileArrayList[i].date > key.date) {
-
                             profileArrayList[i+1] = profileArrayList[i]
                             i = i-1
                         }
                         profileArrayList[i+1] = key
-
                     }
                     //레이아웃 연결
                     binding.recyclerView.layoutManager =
