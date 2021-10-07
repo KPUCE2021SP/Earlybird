@@ -10,6 +10,7 @@ import com.earlybird.runningbuddy.ProfileAdapter
 import com.earlybird.runningbuddy.ProfileData
 import com.earlybird.runningbuddy.databinding.ActivityRecordListBinding
 import com.github.mikephil.charting.charts.PieChart
+import com.github.mikephil.charting.data.Entry
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.*
 import com.google.firebase.ktx.Firebase
@@ -57,7 +58,7 @@ class RecordListActivity : AppCompatActivity() {
                             var time = document.data?.get("Time").toString()
                             var distance = document.data?.get("Distance").toString()
                             var timePerDistance = document.data?.get("timePerDistance")
-                            RecordChartActivity.entries.add(Entry(num++,document.data?.get("Date").toFloat()))
+                            RecaordChartActivity.entries.add(Entry(num++,distance.toFloat()))
                             profileArrayList.add(
                                 ProfileData(date, time, distance, mdocument,
                                 timePerDistance as MutableList<Double>)

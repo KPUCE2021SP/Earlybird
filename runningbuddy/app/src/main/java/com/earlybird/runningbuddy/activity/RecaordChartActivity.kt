@@ -45,8 +45,8 @@ class RecaordChartActivity : AppCompatActivity() {
         entries.add(MutableMap.MutableEntry<Any?, Any?>(4, 4))
         entries.add(MutableMap.MutableEntry<Any?, Any?>(5, 3))*/
 
-        val lineDataSet = LineDataSet(entries, "속성명1")
-        lineDataSet.lineWidth = 2f
+        val lineDataSet = LineDataSet(entries, "달린시간")
+        lineDataSet.lineWidth = 1f
         lineDataSet.circleRadius = 6f
         lineDataSet.setCircleColor(Color.parseColor("#FFA1B4DC"))
         lineDataSet.setCircleColorHole(Color.BLUE)

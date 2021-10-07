@@ -16,30 +16,7 @@
         android:theme="@style/Theme.Runningbuddy">
         <activity
             android:name=".activity.RecaordChartActivity"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".activity.BarChart"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".RecordChart"
-            android:exported="true" />
-        <activity
-            android:name=".activity.RecordChart"
-            android:exported="true"
-            android:label="@string/title_activity_record_chart"
-            android:theme="@style/Theme.Runningbuddy.NoActionBar" />
+            android:exported="true"/>
         <activity
             android:name=".UserInfo"
             android:exported="true"
