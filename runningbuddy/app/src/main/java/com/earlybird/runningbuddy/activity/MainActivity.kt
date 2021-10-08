@@ -19,6 +19,12 @@ import androidx.fragment.app.FragmentTransaction
 import com.earlybird.runningbuddy.*
 import com.earlybird.runningbuddy.databinding.ActivityMainBinding
 import com.google.firebase.auth.FirebaseAuth
+import retrofit2.Call
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
+import java.text.SimpleDateFormat
+import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
@@ -30,6 +36,56 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var transaction: FragmentTransaction
 
+    // 날씨
+    val num_of_rows = 10
+    val page_no = 1
+    val data_type = "JSON"
+    var base_time = "1100"
+    var base_data = "20211008"
+    var nx = "55"
+    var ny = "127"
+
+    var obsrValue:Double = 0.0
+
+    private val retrofit = Retrofit.Builder()
+        .baseUrl("http://apis.data.go.kr/1360000/VilageFcstInfoService_2.0/")
+        .addConverterFactory(GsonConverterFactory.create())
+        .build()
+    inner class ApiObject{
+        val retrofitService:WeatherInterface by lazy {
+            retrofit.create(WeatherInterface::class.java)
+        }
+    }
+
+    private fun weather(date:String, time:String){
+        base_time = time
+        base_data = date
+        Log.d("api","time : $base_time")
+        Log.d("api","date : $base_data")
+        val apiObject = ApiObject()
+        val call = apiObject.retrofitService.GetWeather(data_type,num_of_rows,page_no,base_data,base_time,nx, ny)
+        call.enqueue(object:retrofit2.Callback<WEATHER>{
+
+            override fun onResponse(call: Call<WEATHER>, response: Response<WEATHER>) {
+                if (response.isSuccessful){
+                    Log.d("api",response.body().toString())
+                    Log.d("api",response.body()!!.response.body.items.toString())
+                    Log.d("api",response.body()!!.response.body.items.item[0].category)
+                    for(i in response.body()!!.response.body.items.item){
+                        if(i.category=="T1H"){
+                            obsrValue = i.obsrValue
+                            binding.weather.text = obsrValue.toString()
+                            Log.d("api","obsrValue : $obsrValue")
+                        }
+                    }
+                }
+            }
+
+            override fun onFailure(call: Call<WEATHER>, t: Throwable) {
+                Log.d("api","Failure: ${t.message!!}")
+            }
+        })
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,6 +97,18 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        // 날씨
+        val now = System.currentTimeMillis()
+        val date = Date(now)
+        val sdf = SimpleDateFormat("yyyyMMdd hhmm")
+        val getTime = sdf.format(date)
+        Log.d("api",getTime)
+
+
+        val a = getTime.split(" ")
+        binding.date.text = a[0]
+        binding.time.text = a[1]
+        weather(a[0], a[1])
 
         serviceIntent = Intent(applicationContext, RunningService::class.java)   //RunningService 와 intent
         activityIntent = Intent(this, RunningActivity::class.java) //RunningActivity 와 intent
@@ -80,6 +148,7 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+
     }
 
     override fun onStart() {
@@ -237,6 +306,7 @@ class MainActivity : AppCompatActivity() {
         public const val BACKGROUND_LOCATION = 1000
         public const val FINE_LOCATION = 2000
         var isBuddy: Boolean = false
+
     }
 
 }
