@@ -10,6 +10,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.provider.Settings
 import android.util.Log
+import android.widget.Switch
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AlertDialog
@@ -37,7 +38,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var transaction: FragmentTransaction
 
     // 날씨
-    val num_of_rows = 10
+    val num_of_rows = 60
     val page_no = 1
     val data_type = "JSON"
     var base_time = "1100"
@@ -71,12 +72,33 @@ class MainActivity : AppCompatActivity() {
                     Log.d("api",response.body().toString())
                     Log.d("api",response.body()!!.response.body.items.toString())
                     Log.d("api",response.body()!!.response.body.items.item[0].category)
-                    for(i in response.body()!!.response.body.items.item){
-                        if(i.category=="T1H"){
-                            obsrValue = i.obsrValue
-                            binding.weather.text = obsrValue.toString()
-                            Log.d("api","obsrValue : $obsrValue")
-                        }
+
+                    val list = response.body()!!.response.body.items.item
+                    Log.d("api","${list[5]}")
+                    Log.d("api","${list[6]}")
+                    Log.d("api","${list[7]}")
+                    Log.d("api","${list[18]}")
+                    Log.d("api","${list[24]}")
+                    //18 -> SKY(구름)
+                    list[18]
+                    binding.weatherText.text = "오늘은 뛰기 좋은 날씨네요!"
+                    if(list[18].fcstValue.toInt() >= 3){
+                        binding.weatherImage.setImageResource(R.drawable.cloud)
+                        binding.weatherText.text = "구름이 많아 뛰기 좋을 것 같아요!"
+                    }
+                    if(list[18].fcstValue.toInt() == 4){
+                        binding.weatherLayout.setBackgroundResource(R.color.dark_orange)
+                        binding.weatherText.text = "오늘은 흐리네요. 그래도 열심히 달려봐요!"
+                    }
+
+                    //24 -> T1H(온도)
+                    binding.weather.text = "${list[24].fcstValue}°C"
+
+
+                    //6 -> PTY(강수)
+                    if(list[6].fcstValue.toInt() > 0){
+                        binding.weatherImage.setImageResource(R.drawable.umbrella)
+                        binding.weatherText.text = "오늘은 비가 와서 뛰기 힘들 것 같네요"
                     }
                 }
             }
@@ -96,19 +118,6 @@ class MainActivity : AppCompatActivity() {
 
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-
-        // 날씨
-        val now = System.currentTimeMillis()
-        val date = Date(now)
-        val sdf = SimpleDateFormat("yyyyMMdd hhmm")
-        val getTime = sdf.format(date)
-        Log.d("api",getTime)
-
-
-        val a = getTime.split(" ")
-        binding.date.text = a[0]
-        binding.time.text = a[1]
-        weather(a[0], a[1])
 
         serviceIntent = Intent(applicationContext, RunningService::class.java)   //RunningService 와 intent
         activityIntent = Intent(this, RunningActivity::class.java) //RunningActivity 와 intent
@@ -148,7 +157,55 @@ class MainActivity : AppCompatActivity() {
 
 
         }
+        // 날씨
+        val date = Date()
+        val dateFormat = SimpleDateFormat("yyyyMMdd HHmm",Locale("ko","KR"))
+        val nowdateFormat = SimpleDateFormat("MM월dd일 HH:mm", Locale("ko","KR"))
 
+        val calendar = Calendar.getInstance()
+        val time = calendar.time
+        calendar.setTime(date)
+        val nowFormatTime = nowdateFormat.format(time)
+        val b = nowFormatTime.split(" ")
+        binding.date.text = b[0]
+        binding.time.text = b[1]
+
+
+        calendar.add(Calendar.HOUR,-1)
+
+        val formatTime = dateFormat.format(time)
+
+        Log.d("api",formatTime)
+
+        val a = formatTime.split(" ")
+        weather(a[0],a[1])
+//        val now = System.currentTimeMillis()
+//        val now_date = Date(now)
+//        val sdf = SimpleDateFormat("yyyyMMdd HHmm")
+//        val getTime = sdf.format(now_date)
+//        Log.d("api",getTime)
+//
+//        val a = getTime.split(" ").toMutableList()
+//
+//        var time = a[1].toInt()
+//        var date = a[0].toInt()
+//        time -= 10
+//        if(time<0)
+//        {
+//            date-=1
+//            if(date%100==99){
+//                var calendar = Calendar.getInstance()
+//                calendar.add(Calendar.DAY_OF_YEAR,-1)
+//                var TimeToDate = calendar.time
+//                a[0]=sdf.format(TimeToDate)
+//            }
+//            a[1]="2345"
+//        }
+//
+
+//        binding.date.text = a[0]
+//        binding.time.text = a[1]
+//        weather(a[0], a[1])
     }
 
     override fun onStart() {

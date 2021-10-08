@@ -22,5 +22,5 @@ data class ITEM(
     val baseData : Int,
     val baseTime : Int,
     val category : String,
-    val obsrValue : Double
+    val fcstValue : String
 )

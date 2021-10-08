@@ -88,8 +88,6 @@ class MapFragment(
         //지도 위치를 현 위치로 설정
         naverMap.locationSource = locationSource
         val a = locationSource.lastLocation
-        Log.d("api","${a?.latitude}")
-        //a?.altitude
 
 //        naverMap.minZoom = 18.0
 //        naverMap.maxZoom = 18.0
@@ -150,5 +148,6 @@ class MapFragment(
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1000
+
     }
 }

@@ -14,4 +14,5 @@
     <color name="darkGray">#FF151515</color>
     <color name="transparent">#00000000</color>
     <color name="light_orange">#FFF8AD7B</color>
+    <color name="dark_orange">#C1500C</color>
 </resources>

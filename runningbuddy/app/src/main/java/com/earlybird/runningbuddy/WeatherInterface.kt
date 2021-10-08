@@ -5,7 +5,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface WeatherInterface {
-    @GET("getUltraSrtNcst?serviceKey=DP0tdDGkytW6UzKZENko82wmCGMkElWIE2eJgraICITySpab3uBVke9VoNcnGI%2BOw8bqv9wJQiVGJAxSOwMMgQ%3D%3D")
+    @GET("getUltraSrtFcst?serviceKey=DP0tdDGkytW6UzKZENko82wmCGMkElWIE2eJgraICITySpab3uBVke9VoNcnGI%2BOw8bqv9wJQiVGJAxSOwMMgQ%3D%3D")
     fun GetWeather(
         @Query("dataType") data_type : String,
         @Query("numOfRows") num_of_rows : Int,
