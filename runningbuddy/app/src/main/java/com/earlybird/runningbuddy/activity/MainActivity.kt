@@ -59,6 +59,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun weather(date:String, time:String){
+        Log.d("HANAPI","weather()")
         base_time = time
         base_data = date
         Log.d("api","time : $base_time")
@@ -163,7 +164,7 @@ class MainActivity : AppCompatActivity() {
         val nowdateFormat = SimpleDateFormat("MM월dd일 HH:mm", Locale("ko","KR"))
 
         val calendar = Calendar.getInstance()
-        val time = calendar.time
+        var time = calendar.time
         calendar.setTime(date)
         val nowFormatTime = nowdateFormat.format(time)
         val b = nowFormatTime.split(" ")
@@ -172,10 +173,10 @@ class MainActivity : AppCompatActivity() {
 
 
         calendar.add(Calendar.HOUR,-1)
-
+        time = calendar.time
         val formatTime = dateFormat.format(time)
 
-        Log.d("api",formatTime)
+        Log.d("HANAPI",formatTime)
 
         val a = formatTime.split(" ")
         weather(a[0],a[1])
