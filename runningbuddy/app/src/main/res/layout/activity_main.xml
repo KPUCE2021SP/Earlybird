@@ -24,35 +24,37 @@
             android:id="@+id/weatherImage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="62dp"
-            android:layout_marginEnd="32dp"
             android:src="@drawable/sunny"
+            app:layout_constraintEnd_toStartOf="@id/weather"
+            app:layout_constraintHorizontal_chainStyle="packed"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <TextView
-            android:id="@+id/date"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:textColor="@color/white"
-            android:textSize="30sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="10월09일" />
+<!--        <TextView-->
+<!--            android:id="@+id/date"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_marginTop="24dp"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="30sp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toTopOf="parent"-->
+<!--            tools:text="10월09일" />-->
+
+<!--        <TextView-->
+<!--            android:id="@+id/time"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:textColor="@color/white"-->
+<!--            android:textSize="30sp"-->
+<!--            app:layout_constraintEnd_toEndOf="parent"-->
+<!--            app:layout_constraintTop_toBottomOf="@id/date"-->
+<!--            tools:text="10:10" />-->
 
         <TextView
-            android:id="@+id/time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/white"
-            android:textSize="30sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/date"
-            tools:text="10:10" />
-
-        <TextView
+            app:layout_constraintStart_toEndOf="@id/weatherImage"
             android:id="@+id/weather"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -60,7 +62,6 @@
             android:textColor="@color/white"
             android:textSize="30sp"
             app:layout_constraintBottom_toBottomOf="@id/weatherImage"
-            app:layout_constraintStart_toEndOf="@id/weatherImage"
             app:layout_constraintTop_toTopOf="@id/weatherImage"
             tools:text="23º" />
 

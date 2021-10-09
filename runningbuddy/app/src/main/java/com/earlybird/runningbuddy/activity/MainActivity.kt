@@ -168,8 +168,8 @@ class MainActivity : AppCompatActivity() {
         calendar.setTime(date)
         val nowFormatTime = nowdateFormat.format(time)
         val b = nowFormatTime.split(" ")
-        binding.date.text = b[0]
-        binding.time.text = b[1]
+//        binding.date.text = b[0]
+//        binding.time.text = b[1]
 
 
         calendar.add(Calendar.HOUR,-1)
