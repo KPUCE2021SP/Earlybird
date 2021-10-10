@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="7680"
+   height="4320"
+   viewBox="0 0 7680 4320"
+   version="1.1"
+   id="svg5"
+   inkscape:version="1.1.1 (3bf5ae0d25, 2021-09-20)"
+   sodipodi:docname="러닝버디 8k로고(찐).svg"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:document-units="px"
+     showgrid="false"
+     inkscape:zoom="0.11950841"
+     inkscape:cx="4338.6067"
+     inkscape:cy="2137.9248"
+     inkscape:window-width="1920"
+     inkscape:window-height="1057"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:current-layer="layer1" />
+  <defs
+     id="defs2" />
+  <g
+     inkscape:label="레이어 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="fill:none;fill-opacity:1;stroke:#fa6a00;stroke-width:370.045;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1;paint-order:markers stroke fill"
+       id="path1824"
+       sodipodi:type="arc"
+       sodipodi:cx="-1586.7112"
+       sodipodi:cy="-2875.2031"
+       sodipodi:rx="1061.3359"
+       sodipodi:ry="1061.3359"
+       sodipodi:start="6.2780366"
+       sodipodi:end="3.1420813"
+       sodipodi:arc-type="slice"
+       d="m -525.38931,-2880.6676 a 1061.3359,1061.3359 0 0 1 -527.65149,922.8684 1061.3359,1061.3359 0 0 1 -1063.0598,2.4769 1061.3359,1061.3359 0 0 1 -531.9464,-920.3995 l 1061.3358,0.5187 z"
+       transform="matrix(-0.870349,0.49243539,-0.48978878,-0.87184113,0,0)" />
+    <path
+       style="fill:none;stroke:#fa6800;stroke-width:370;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 1359.0823,2539.4391 C 5452.1536,246.97537 5452.1536,246.97537 5452.1536,246.97537"
+       id="path4763" />
+    <path
+       style="fill:none;stroke:#fa6800;stroke-width:370;stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 1879.1629,2247.1526 c 0,0 564.0073,1841.1176 2369.9157,1879.2165"
+       id="path5392"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#00037b;stroke-width:370;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 4249.0786,4126.3691 6284.0765,1146.3628"
+       id="path6290" />
+    <path
+       style="fill:none;stroke:#00027a;stroke-width:370;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 4249.0786,4126.3691 c 0,0 2980.538,-436.2523 1440.8974,-2118.1423"
+       id="path6438"
+       sodipodi:nodetypes="cc" />
+    <path
+       style="fill:none;stroke:#00027a;stroke-width:370;stroke-linecap:round;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="m 6284.0765,1146.3628 c 0,0 -368.175,-301.23393 -962.2754,100.4114"
+       id="path10513" />
+    <path
+       style="fill:none;stroke:#fa6800;stroke-width:370;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 5452.1536,246.97537 c 0,0 162.5139,581.4182 -130.3525,999.79883"
+       id="path6909"
+       sodipodi:nodetypes="cc" />
+  </g>
+</svg>
